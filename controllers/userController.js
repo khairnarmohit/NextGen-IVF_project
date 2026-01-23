@@ -9,6 +9,7 @@ exports.getHomePage = (req, res) => {
   }
 };
 
+
 exports.getAboutPage = (req, res) => {
   try{
     res.render("user/about");
@@ -26,4 +27,14 @@ exports.getTreatmentPage = (req,res) => {
     res.status(500).render("error", {message: "Treatment Page Error"})
   }
 }
+
+exports.getDoctorsPage = (req, res) => {
+  try{
+    res.render("user/doctors");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Doctors Page Error" });
+  }
+};
+
 

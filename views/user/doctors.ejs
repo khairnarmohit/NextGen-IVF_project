@@ -1,0 +1,90 @@
+<%- include('navbar.ejs') %>
+
+<style>
+    .bg_doctor {
+        background-image: url("https://progenesisivf.com/images/DoctorB.png");
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 700px; /* MUST */
+    }
+     /* Doctors text color */
+    .doctor-link {
+        color: #1E88E5;
+        font-weight: 600;
+    }
+
+    /* h1 height increase */
+    .doctor-heading {
+        font-size: 75px;
+        line-height: 80px;
+        margin-top:100px;
+    }
+    /* .doctor_gallery p{
+        font-size:50px;
+
+    } */
+    .doctor_gallery img{
+        border-radius: 20px;
+        height:450px;
+        width:450px
+    }
+
+
+    
+
+
+</style>
+
+
+
+
+<div class="container-fluid bg_doctor">
+    <p class="pt-5 ps-5 ">
+        <span class="text-dark me-4 fs-3">Home</span>
+        <span class="doctor-link me-4 fs-2"> > Doctors</span>
+    </p>
+
+    <h1 class="text-dark ms-5 doctor-heading">
+        Because of Their Expertise &<br>
+        Care, Dreams Have Found Life.
+    </h1>
+</div>
+\
+<!-- doctor gallery -->
+ <div class="container doctor_gallery mt-5 ">
+    <div class=" mb-5">
+  
+<button class="btn btn-outline-primary">Our Doctors</button>
+<p  style="font-size:50px ;">Meet our Experts</p>
+    <div class="row  mt-5">
+        <div class="col-4">
+            <img src="https://admin.progenesisivf.com/media/uploads/doctor/profile/1.png" alt="doctor gallery" class="img-fluid">
+
+        </div>
+        <div class="col-4">
+            <p style="font-size:40px;">
+Dr. Narhari S. Malagaonkar</p>
+<p style="font-size:20px;">He emphasises a fully personalised fertility treatment plan and advanced laboratory technologies to address each couple’s unique infertility issues</p>
+<p style="font-colo">15+ Years of Experience<br><br>
+    
+MD, DNB, DGO, FCPS, DFP (Mumbai)<br><br>Fellowship in Reproductive Medicine (Singapore)
+</p>
+        </div>
+        
+
+        </div>
+        
+    </div>
+ </div>
+
+
+
+
+
+
+
+
+
+</div>
+<%- include('footer.ejs') %>
