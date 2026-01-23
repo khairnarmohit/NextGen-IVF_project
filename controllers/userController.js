@@ -9,6 +9,7 @@ exports.getHomePage = (req, res) => {
   }
 };
 
+<<<<<<< Updated upstream
 
 exports.getAboutPage = (req, res) => {
   try{
@@ -19,3 +20,13 @@ exports.getAboutPage = (req, res) => {
   }
 };
 
+=======
+exports.getTreatmentPage = (req,res) => {
+  try{
+    res.render("user/treatments");
+  }catch (error) {
+    console.error(error);
+    res.status(500).render("error", {message: "Treatment Page Error"})
+  }
+}
+>>>>>>> Stashed changes
