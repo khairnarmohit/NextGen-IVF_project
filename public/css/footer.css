@@ -1,0 +1,240 @@
+
+/* Base Footer Styling */
+.ivf-footer {
+  position: relative;
+  font-family: 'Manrope', sans-serif;
+  color: #fff;
+  background-color: #645242; /* Fallback color */
+  padding-bottom: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+
+}
+
+/* BACKGROUND IMAGE LOGIC - Kept exactly as requested */
+.ivf-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://media.istockphoto.com/id/2152079554/photo/newborn-sleeping-on-blanket-over-black-background-baby-sleep-in-fetal-position-side-view.jpg?s=612x612&w=0&k=20&c=jgEdhApU8LrHMCnKaPQNcW3A5MCxdCXaHemXfZpuUjs=') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Black Overlay */
+.ivf-footer .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+/* Main Content Area */
+.ivf-footer .footer-content {
+  position: relative;
+  z-index: 3;
+  padding-top: 80px;
+  padding-bottom: 60px;
+  flex-grow: 1;
+}
+
+/* Column Headings */
+.ivf-footer h5 {
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #fff;
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+.ivf-footer h5::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 2px;
+  background-color: #0d6efd;
+  margin-top: 10px;
+}
+
+/* List Styling */
+.ivf-footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Links Styling */
+.ivf-footer a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  line-height: 2.2;
+  transition: all 0.3s ease;
+  display: block;
+}
+.ivf-footer a:hover {
+  color: #0d6efd !important;
+  transform: translateX(5px);
+}
+.ivf-footer a:active,
+.ivf-footer a:focus {
+  color: #0d6efd !important;
+  text-decoration: underline;
+}
+
+/* --- COLUMN 1 STYLES --- */
+.footer-logo-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+/* New Heartbeat Icon Styling */
+.heartbeat-icon {
+  font-size: 3.5rem; /* Large size for the logo */
+  color: #fff;
+}
+
+/* Footer text styling */
+.footer-logo-text {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin: 0;
+}
+
+/* Social icons centered below description */
+.social-icons-horizontal {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  justify-content: center;
+}
+
+/* Social icons circle styling - RESTORED from commented state */
+.social-icon-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  color: #fff;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+/* Increased icon size inside circle as requested */
+.social-icon-circle i {
+  font-size: 1.4rem; /* Increased size */
+  margin-left: 13px;
+  margin-top: 10px;
+}
+
+/*.social-icon-circle:hover {
+  background: #0d6efd;
+  color: #fff;
+  transform: translateY(-3px) !important;
+}
+*/
+/* social description in first column */
+.social-desc {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* --- VERTICAL CENTER HELPER FOR COL 2 & 3 --- */
+.v-center-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  /* Ensure it aligns well with the first column's height */
+  padding-top: 10px; 
+}
+
+/* --- COLUMN 4 STYLES --- */
+.subscribe-newsletter h6 {
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.9);
+}
+
+/* Input Group overrides for attached row */
+.input-group .form-control {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+}
+.input-group .form-control::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+.input-group .form-control:focus {
+  background: rgba(255,255,255,0.2);
+  border-color: #0d6efd;
+  box-shadow: none;
+  color: #fff;
+}
+
+.input-group .btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+.input-group .btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+/* --- HORIZONTAL LINKS WITH SLASH --- */
+.horizontal-links-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.horizontal-links-row a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.horizontal-links-row a:hover {
+  color: #fff;
+}
+
+/* Logic to add Slash after every link except the last one */
+.horizontal-links-row a:not(:last-child)::after {
+  content: "/";
+  margin-left: 10px;
+  color: rgba(255,255,255,0.5); /* Slightly dimmer color for the slash */
+}
+
+/* Bottom Bar / Copyright */
+.copyright-bar {
+  background-color: rgba(0,0,0,0.6);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 20px 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  position: relative;
+  z-index: 3;
+}
