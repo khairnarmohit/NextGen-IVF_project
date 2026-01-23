@@ -5,6 +5,10 @@ var userController = require("../controllers/userController");
 
 router.get("/", userController.getHomePage);
 
+router.get("/about", userController.getAboutPage);
+
+
+
 
 
 
