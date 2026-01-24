@@ -135,13 +135,15 @@
   color: #fff;
   transition: all 0.3s ease;
   text-decoration: none;
+  /* margin-left: 0px; */
+   
 }
 
 /* Increased icon size inside circle as requested */
 .social-icon-circle i {
   font-size: 1.4rem; /* Increased size */
-  margin-left: 13px;
-  margin-top: 10px;
+  margin-left: 15px;
+  margin-top: 12px;
 }
 
 /*.social-icon-circle:hover {
