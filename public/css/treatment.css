@@ -1,0 +1,121 @@
+/* <style> */
+.hero-section {
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.breadcrumb-title a {
+    color: #0d6efd;
+}
+
+.breadcrumb-title a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: auto;
+        padding: 60px 0;
+    }
+
+    .breadcrumb-title {
+        font-size: 16px;
+    }
+}
+
+
+/* Treaments Cards Css */
+
+.treatment-card {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    z-index: 1;
+}
+
+/* Background image */
+.treatment-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("/treatment-1.jpg") center / cover no-repeat;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -2;
+  
+}
+/* Primary color overlay */
+.treatment-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 110, 253, 0.85); /* Bootstrap primary */
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+}
+
+/* Hover state */
+.treatment-card:hover::before,
+.treatment-card:hover::after {
+    opacity: 1;
+}
+
+/* Text & icon color change */
+.treatment-card h3,
+.treatment-card p,
+.treatment-card i {
+    transition: color 0.3s ease;
+}
+
+.treatment-card:hover h3,
+.treatment-card:hover p,
+.treatment-card:hover i {
+    color: #fff;
+}
+
+/* Arrow move */
+.treatment-link i {
+    transition: transform 0.3s ease;
+}
+
+.treatment-card:hover .treatment-link i {
+    transform: translateX(8px);
+}
+
+
+.cta-section {
+    margin-top: 60px;
+}
+
+.cta-text {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+/* Mobile refinement */
+@media (max-width: 768px) {
+    .cta-text {
+        font-size: 18px;
+    }
+
+    .cta-section .btn {
+        font-size: 16px;
+        padding: 10px 22px;
+    }
+}
+
+/* </style> */

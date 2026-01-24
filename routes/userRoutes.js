@@ -10,11 +10,16 @@ router.get("/Treatments", userController.getTreatmentPage);
 
 router.get("/about", userController.getAboutPage);
 
-router.get("/Treatments" , userController.getTreatmentPage)
+router.get("/treatments" , userController.getTreatmentPage)
 
 router.get("/doctors", userController.getDoctorsPage);
 
+<<<<<<< Updated upstream
 router.get("/contact", userController.getContactPage);
+=======
+router.get("/patient-stories", userController.getPatientStoriesPage);
+
+>>>>>>> Stashed changes
 
 
 module.exports = router;
