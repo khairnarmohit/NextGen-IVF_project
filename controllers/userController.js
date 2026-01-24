@@ -42,7 +42,6 @@ exports.getDoctorsPage = (req, res) => {
   }
 };
 
-<<<<<<< Updated upstream
 exports.getContactPage = (req, res) => {
   try{
     res.render("user/contact");
@@ -55,7 +54,6 @@ exports.getContactPage = (req, res) => {
 
 
 
-=======
 exports.getPatientStoriesPage = (req, res) => {
   try{
     res.render("user/patient_stories");
@@ -64,4 +62,3 @@ exports.getPatientStoriesPage = (req, res) => {
     res.status(500).render("error", { message: "Patient Stories Page Error" });
   }
 };
->>>>>>> Stashed changes
