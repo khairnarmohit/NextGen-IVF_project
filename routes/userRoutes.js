@@ -11,6 +11,7 @@ router.get("/Treatments" , userController.getTreatmentPage)
 
 router.get("/doctors", userController.getDoctorsPage);
 
+router.get("/contact", userController.getContactPage);
 
 
 module.exports = router;

@@ -1,5 +1,430 @@
 <%- include("navbar.ejs") %>
+<style>
+    
+    /* Internal CSS for About Page */
+    :root {
+      --primary: #1e88e5;
+      --primary-dark: #1565c0;
+      --secondary: #e3f2fd;
+      --background: #ffffff;
+      --text: #263238;
+      --text-light: #546e7a;
+      --accent: #43a047;
+      --light-gray: #f8f9fa;
+      --border-radius: 16px;
+    }
 
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: var(--text);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+    }
+
+    .section-padding {
+        padding: 80px 0;
+    }
+
+    .bg-light-alt {
+        background-color: var(--light-gray);
+    }
+
+    .text-primary-custom {
+        color: var(--primary);
+    }
+
+    /* Common Section Header */
+    .section-header {
+        margin-bottom: 50px;
+    }
+    
+    .section-subtitle {
+        color: var(--primary);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        color: var(--text);
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Hero Section */
+    .page-header {
+        background: linear-gradient(135deg, var(--secondary) 0%, #ffffff 100%);
+        padding: 100px 0 80px;
+        position: relative;
+    }
+
+    .breadcrumb-item a {
+        color: var(--text-light);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    /* Image Styling */
+    .img-frame {
+        position: relative;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .img-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .img-frame:hover img {
+        transform: scale(1.05);
+    }
+
+    /* History Section */
+    .history-year {
+        font-size: 4rem;
+        font-weight: 900;
+        color: rgba(30, 136, 229, 0.1);
+        line-height: 1;
+        position: absolute;
+        top: -30px;
+        left: -20px;
+        z-index: -1;
+    }
+
+    .history-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Vision & Mission - Redesigned */
+    .vm-card {
+        padding: 40px;
+        border-radius: 24px;
+        border: none;
+        box-shadow: none;
+        color: #fff;
+        margin-bottom: 24px;
+        transition: transform 0.3s ease;
+    }
+    
+    .vm-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .vm-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .vm-card-mission {
+        background-color: var(--primary); /* Blue */
+    }
+
+    .vm-card-vision {
+        background-color: var(--accent); /* Green */
+    }
+
+    .vm-icon-box {
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        color: #fff;
+        opacity: 0.9;
+    }
+    
+    .vm-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    
+    .vm-desc {
+        font-size: 1rem;
+        line-height: 1.6;
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+
+    .vm-img-frame {
+        height: 100%;
+        min-height: 500px; 
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .vm-img-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Chief Message */
+    .chief-msg-box {
+        background: #fff;
+        padding: 50px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+        position: relative;
+    }
+
+    .quote-icon {
+        font-size: 4rem;
+        color: var(--secondary);
+        position: absolute;
+        top: 20px;
+        left: 30px;
+    }
+
+    .chief-signature {
+        font-family: 'Cursive', sans-serif; /* Fallback */
+        font-size: 1.5rem;
+        color: var(--primary);
+        margin-top: 20px;
+    }
+
+    /* Why Choose Us */
+    .feature-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid transparent;
+    }
+
+    .feature-card:hover {
+        border-color: var(--secondary);
+        box-shadow: 0 15px 30px rgba(30, 136, 229, 0.1);
+        transform: translateY(-10px);
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--secondary) 0%, #ffffff 100%);
+        color: var(--primary);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin: 0 auto 20px;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        background: var(--primary);
+        color: #fff;
+        transform: rotate(15deg);
+    }
+
+    /* Counter Text Styling */
+    .counter-number {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 5px;
+        line-height: 1;
+    }
+
+    .counter-label {
+        color: var(--text-light);
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+
+    /* Counter Box - Refined Clean Style */
+    .counter-box {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 20px;
+        padding: 40px 20px;
+        text-align: center;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .counter-box::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    .counter-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        border-color: var(--primary);
+    }
+
+    .counter-icon {
+        width: 70px;
+        height: 70px;
+        background: #fff;
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    /* Counter Icon */
+    .counter-icon {
+        width: 70px;
+        height: 70px;
+        background: #fff;
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .counter-box:hover .counter-icon {
+        transform: scale(1.1) rotate(10deg);
+        background: var(--primary);
+        color: #fff;
+    }
+
+ 
+
+    /* Our Awards Section */
+    .award-card {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+    }
+
+    .award-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(30, 136, 229, 0.15);
+        border-color: var(--primary);
+    }
+
+    .award-img-box {
+        height: 220px;
+        position: relative;
+        overflow: hidden;
+        background: var(--light-gray);
+    }
+
+    .award-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+        filter: grayscale(100%);
+    }
+
+    .award-card:hover .award-img-box img {
+        transform: scale(1.05);
+        filter: grayscale(0%);
+    }
+
+    .award-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        color: var(--primary);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        z-index: 2;
+    }
+
+    .award-card:hover .award-badge {
+        background: var(--accent);
+        color: #fff;
+    }
+
+    .award-content {
+        padding: 25px;
+        text-align: center;
+    }
+
+    .award-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--text);
+    }
+
+    .award-year {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--primary);
+        background: var(--secondary);
+        padding: 4px 12px;
+        border-radius: 20px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 991px) {
+        .section-padding {
+            padding: 50px 0;
+        }
+        .section-title {
+            font-size: 2rem;
+        }
+        .chief-msg-box {
+            padding: 30px;
+        }
+        .history-year {
+            font-size: 3rem;
+        }
+        .vm-img-frame {
+            min-height: 300px;
+            margin-bottom: 24px;
+        }
+    }
+
+</style>
 
 <!-- Header / Hero -->
 <header class="page-header text-center">
@@ -21,7 +446,7 @@
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <div class="history-content pe-lg-4">
                     <span class="section-subtitle">Our Journey</span>
-                    <h2 class="section-title mb-4">Legacy of Creating Families Since 2008</h2>
+                    <h2 class="section-title mb-4">NextGen IVF Center</h2>
                     <div class="position-relative">
                         
                         <p class="lead text-secondary mb-4">Founded with a vision to bring world-class fertility care to our community.</p>
@@ -47,6 +472,10 @@
 <!-- 2. Photo + Vision and Mission Section -->
 <section class="section-padding bg-light-alt" id="vision-mission">
     <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-subtitle">Our Philosophy</span>
+            <h2 class="section-title">Vision & Mission</h2>
+        </div>
         <div class="row align-items-stretch">
             <!-- Image Column -->
             <div class="col-lg-6 mb-4 mb-lg-0">
@@ -90,6 +519,10 @@
 <!-- 3. Photo + Chief Message Section -->
 <section class="section-padding" id="chief-message">
     <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-subtitle">Leadership</span>
+            <h2 class="section-title">Director's Message</h2>
+        </div>
         <div class="row align-items-center">
             <div class="col-lg-5 mb-5 mb-lg-0">
                 <div class="img-frame shadow-lg">
@@ -99,10 +532,11 @@
             </div>
             <div class="col-lg-7 ps-lg-5">
                 <div class="chief-msg-box">
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="ps-4 pt-5">
-                        <span class="section-subtitle">Director's Message</span>
-                        <!-- <h2 class="section-title mb-4">A Message from Our Chief Director</h2> -->
+                    <!-- <i class="fas fa-quote-left quote-icon"></i> -->
+                    <div class="ps-4 pt-3">
+                        <h3 class="mb-4">A Message from Our Chief Director</h3>
+                    <i class="fas fa-quote-right quote-icon" style="margin-left:570px;"></i>
+
                         <p class="lead fst-italic text-dark mb-4">
                             "At NextGen IVF, we believe that every couple deserves the chance to experience the miracle of life. Our commitment goes beyond medical treatment; it is about building trust and offering hope."
                         </p>
@@ -110,10 +544,9 @@
                             Welcome to NextGen IVF. Since our inception, we have dedicated ourselves to one singular goal: helping you build your family. We understand that the journey to parenthood can be challenging, which is why we have assembled a team of world-class specialists and invested in the latest technology to ensure the best possible outcomes.
                         </p>
                         <div class="mt-4">
-                            <h5 class="mb-0 fw-bold">Dr. Mansi Berad</h5>
+                            <h5 class="mb-0 fw-bold">Dr. Lalit Magar</h5>
                             <p class="text-primary mb-0">Chief Medical Director & Founder</p>
-                            <!-- Signature placeholder if needed -->
-                            <!-- <div class="chief-signature">Dr. Mansi Berad</div> -->
+                           
                         </div>
                     </div>
                 </div>
@@ -128,9 +561,7 @@
         <div class="text-center mb-5">
             <span class="section-subtitle">Why Choose Us</span>
             <h2 class="section-title">Excellence in Every Step</h2>
-            <p class="text-secondary mt-3 mx-auto" style="max-width: 600px;">
-                We combine medical expertise with emotional support to provide a holistic fertility care experience.
-            </p>
+            
         </div>
 
         <div class="row g-4">
@@ -178,84 +609,145 @@
     </div>
 </section>
 
-<!-- 5. Awards and Certificates Section -->
-<section class="section-padding" id="awards">
+<!-- 5. Achievements Section -->
+<section class="section-padding" id="achievements">
     <div class="container">
         <div class="text-center mb-5">
             <span class="section-subtitle">Our Achievements</span>
-            <h2 class="section-title">Awards & Accreditations</h2>
+            <h2 class="section-title">Milestones</h2>
         </div>
 
-        <div class="row g-4 justify-content-center">
-            <!-- Award 1 -->
-            <div class="col-md-6 col-lg-3">
-                <div class="award-card">
-                    <div class="award-img-box">
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Best IVF Center">
-                        <div class="award-overlay">
-                             <i class="fas fa-trophy fa-2x text-white"></i>
-                        </div>
+        <!-- Stats Counters -->
+        <div class="row g-4 justify-content-center mb-5 pb-5">
+            <div class="col-6 col-md-3">
+                <div class="counter-box">
+                    <div class="counter-icon">
+                        <i class="fas fa-baby"></i>
                     </div>
-                    <div class="award-content">
-                        <h5 class="award-title">Best IVF Center</h5>
-                        <span class="award-year">2023</span>
-                    </div>
+                    <div class="counter-number">5000+</div>
+                    <div class="counter-label">Happy Families</div>
                 </div>
             </div>
-            
-            <!-- Award 2 -->
-             <div class="col-md-6 col-lg-3">
-                <div class="award-card">
-                    <div class="award-img-box">
-                        <img src="https://images.unsplash.com/photo-1555529733-0e670560f7e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="ISO Certification">
-                        <div class="award-overlay">
-                             <i class="fas fa-certificate fa-2x text-white"></i>
-                        </div>
+            <div class="col-6 col-md-3">
+                <div class="counter-box">
+                    <div class="counter-icon">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
-                    <div class="award-content">
-                        <h5 class="award-title">ISO Certified</h5>
-                        <span class="award-year">2022</span>
-                    </div>
+                    <div class="counter-number">15+</div>
+                    <div class="counter-label">Years Experience</div>
                 </div>
             </div>
-            
-            <!-- Award 3 -->
-             <div class="col-md-6 col-lg-3">
-                <div class="award-card">
-                    <div class="award-img-box">
-                        <img src="https://images.unsplash.com/photo-1589829545384-947c69aa186a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Excellence in Healthcare">
-                        <div class="award-overlay">
-                             <i class="fas fa-medal fa-2x text-white"></i>
-                        </div>
+             <div class="col-6 col-md-3">
+                <div class="counter-box">
+                    <div class="counter-icon">
+                        <i class="fas fa-user-md"></i>
                     </div>
-                    <div class="award-content">
-                        <h5 class="award-title">Excellence Award</h5>
-                        <span class="award-year">2021</span>
-                    </div>
+                    <div class="counter-number">50+</div>
+                    <div class="counter-label">Expert Doctors</div>
                 </div>
             </div>
-            
-            <!-- Award 4 -->
-             <div class="col-md-6 col-lg-3">
-                <div class="award-card">
-                    <div class="award-img-box">
-                        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Global Healthcare">
-                        <div class="award-overlay">
-                             <i class="fas fa-globe-americas fa-2x text-white"></i>
-                        </div>
+             <div class="col-6 col-md-3">
+                <div class="counter-box">
+                    <div class="counter-icon">
+                        <i class="fas fa-award"></i>
                     </div>
-                    <div class="award-content">
-                        <h5 class="award-title">Global Healthcare</h5>
-                        <span class="award-year">2020</span>
-                    </div>
+                    <div class="counter-number">25+</div>
+                    <div class="counter-label">Global Awards</div>
                 </div>
             </div>
         </div>
-        
-        <div class="text-center mt-5">
-            <p class="text-secondary">Recognized globally for maintaining the highest standards in reproductive healthcare.</p>
-        </div>
-    </div>
+     </div>
 </section>
+
+         <!-- Awards Section -->
+    <section class="section-padding bg-light-alt">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">Our Awards & Recognitions</h2>
+                    <p class="section-subtitle">We're proud to be recognized for our commitment to excellence in healthcare and patient-centered services.</p>
+                </div>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <!-- Award 1 - Best IVF Center -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="award-card">
+                        <div class="award-img-box">
+                            <div class="award-badge trophy">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <!-- Realistic medical award image -->
+                            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Best IVF Center Award">
+                        </div>
+                        <div class="award-content">
+                            <h5 class="award-title">Best IVF Center of the Year</h5>
+                            <p class="award-description">Recognized for excellence in fertility treatments and patient care outcomes.</p>
+                            <div class="award-issuer">Global Healthcare Awards</div>
+                            <span class="award-year">2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Award 2 - ISO Certification -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="award-card">
+                        <div class="award-img-box">
+                            <div class="award-badge certificate">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <!-- Realistic certification image -->
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3MuC4cL-e6AjKFlaojVY1DbYywcgPJ0K2w&s" alt="ISO Certification">
+                        </div>
+                        <div class="award-content">
+                            <h5 class="award-title">ISO 9001:2015 Certified</h5>
+                            <p class="award-description">Quality management certification for consistent healthcare service delivery.</p>
+                            <div class="award-issuer">International Standards Org.</div>
+                            <span class="award-year">2022</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Award 3 - Excellence Award -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="award-card">
+                        <div class="award-img-box">
+                            <div class="award-badge medal">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                            <!-- Realistic medical excellence award image -->
+                            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Excellence in Healthcare Award">
+                        </div>
+                        <div class="award-content">
+                            <h5 class="award-title">Excellence in Patient Care</h5>
+                            <p class="award-description">Awarded for outstanding patient satisfaction and clinical outcomes.qwertyuio</p>
+                            <div class="award-issuer">Healthcare Excellence Forum</div>
+                            <span class="award-year">2021</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Award 4 - Global Healthcare -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="award-card">
+                        <div class="award-img-box">
+                            <div class="award-badge globe">
+                                <i class="fas fa-globe-americas"></i>
+                            </div>
+                            <!-- Realistic global healthcare image -->
+                            <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Global Healthcare Award">
+                        </div>
+                        <div class="award-content">
+                            <h5 class="award-title">Global Healthcare Excellence</h5>
+                            <p class="award-description">Recognized as a leading healthcare provider in the international community.</p>
+                            <div class="award-issuer">World Health Organization</div>
+                            <span class="award-year">2020</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
 <%- include("footer.ejs") %>
