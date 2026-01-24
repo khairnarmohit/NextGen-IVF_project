@@ -9,6 +9,9 @@ exports.getHomePage = (req, res) => {
   }
 };
 
+
+
+
 exports.getAboutPage = (req, res) => {
   try{
     res.render("user/about");
@@ -17,6 +20,9 @@ exports.getAboutPage = (req, res) => {
     res.status(500).render("error", { message: "About Page Error" });
   }
 };
+
+
+
 
 exports.getTreatmentPage = (req,res) => {
   try{
@@ -44,7 +50,6 @@ exports.getContactPage = (req, res) => {
     res.status(500).render("error", { message: "Contact Page Error" });
   }
 };
-
 
 
 
