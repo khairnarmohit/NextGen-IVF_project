@@ -7,4 +7,13 @@ router.get("/", userController.getHomePage);
 router.get("/about", userController.getAboutPage);
 router.get("/doctors", userController.getDoctorsPage);
 router.get("/Treatments", userController.getTreatmentPage);
+
+router.get("/about", userController.getAboutPage);
+
+router.get("/Treatments" , userController.getTreatmentPage)
+
+router.get("/doctors", userController.getDoctorsPage);
+
+
+
 module.exports = router;
