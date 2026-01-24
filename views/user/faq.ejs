@@ -1,0 +1,590 @@
+<%- include("navbar.ejs") %>
+
+    <style type="text/css">
+        /* CSS Variables */
+:root {
+    --primary-color: #2bb0c0;
+    --primary-light: #e6f7f9;
+    --secondary-color: #38b6ff;
+    --accent-color: #ff7eb3;
+    --dark-color: #2c3e50;
+    --light-color: #f8f9fa;
+    --text-dark: #333333;
+    --text-light: #666666;
+    --border-radius: 10px;
+    --box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+}
+
+
+
+
+/* FAQ Section */
+.faq-section {
+    background-color: white;
+}
+.faq-section h3{
+    color: #5097ee;
+}
+
+.category-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: var(--box-shadow);
+    border-top: 4px solid var(--primary-color) !important;
+    height: 100%;
+    transition: var(--transition);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.category-title {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-light);
+    display: flex;
+    align-items: center;
+}
+
+.category-title i {
+    background-color: var(--primary-light);
+    padding: 10px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Accordion Customization */
+.accordion {
+    --bs-accordion-border-color: #e9ecef;
+    --bs-accordion-border-radius: var(--border-radius);
+    --bs-accordion-inner-border-radius: calc(var(--border-radius) - 1px);
+}
+
+.accordion-item {
+    border: none;
+    border-radius: var(--border-radius) !important;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.accordion-item:hover {
+    box-shadow: 0 5px 15px rgba(43, 176, 192, 0.1);
+}
+
+.accordion-button {
+    background-color: var(--primary-light) !important;
+    color: var(--dark-color) !important;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 20px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: var(--transition);
+}
+
+.accordion-button:not(.collapsed) {
+/*    color: var(--primary-color) !important;*/
+    background-color: white !important;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232bb0c0'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    width: 1.25rem;
+    height: 1.25rem;
+    background-size: 1.25rem;
+    transition: var(--transition);
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232bb0c0'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    transform: rotate(180deg);
+}
+
+.accordion-body {
+    padding: 20px !important;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+.accordion-body strong {
+    color: var(--dark-color);
+}
+
+/* Call to Action Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--dark-color) 0%, #34495e 100%);
+    color: white;
+}
+
+.cta-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 50px 30px;
+    box-shadow: var(--box-shadow);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cta-title {
+    color: var(--dark-color);
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.cta-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    background-color: var(--primary-color) !important;
+    border: none !important;
+    padding: 15px 40px !important;
+    border-radius: 50px !important;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.cta-button:hover {
+    background-color: var(--secondary-color) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(43, 176, 192, 0.3);
+}
+
+.contact-info {
+    margin-top: 30px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.contact-item i {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    background-color: var(--primary-light);
+    padding: 12px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+    </style>
+   
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="hero-title">Frequently Asked Questions</h1>  
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" >FAQs</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section py-5">
+        <div class="container">
+            <div class="row">
+                <!-- IVF Treatment Category -->
+                <div class="col-lg-6 mb-4">
+                    <div class="category-card">
+                        <h3 class="category-title">
+                            <i class="fas fa-dna me-2"></i>
+                            IVF Treatment
+                        </h3>
+                        
+                        <div class="accordion" id="accordionTreatment">
+                            <!-- Question 1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                        What is IVF treatment?
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionTreatment">
+                                    <div class="accordion-body">
+                                        <p>IVF (In Vitro Fertilization) is a medical treatment to help couples conceive.
+In this process, egg and sperm are fertilized in a lab and the embryo is placed into the uterus.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 2 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                        How does IVF work?
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionTreatment">
+                                    <div class="accordion-body">
+                                        <p>IVF works by collecting eggs from the ovaries and fertilizing them with sperm in a laboratory.
+The healthy embryo is then transferred into the woman’s uterus to achieve pregnancy.</p>
+          
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 3 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                        Is IVF painful?
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionTreatment">
+                                    <div class="accordion-body">
+                                        <p>IVF is usually not very painful, though some steps may cause mild discomfort.
+Most women feel temporary cramps or bloating, which doctors help manage with medication.
+</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 4 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                        How long does IVF take?
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionTreatment">
+                                    <div class="accordion-body">
+                                        <p>An IVF cycle usually takes about **4 to 6 weeks** from start to embryo transfer.
+This includes hormone treatment, egg retrieval, fertilization, and embryo transfer.
+</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 5 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+                                        How many IVF cycles are needed?
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionTreatment">
+                                    <div class="accordion-body">
+                                        <p>The number of IVF cycles needed varies from person to person.
+Some conceive in one cycle, while others may need **2–3 cycles** or more for success.
+</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cost & Payment Category -->
+                <div class="col-lg-6 mb-4">
+                    <div class="category-card">
+                        <h3 class="category-title">
+                            <i class="fas fa-money-bill-wave me-2"></i>
+                            Cost & Payment
+                        </h3>
+                        
+                        <div class="accordion" id="accordionCost">
+                            <!-- Question 1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSix">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix">
+                                        What is IVF treatment cost?
+                                    </button>
+                                </h2>
+                                <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionCost">
+                                    <div class="accordion-body">
+                                        <p>In big cities like Mumbai and Delhi, it generally starts around ₹1.2 lakh to ₹2.8 lakh per cycle and can go higher with advanced techniques.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 2 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSeven">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven">
+                                        Is IVF expensive?
+                                    </button>
+                                </h2>
+                                <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionCost">
+                                    <div class="accordion-body">
+                                        <p>Yes, IVF can be expensive for many people because it involves specialized medical procedures, lab work, and medications.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 3 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingEight">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight">
+                                        Does insurance cover IVF?
+                                    </button>
+                                </h2>
+                                <div id="collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionCost">
+                                    <div class="accordion-body">
+                                            <p>We provide documentation needed for insurance claims
+                                            Our financial counselors help navigate insurance processes
+                                            We offer self-pay options for patients without coverage</p>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 4 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingNine">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine">
+                                        Are EMI options available?
+                                    </button>
+                                </h2>
+                                <div id="collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionCost">
+                                    <div class="accordion-body">
+                                        <p>EMI facilities through partner banks and finance companies
+                                            Customized payment plans based on your financial situation
+                                            Zero-cost EMI options available</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 5 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen">
+                                        What is included in IVF package?
+                                    </button>
+                                </h2>
+                                <div id="collapseTen" class="accordion-collapse collapse" data-bs-parent="#accordionCost">
+                                    <div class="accordion-body">
+                                       <p>All monitoring ultrasounds and blood tests Egg retrieval procedure and anesthesia Laboratory fertilization and embryo culture</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Eligibility Category -->
+                <div class="col-lg-6 mb-4">
+                    <div class="category-card">
+                        <h3 class="category-title">
+                            <i class="fas fa-user-md me-2"></i>
+                            Eligibility
+                        </h3>
+                        
+                        <div class="accordion" id="accordionEligibility">
+                            <!-- Question 1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingEleven">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEleven">
+                                        Who can go for IVF?
+                                    </button>
+                                </h2>
+                                <div id="collapseEleven" class="accordion-collapse collapse" data-bs-parent="#accordionEligibility">
+                                    <div class="accordion-body">
+                                      <p>Male factor infertility (low sperm count or quality) Ovulation disorders or premature ovarian failure Endometriosis affecting fertility</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 2 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwelve">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwelve">
+                                        Is there an age limit?
+                                    </button>
+                                </h2>
+                                <div id="collapseTwelve" class="accordion-collapse collapse" data-bs-parent="#accordionEligibility">
+                                    <div class="accordion-body">
+                                    <p>Advanced maternal age may require additional testing Donor egg options available for women with diminished ovarian reserve</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 3 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThirteen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThirteen">
+                                        What tests are needed?
+                                    </button>
+                                </h2>
+                                <div id="collapseThirteen" class="accordion-collapse collapse" data-bs-parent="#accordionEligibility">
+                                    <div class="accordion-body">
+                                        
+                                        <ul>
+                                            <li><strong>For women:</strong> AMH, FSH, antral follicle count, thyroid function, infectious disease screening</li>
+                                            <li><strong>For men:</strong> Semen analysis, sperm function tests, infectious disease screening</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 4 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFourteen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourteen">
+                                        Can lifestyle affect IVF?
+                                    </button>
+                                </h2>
+                                <div id="collapseFourteen" class="accordion-collapse collapse" data-bs-parent="#accordionEligibility">
+                                    <div class="accordion-body">
+                                        <p>Healthy habits like balanced diet, regular exercise, avoiding smoking and alcohol can improve IVF outcomes.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 5 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFifteen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFifteen">
+                                        Can single women do IVF?
+                                    </button>
+                                </h2>
+                                <div id="collapseFifteen" class="accordion-collapse collapse" data-bs-parent="#accordionEligibility">
+                                    <div class="accordion-body">
+                                        <p>
+                                            Single women using donor sperm
+                                            Same-sex female couples using donor sperm
+                                            Same-sex male couples using egg donation and surrogacy
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- After IVF Care Category -->
+                <div class="col-lg-6 mb-4">
+                    <div class="category-card">
+                        <h3 class="category-title">
+                            <i class="fas fa-heartbeat me-2"></i>
+                            After IVF Care
+                        </h3>
+                        
+                        <div class="accordion" id="accordionAftercare">
+                            <!-- Question 1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSixteen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSixteen">
+                                        What precautions after IVF?
+                                    </button>
+                                </h2>
+                                <div id="collapseSixteen" class="accordion-collapse collapse" data-bs-parent="#accordionAftercare">
+                                    <div class="accordion-body">
+                                        <p>Maintain normal activities but avoid excessive stress
+                                            Contact us immediately if you experience severe pain, heavy bleeding, or fever
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 2 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingSeventeen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeventeen">
+                                        When to do pregnancy test?
+                                    </button>
+                                </h2>
+                                <div id="collapseSeventeen" class="accordion-collapse collapse" data-bs-parent="#accordionAftercare">
+                                    <div class="accordion-body">
+                                       <p>We schedule a blood test (beta hCG) 10-14 days after embryo transfer
+                                            Blood tests are more accurate than urine tests
+                                            Avoid home pregnancy tests too early (they can give false results)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 3 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingEighteen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEighteen">
+                                        What is IVF success rate?
+                                    </button>
+                                </h2>
+                                <div id="collapseEighteen" class="accordion-collapse collapse" data-bs-parent="#accordionAftercare">
+                                    <div class="accordion-body">
+                                        <p>Our clinic's success rates are consistently above national averages
+                                            Success rates increase with multiple cycles
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 4 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingNineteen">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNineteen">
+                                        Are there side effects?
+                                    </button>
+                                </h2>
+                                <div id="collapseNineteen" class="accordion-collapse collapse" data-bs-parent="#accordionAftercare">
+                                    <div class="accordion-body">
+                                        <p> Ovarian Hyperstimulation Syndrome (OHSS), infection, bleeding
+                                            We monitor you closely and provide detailed instructions for any concerns</p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Question 5 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwenty">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwenty">
+                                        What if IVF fails?
+                                    </button>
+                                </h2>
+                                <div id="collapseTwenty" class="accordion-collapse collapse" data-bs-parent="#accordionAftercare">
+                                    <div class="accordion-body">
+                                        <p>Detailed review of the cycle to understand what happened
+                                            Modified treatment plan for next attempt
+                                            Additional testing if needed (ERA, genetic testing, immunology)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <%- include("footer.ejs") %>
+

@@ -62,3 +62,13 @@ exports.getPatientStoriesPage = (req, res) => {
     res.status(500).render("error", { message: "Patient Stories Page Error" });
   }
 };
+
+
+exports.getFaqPage = (req, res) => {
+  try{
+    res.render("user/faq");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "FAQ Page Error" });
+  }
+};

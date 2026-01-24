@@ -17,6 +17,8 @@ router.get("/doctors", userController.getDoctorsPage);
 router.get("/contact", userController.getContactPage);
 router.get("/patient-stories", userController.getPatientStoriesPage);
 
+router.get("/faq", userController.getFaqPage);
+
 
 
 module.exports = router;
