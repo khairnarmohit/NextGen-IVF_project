@@ -1,0 +1,68 @@
+/* 
+   HERO BANNER CSS (Bootstrap Version - Z-Index Fixed)
+*/
+
+/* Container for the section */
+.video-hero-container {
+    position: relative; /* This ensures it scrolls with the page normally */
+    width: 100%;
+    height: 80vh; 
+    min-height: 700px;
+    overflow: hidden; 
+    background-color: #000;
+}
+
+/* The Video Element */
+.video-hero-container .video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* Dark Overlay */
+.video-hero-container .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+/* Ensure content sits above video but below navbar */
+.video-hero-container .content-wrapper {
+    position: relative;
+    z-index: 10; /* CHANGED: Reduced from 9999 to 10 to prevent covering the navbar */
+}
+
+/* Custom Animation (Fade In Up) */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Applying animation to elements */
+.animate-up {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Staggering animations */
+.delay-0 { animation-delay: 0.5s; } 
+.delay-1 { animation-delay: 0.8s; } 
+
+
+
+.slider_text{
+  color: #a22853;
+}

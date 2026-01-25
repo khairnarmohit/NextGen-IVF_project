@@ -1,0 +1,407 @@
+ :root {
+      --primary: #1e88e5;
+      --primary-dark: #1565c0;
+      --secondary: #e3f2fd;
+      --background: #ffffff;
+      --text: #263238;
+      --text-light: #546e7a;
+      --accent: #43a047;
+      --light-gray: #f8f9fa;
+      --border-radius: 16px;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: var(--text);
+        overflow-x: hidden;
+    }
+
+ h1, h2, h3, h4, h5, h6 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+    }
+
+
+
+
+
+
+
+
+
+.section-header {
+        margin-bottom: 50px;
+    }
+    
+.section-padding {
+        padding: 80px 0;
+    }
+
+    .section-subtitle {
+        color: var(--primary);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        color: var(--text);
+        position: relative;
+        display: inline-block;
+    }
+
+    .img-frame {
+        position: relative;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .img-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .img-frame:hover img {
+        transform: scale(1.05);
+    }
+
+     .history-year {
+        font-size: 4rem;
+        font-weight: 900;
+        color: rgba(30, 136, 229, 0.1);
+        line-height: 1;
+        position: absolute;
+        top: -30px;
+        left: -20px;
+        z-index: -1;
+    }
+
+    .history-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .about_image{
+        border-radius: 5%;
+    }
+
+    .About_text{
+        margin-left: 600px;
+        margin-bottom: 40px;
+        font-weight: bold;
+
+    }
+
+
+
+
+
+
+
+
+
+
+    
+  
+    /* ===== SECTION HEADER ===== */
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #1E88E5;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-header h2::after {
+      content: "";
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #1E88E5, #64B5F6);
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 5px;
+    }
+
+    .section-header p {
+      margin-top: 1.8rem;
+      color: #607D8B;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* ===== DOCTOR CARD ===== */
+    .doctor-card {
+      height: 100%;
+      background: linear-gradient(180deg, #ffffff, #f6f9ff);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+      transition: 0.4s ease;
+      position: relative;
+    }
+
+    .doctor-card:hover {
+      transform: translateY(-12px);
+    }
+
+    /* Gradient tech border */
+    .doctor-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      padding: 1px;
+      /* background: linear-gradient(135deg,#1E88E5,#64B5F6); */
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: 0.4s ease;
+    }
+
+    .doctor-card:hover::before {
+      opacity: 1;
+    }
+
+    /* ===== IMAGE ===== */
+    .doctor-img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: 0.4s ease;
+    }
+
+    .doctor-card:hover .doctor-img {
+      transform: scale(1.06);
+    }
+
+    /* ===== INFO ===== */
+    .doctor-info {
+      padding: 28px;
+      text-align: center;
+    }
+
+    .doctor-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: #263238;
+    }
+
+    .doctor-degree {
+      font-size: 0.95rem;
+      color: #1E88E5;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .doctor-specialization {
+      display: inline-block;
+      padding: 6px 16px;
+      background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+      color: #1E88E5;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 50px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 10px rgba(30, 136, 229, 0.2);
+    }
+
+    /* ===== EXPERIENCE ===== */
+    .doctor-experience {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px dashed #E3F2FD;
+      font-family: 'Roboto', sans-serif;
+      color: #455A64;
+    }
+
+    .doctor-experience i {
+      color: #1E88E5;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    /* Why Choose Us */
+    .feature-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        text-align: center;
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid transparent;
+    }
+
+    .feature-card:hover {
+        border-color: var(--secondary);
+        box-shadow: 0 15px 30px rgba(30, 136, 229, 0.1);
+        transform: translateY(-10px);
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--secondary) 0%, #ffffff 100%);
+        color: var(--primary);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin: 0 auto 20px;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        background: var(--primary);
+        color: #fff;
+        transform: rotate(15deg);
+    }
+
+    
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+.slider-wrapper {
+            width: 100%;
+            overflow: hidden; /* Hides the overflowing cards */
+            padding: 40px 0;
+            background-color: #f8f9fa; /* Matches bg-light */
+        }
+
+        /* --- The Moving Track --- */
+        .slider-track {
+            display: flex;
+            gap: 30px; /* Space between cards */
+            width: max-content; /* Ensures track is wide enough for all items */
+            animation: scroll 30s linear infinite;
+        }
+
+        /* Pause animation on hover so users can read */
+        .slider-wrapper:hover .slider-track {
+            animation-play-state: paused;
+        }
+
+        /* --- Card Styling (Preserved & Adapted) --- */
+        .testimonial-card {
+            background: linear-gradient(135deg, #ffffff, #e3f2fd);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            
+            /* Fixed width for consistent scrolling layout */
+            width: 400px; 
+            flex-shrink: 0; /* Prevents cards from shrinking */
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px) scale(1.02); /* Added slight scale for better effect */
+            box-shadow: 0 25px 45px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quote-icon i {
+            font-size: 24px;
+            color: #ff80ab;
+        }
+
+        .testimonial-text {
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #263238;
+            margin-top: 40px;
+        }
+
+        .profile-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #1e88e5;
+        }
+
+        /* --- Animation Keyframes --- */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                /* Move the track to the left by 50%. 
+                   Since we duplicated the list, this creates the seamless loop. */
+                transform: translateX(-50%);
+            }
+        }
+
+        /* --- Responsive Tweaks --- */
+        @media (max-width: 768px) {
+            .testimonial-card {
+                width: 300px; /* Slightly smaller on mobile */
+            }
+            .slider-track {
+                gap: 20px;
+            }
+        }

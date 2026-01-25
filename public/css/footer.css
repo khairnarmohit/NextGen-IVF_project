@@ -1,3 +1,6 @@
+/* =========================================
+   FOOTER CSS - SCOPED TO .ivf-footer ONLY
+   ========================================= */
 
 /* Base Footer Styling */
 .ivf-footer {
@@ -6,21 +9,19 @@
   color: #fff;
   background-color: #645242; /* Fallback color */
   padding-bottom: 0;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 500px;
-
+  min-height: auto; 
 }
 
-/* BACKGROUND IMAGE LOGIC - Kept exactly as requested */
+/* BACKGROUND IMAGE LOGIC */
 .ivf-footer::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 90%;
+  height: 100%;
   background: url('https://media.istockphoto.com/id/2152079554/photo/newborn-sleeping-on-blanket-over-black-background-baby-sleep-in-fetal-position-side-view.jpg?s=612x612&w=0&k=20&c=jgEdhApU8LrHMCnKaPQNcW3A5MCxdCXaHemXfZpuUjs=') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
@@ -35,7 +36,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4); /* Darken the image */
   z-index: 2;
 }
 
@@ -43,9 +44,8 @@
 .ivf-footer .footer-content {
   position: relative;
   z-index: 3;
-  padding-top: 80px;
-  padding-bottom: 60px;
-  flex-grow: 1;
+  padding-top: 60px;
+  padding-bottom: 40px;
 }
 
 /* Column Headings */
@@ -58,6 +58,8 @@
   letter-spacing: 0.5px;
   position: relative;
 }
+
+/* Blue underline effect */
 .ivf-footer h5::after {
   content: '';
   display: block;
@@ -83,155 +85,143 @@
   transition: all 0.3s ease;
   display: block;
 }
+
 .ivf-footer a:hover {
   color: #0d6efd !important;
-  transform: translateX(5px);
-}
-.ivf-footer a:active,
-.ivf-footer a:focus {
-  color: #0d6efd !important;
-  text-decoration: underline;
+  padding-left: 5px; /* Slight movement on hover */
 }
 
 /* --- COLUMN 1 STYLES --- */
-.footer-logo-container {
+.ivf-footer .footer-logo-container {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
   gap: 15px;
 }
 
-/* New Heartbeat Icon Styling */
-.heartbeat-icon {
-  font-size: 3.5rem; /* Large size for the logo */
+/* Heartbeat Icon Styling */
+.ivf-footer .heartbeat-icon {
+  font-size: 3rem; 
   color: #fff;
 }
 
 /* Footer text styling */
-.footer-logo-text {
+.ivf-footer .footer-logo-text {
   font-size: 1.8rem;
   font-weight: 800;
   letter-spacing: -1px;
   margin: 0;
 }
 
-/* Social icons centered below description */
-.social-icons-horizontal {
+/* Social icons container */
+.ivf-footer .social-icons-horizontal {
   display: flex;
   gap: 15px;
   margin-top: 25px;
-  justify-content: center;
+  justify-content: flex-start; 
 }
 
-/* Social icons circle styling - RESTORED from commented state */
-.social-icon-circle {
+/* Social icons circle styling */
+.ivf-footer .social-icon-circle {
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
+  align-items: center; 
+  width: 45px;
+  height: 45px;
   background: rgba(255,255,255,0.1);
   border-radius: 50%;
   color: #fff;
   transition: all 0.3s ease;
   text-decoration: none;
-  /* margin-left: 0px; */
-   
 }
 
-/* Increased icon size inside circle as requested */
-.social-icon-circle i {
-  font-size: 1.4rem; /* Increased size */
-  margin-left: 15px;
-  margin-top: 12px;
-}
-
-/*.social-icon-circle:hover {
+.ivf-footer .social-icon-circle:hover {
   background: #0d6efd;
-  color: #fff;
-  transform: translateY(-3px) !important;
-}
-*/
-/* social description in first column */
-.social-desc {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.7);
-  margin-top: 15px;
-  text-align: center;
+  transform: translateY(-3px);
 }
 
-/* --- VERTICAL CENTER HELPER FOR COL 2 & 3 --- */
-.v-center-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  /* Ensure it aligns well with the first column's height */
-  padding-top: 10px; 
+.ivf-footer .social-icon-circle i {
+  font-size: 1.2rem;
+  margin: 0; 
+}
+
+/* --- VERTICAL ALIGNMENT HELPERS --- */
+@media (min-width: 768px) {
+  .ivf-footer .v-center-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
 }
 
 /* --- COLUMN 4 STYLES --- */
-.subscribe-newsletter h6 {
+.ivf-footer .subscribe-newsletter h6 {
   font-weight: 700;
   margin-bottom: 15px;
   font-size: 1rem;
   color: rgba(255,255,255,0.9);
 }
 
-/* Input Group overrides for attached row */
-.input-group .form-control {
+/* Input Group overrides */
+.ivf-footer .input-group .form-control {
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.2);
   color: #fff;
 }
-.input-group .form-control::placeholder {
+
+.ivf-footer .input-group .form-control::placeholder {
   color: rgba(255,255,255,0.6);
 }
-.input-group .form-control:focus {
+
+.ivf-footer .input-group .form-control:focus {
   background: rgba(255,255,255,0.2);
   border-color: #0d6efd;
   box-shadow: none;
   color: #fff;
 }
 
-.input-group .btn-primary {
+.ivf-footer .input-group .btn-primary {
   background-color: #0d6efd;
   border-color: #0d6efd;
+  color: #fff;
+  font-weight: 600;
 }
-.input-group .btn-primary:hover {
+
+.ivf-footer .input-group .btn-primary:hover {
   background-color: #0b5ed7;
   border-color: #0a58ca;
 }
 
 /* --- HORIZONTAL LINKS WITH SLASH --- */
-.horizontal-links-row {
+.ivf-footer .horizontal-links-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 8px; 
+  margin-top: 25px;
 }
 
-.horizontal-links-row a {
+.ivf-footer .horizontal-links-row a {
   color: rgba(255,255,255,0.75);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: color 0.3s;
 }
 
-.horizontal-links-row a:hover {
+.ivf-footer .horizontal-links-row a:hover {
   color: #fff;
 }
 
 /* Logic to add Slash after every link except the last one */
-.horizontal-links-row a:not(:last-child)::after {
+.ivf-footer .horizontal-links-row a:not(:last-child)::after {
   content: "/";
   margin-left: 10px;
-  color: rgba(255,255,255,0.5); /* Slightly dimmer color for the slash */
+  color: rgba(255,255,255,0.5);
 }
 
 /* Bottom Bar / Copyright */
-.copyright-bar {
+.ivf-footer .copyright-bar {
   background-color: rgba(0,0,0,0.6);
   border-top: 1px solid rgba(255,255,255,0.1);
   padding: 20px 0;
@@ -239,4 +229,36 @@
   color: rgba(255,255,255,0.6);
   position: relative;
   z-index: 3;
+}
+
+/* --- MOBILE SPECIFIC TWEAKS --- */
+@media (max-width: 767px) {
+  .ivf-footer .social-icons-horizontal {
+    justify-content: center; 
+  }
+  
+  .ivf-footer .horizontal-links-row {
+    justify-content: center; 
+  }
+
+  .ivf-footer .footer-logo-container {
+    justify-content: center;
+  }
+
+  .ivf-footer .footer-desc {
+    text-align: center;
+  }
+  
+  .ivf-footer .footer-content {
+    padding-top: 40px;
+    padding-bottom: 20px;
+  }
+  
+  .ivf-footer h5 {
+    text-align: center; 
+  }
+  
+  .ivf-footer ul {
+    text-align: center; 
+  }
 }
