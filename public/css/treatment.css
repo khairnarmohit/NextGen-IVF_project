@@ -35,12 +35,24 @@
 /* Treatment Card */
 .treatment-card {
     position: relative;
-    background: #dadcec;
+    /* background: #E3F2FD; */
+    /* background: #dadcec; */
     border-radius: 16px;
     overflow: hidden;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
 }
+
+.treatment-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  align-items: center;
+  justify-content: center;
+  color: #6295c1; /* Medical Blue */
+
+}
+
 
 /* Background image */
 .treatment-card::before {
