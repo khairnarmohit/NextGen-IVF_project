@@ -1,0 +1,347 @@
+<%- include("navbar.ejs") %>
+
+    <style>
+        /* ===== VARIABLES ===== */
+        :root {
+            --primary-blue: #1E88E5;
+            --primary-blue-dark: #1565C0;
+            --light-gray: #f8f9fa;
+            --border-color: #e4e8ff;
+            --text-muted: #6c757d;
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.05);
+            --border-radius: 14px;
+        }
+
+        /* ===== SECTION ===== */
+        .appointment-section {
+            padding: 90px 0;
+            background: #fff;
+            font-family: 'Roboto', sans-serif;
+            min-height: calc(100vh - 160px);
+            /* Adjust based on navbar/footer height */
+        }
+
+        /* ===== HEADING ===== */
+        .appointment-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 2.5rem;
+            line-height: 1.2;
+        }
+
+        .appointment-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            max-width: 90%;
+        }
+
+        /* ===== FORM ===== */
+        .appointment-form {
+            background: var(--light-gray);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .form-control,
+        .form-select {
+            padding: 1rem 1.25rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #333;
+            display: block;
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.25rem rgba(30, 136, 229, 0.15);
+            outline: 0;
+        }
+
+        /* ===== BUTTON ===== */
+        .btn-appointment {
+            background: var(--primary-blue);
+            color: #fff;
+            /* padding: 1rem 3rem; */
+            /* border-radius: var(--border-radius); */
+            /* font-weight: 600; */
+            border: none;
+            transition: all 0.3s ease;
+            /* font-size: 1.1rem; */
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .btn-appointment:hover {
+            background: var(--primary-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 136, 229, 0.3);
+        }
+
+        .btn-appointment:active {
+            transform: translateY(0);
+        }
+
+        .btn-appointment:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ===== IMAGE ===== */
+        .appointment-image {
+            border-radius: 28px;
+            overflow: hidden;
+            height: 100%;
+            position: relative;
+            box-shadow: var(--shadow-light);
+        }
+
+        .appointment-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .appointment-image:hover img {
+            transform: scale(1.03);
+        }
+
+        /* ===== LOADING STATE ===== */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== SUCCESS MESSAGE ===== */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            display: none;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .appointment-section {
+                padding: 60px 0;
+            }
+
+            .appointment-title {
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .appointment-form {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .appointment-title {
+                font-size: 2rem;
+                text-align: center;
+            }
+
+            .appointment-subtitle {
+                text-align: center;
+                max-width: 100%;
+            }
+
+            .appointment-form {
+                padding: 1.5rem;
+            }
+
+            .btn-appointment {
+                padding: 0.875rem 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .appointment-section {
+                padding: 40px 0;
+            }
+
+            .appointment-form {
+                padding: 1.25rem;
+            }
+
+            .form-control,
+            .form-select {
+                padding: 0.875rem 1rem;
+            }
+        }
+    </style>
+
+    <section class="appointment-section" aria-label="Appointment Booking">
+        <div class="container">
+            <div class="row align-items-center g-5 g-lg-4">
+
+                <!-- LEFT FORM -->
+                <div class="col-lg-6 order-2 order-lg-1">
+                    <h2 class="appointment-title">
+                        Book Your Appointment Today!
+                    </h2>
+                    <p class="appointment-subtitle">
+                        Schedule your consultation with our expert team. We'll get back to you within 24 hours.
+                    </p>
+
+                    <form class="appointment-form" id="appointmentForm" style="margin-top:-50px;">
+                        <div class="row g-3 g-md-4">
+                            <div class="col-md-12">
+                                <label for="fullname" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullname" placeholder="Enter Full Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="example@gmail.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" pattern="[0-9]{10}" id="phone"
+                                    placeholder="1234567890" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select" id="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" min="18" max="45"
+                                    placeholder="Enter Age" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="doctor" class="form-label">Doctor(optional)</label>
+                                <select class="form-select" id="doctor">
+                                    <option value="">Select Doctor</option>
+                                    <option value="Dr. Lalit Magar">Dr. Lalit Magar</option>
+                                    <option value="Dr. Mukund Khedkar">Dr. Mukund Khedkar</option>
+                                    <option value="Dr. Sakshi Mohite">Dr. Sakshi Mohite</option>
+                                    <option value="Dr. Sakshi Are">Dr. Sakshi Are</option>
+                                </select>
+                            </div>
+                            <% const today=new Date(); const minDate=today.toISOString().split('T')[0]; const
+                                maxDate=new Date(); maxDate.setDate(today.getDate() + 30); const
+                                maxDateStr=maxDate.toISOString().split('T')[0]; %>
+
+                                <div class="col-md-6">
+                                    <label for="appointmentDate" class="form-label">Preferred Date</label>
+                                    <input type="date" class="form-control" id="appointmentDate" min="<%= minDate %>"
+                                    max="<%= maxDateStr %>" required>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-appointment" id="submitBtn">
+                                        <span id="buttonText">Book An Appointment <i class="fas fa-calendar-check me-2"></i></span>
+                                        <span id="buttonSpinner" class="loading" style="display: none;"></span>
+                                    </button>
+                                    <div class="success-message" id="successMessage">
+                                        <i class="bi bi-check-circle-fill me-2"></i>
+                                        Thank you! Your appointment request has been submitted. We'll contact you
+                                        shortly.
+                                    </div>
+                                </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- RIGHT IMAGE -->
+                <div class="col-lg-6 order-1 order-lg-2">
+                    <div class="appointment-image">
+                        <img src="https://demo.awaikenthemes.com/ferlix/wp-content/uploads/2025/04/appointment-image.jpg"
+                            alt="Family consulting with fertility specialist in a modern clinic">
+                        <div class="position-absolute bottom-0 start-0 p-4 text-white"
+                            style="background: linear-gradient(transparent, rgba(0,0,0,0.7)); width: 100%;">
+                            <h6 class="mb-2">Monday - Friday: 08:00 - 18:00</h6>
+                            <h6 class="mb-2">Saturday: 08:00 - 12:00</h6>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('appointmentForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const buttonText = document.getElementById('buttonText');
+            const buttonSpinner = document.getElementById('buttonSpinner');
+            const successMessage = document.getElementById('successMessage');
+
+            // Set minimum date to today
+            const dateInput = document.getElementById('appointmentDate');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Show loading state
+                submitBtn.disabled = true;
+                buttonText.textContent = 'Processing...';
+                buttonSpinner.style.display = 'inline-block';
+
+                // Simulate API call
+                setTimeout(() => {
+                    // Reset form
+                    form.reset();
+
+                    // Show success message
+                    successMessage.style.display = 'block';
+
+                    // Reset button
+                    submitBtn.disabled = false;
+                    buttonText.textContent = 'Book An Appointment';
+                    buttonSpinner.style.display = 'none';
+
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                }, 1500);
+            });
+        });
+    </script>
+
+    <%- include("footer.ejs") %>
