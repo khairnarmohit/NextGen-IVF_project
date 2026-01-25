@@ -19,6 +19,10 @@ router.get("/patient-stories", userController.getPatientStoriesPage);
 
 router.get("/faq", userController.getFaqPage);
 
+router.get("/privacy", userController.getPrivacyPage);
+
+router.get("/appointment", userController.getAppointmentPage);
+
 
 
 module.exports = router;

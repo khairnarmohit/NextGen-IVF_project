@@ -72,3 +72,22 @@ exports.getFaqPage = (req, res) => {
     res.status(500).render("error", { message: "FAQ Page Error" });
   }
 };
+
+exports.getPrivacyPage = (req, res) => {
+  try{
+    res.render("user/privacy");
+  } catch (error) {
+    console.error(error);
+    res.status(50).render("error", { message: "Privacy Page Error"});
+  }
+};
+
+
+exports.getAppointmentPage = (req, res) => {
+  try{
+    res.render("user/appointment");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Appointment Page Error" });
+  }
+};
