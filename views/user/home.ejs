@@ -31,14 +31,29 @@
 
 
 
-<!-- 
-  START HERO BANNER SECTION 
--->
+<!-- hero banner -->
 <section class="video-hero-container">
     
     <!-- Background Video -->
-    <video class="video-background" autoplay muted loop playsinline poster="https://picsum.photos/seed/poster/1920/1080.jpg">
-        <!-- Replace src below with your actual video file path -->
+    <!-- 
+       CHANGES:
+       1. Added preload="auto": Forces immediate buffering.
+       2. poster: This is the image shown while video loads (or on mobile).
+    -->
+    <video 
+      class="video-background" 
+      preload="auto" 
+      autoplay 
+      muted 
+      loop 
+      playsinline 
+      poster="/uploads/baby_crawl_image.jpeg"
+    >
+        <!-- 
+           IMPORTANT: If the image path above is wrong, you might still see black.
+           For testing, you can use a placeholder URL:
+           poster="https://picsum.photos/seed/babyvideo/1920/1080"
+        -->
         <source src="/uploads/baby_crawl_video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -48,25 +63,15 @@
 
     <!-- Content Wrapper -->
     <div class="container h-100 content-wrapper">
-        <div class="row h-100 align-items-center"> <!-- Centers content vertically -->
+        <div class="row h-100 align-items-center">
             
-            <!-- 
-               Left Column: 
-               'col-12' = Full width on mobile
-               'col-lg-7' = 7 columns wide (left side) on large screens 
-            -->
             <div class="col-12 col-lg-7 text-start">
-                
-                <!-- Title: Bootstrap typography classes -->
-                <h1 class="display-3 fw-bold  animate-up delay-0 slider_text">
+                <h1 class="display-3 fw-bold animate-up delay-0 slider_text">
                     Helping you build of the family of your dreams!
                 </h1>
-                
-                <!-- Button: Bootstrap button classes -->
                 <a href="#appointment-link" class="btn btn-primary btn-lg rounded-pill px-5 py-3 animate-up delay-1 shadow">
                     Book an Appointment
                 </a>
-                
             </div>
             
         </div>
@@ -75,12 +80,9 @@
 </section>
 
 
-
-
-
 <section class="section-padding" id="history">
     <div class="container">
-        <h1 class="About_text text-primary">About Us</h1>
+        <!-- <h1 class="About_text text-primary">About Us</h1> -->
         <div class="row align-items-center">
             
             <div class="col-lg-6 mb-5 mb-lg-0">
@@ -112,6 +114,57 @@
     </div>
 </section>
 
+
+
+
+<!-- tretments -->
+<section>
+    <div class="container">
+        <div class="row mt-5 mb-5">
+ <h2 class="text-center text-primary mb-4">Treatment</h2>
+             
+            <div class="col-md-4">
+                <div class="card card-body treatment-card p-5 border-1">
+                <i class="fa-solid fa-microscope fs-1 pb-4 treatment-icon"></i>
+                <h3>In Vitro Fertilization (IVF)</h3>
+                <p class="pt-3 pb-3">
+                    In Vitro Fertilization (IVF) Lab fertilization of eggs for a
+                     higher success rate.
+                </p>
+                <a href="#" class="fs-4 treatment-link">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            </div>
+              <div class="col-md-4">
+                <div class="card card-body treatment-card p-5 border-1">
+                <i class="fa-solid fa-egg fa-snowflake fs-1 pb-4 treatment-icon"></i>
+                <h3>Egg Freezing</h3>
+                <p class="pt-3 pb-3">
+                    Preserve your eggs today to protect your fertility for the future.
+                </p>
+                <a href="#" class="fs-4 treatment-link">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            </div>
+              <div class="col-md-4">
+                <div class="card card-body treatment-card p-5 border-1">
+                <i class="fa-solid fa-seedling fs-1 pb-4 treatment-icon "></i>
+                <h3>Embryo Freezing</h3>
+                <p class="pt-3 pb-3">
+                    High-quality embryos from IVF are frozen for future use.
+                </p>
+                <a href="#" class="fs-4 treatment-link">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            </div>
+            
+        </div>
+    
+    </div>
+</section>
 
 
 
@@ -247,7 +300,7 @@
 
 
 <!-- patient-stories -->
-<!-- <section class="py-5 bg-light">
+ <section class="py-5 bg-light">
     <div class="container">
         <h2 class="text-center mb-5 fw-bold text-primary"
             style="font-family: 'Poppins', sans-serif;">
@@ -324,7 +377,7 @@
 
         </div>
     </div>
-</section> -->
+</section> 
 
 
 
@@ -338,198 +391,6 @@
 
 
 
- <!-- Header Section -->
-    <section>
-    <div class="text-center pt-5 pb-2">
-        <h2 class="fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">
-            Patients Reviews
-        </h2>
-        <p class="text-muted">What our patients say about their journey</p>
-    </div>
-
-    <!-- Horizontal Slider Section -->
-    <section class="slider-wrapper">
-        <div class="slider-track">
-            
-            <!-- SET 1 (Original Cards) -->
-            
-            <!-- Card 1 -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "The process was smooth, safe, and transparent. We are thankful for their dedication and continuous guidance throughout our journey."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=47" class="profile-img" alt="Sarah">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">Sarah Williams</h6>
-                        <small class="text-muted">Ahilyanagar • Apr 14, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "Exceptional care from start to finish. The team was always available to answer our questions with patience."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=32" class="profile-img" alt="Emma">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">Emma Peterson</h6>
-                        <small class="text-muted">Pune • May 5, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "A life-changing experience. The support throughout our fertility journey truly made all the difference."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=12" class="profile-img" alt="David">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">David Lopez</h6>
-                        <small class="text-muted">Mumbai • Jun 18, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-             <!-- Card 4 (Extra to make scroll fuller) -->
-             <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "Highly professional and empathetic staff. The facilities are world-class, and I felt safe at all times."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=68" class="profile-img" alt="Maria">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">Maria Garcia</h6>
-                        <small class="text-muted">Delhi • Jul 2, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 5 (Extra) -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "The doctors explained everything clearly. It was a stress-free experience compared to other places we visited."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=11" class="profile-img" alt="James">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">James Anderson</h6>
-                        <small class="text-muted">Bangalore • Aug 10, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SET 2 (Duplicate for Seamless Loop) -->
-            <!-- Note: We repeat the exact same cards here. 
-                 The animation moves the track -50%, so when Set 1 leaves screen, Set 2 appears exactly after it, 
-                 then the animation resets instantly to 0. -->
-
-            <!-- Card 1 -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "The process was smooth, safe, and transparent. We are thankful for their dedication and continuous guidance throughout our journey."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=47" class="profile-img" alt="Sarah">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">Sarah Williams</h6>
-                        <small class="text-muted">Ahilyanagar • Apr 14, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "Exceptional care from start to finish. The team was always available to answer our questions with patience."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=32" class="profile-img" alt="Emma">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">Emma Peterson</h6>
-                        <small class="text-muted">Pune • May 5, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "A life-changing experience. The support throughout our fertility journey truly made all the difference."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=12" class="profile-img" alt="David">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">David Lopez</h6>
-                        <small class="text-muted">Mumbai • Jun 18, 2025</small>
-                    </div>
-                </div>
-            </div>
-
-             <!-- Card 4 (Duplicate) -->
-              <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "Highly professional and empathetic staff. The facilities are world-class, and I felt safe at all times."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=68" class="profile-img" alt="Maria">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">Maria Garcia</h6>
-                        <small class="text-muted">Delhi • Jul 2, 2025</small>
-                    </div>
-                </div>
-            </div> 
-
-            <!-- Card 5 (Duplicate) -->
-            <div class="testimonial-card">
-                <div class="quote-icon">
-                    <i class="fas fa-quote-right"></i>
-                </div>
-                <p class="testimonial-text">
-                    "The doctors explained everything clearly. It was a stress-free experience compared to other places we visited."
-                </p>
-                <div class="d-flex align-items-center mt-4">
-                    <img src="https://i.pravatar.cc/100?img=11" class="profile-img" alt="James">
-                    <div class="ms-3">
-                        <h6 class="mb-0 fw-bold text-primary">James Anderson</h6>
-                        <small class="text-muted">Bangalore • Aug 10, 2025</small>
-                    </div>
-                </div>
-            </div> 
-
-        </div>
-    </section>
-</section>
+ 
 
 <%- include("footer.ejs") %>
