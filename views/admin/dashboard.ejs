@@ -1,1 +1,168 @@
-<h1>Admin Dashboard</h1>
+<%- include("navbar.ejs") %>
+
+        
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Dashboard Overview</h1>
+                <p class="page-subtitle">Welcome back, Dr. Johnson. Here's what's happening at your IVF center today.</p>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="#" class="action-btn" id="newAppointmentBtn">
+                    <i class="fas fa-plus-circle"></i>
+                    <span class="action-label">New Appointment</span>
+                </a>
+                <a href="#" class="action-btn" id="addPatientBtn">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="action-label">Add Patient</span>
+                </a>
+                <a href="#" class="action-btn" id="newReportBtn">
+                    <i class="fas fa-file-medical"></i>
+                    <span class="action-label">New Report</span>
+                </a>
+                <a href="#" class="action-btn" id="exportDataBtn">
+                    <i class="fas fa-download"></i>
+                    <span class="action-label">Export Data</span>
+                </a>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card patients fade-in-up">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <h3>1,248</h3>
+                            <div class="stat-title">Total Patients</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12% from last month</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-user-injured"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card appointments fade-in-up delay-1">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <h3>18</h3>
+                            <div class="stat-title">Today's Appointments</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-clock"></i>
+                                <span>3 pending</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card success-rate fade-in-up delay-2">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <h3>68.2%</h3>
+                            <div class="stat-title">IVF Success Rate</div>
+                            <div class="stat-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>4.5% from last quarter</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card enquiries fade-in-up delay-3">
+                    <div class="stat-content">
+                        <div class="stat-info">
+                            <h3>24</h3>
+                            <div class="stat-title">New Enquiries</div>
+                            <div class="stat-trend negative">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>8 require follow-up</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h5 class="chart-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Monthly Appointments
+                        </h5>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                Last 12 Months
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Last 6 Months</a></li>
+                                <li><a class="dropdown-item" href="#">Last 12 Months</a></li>
+                                <li><a class="dropdown-item" href="#">Year to Date</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="appointmentsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h5 class="chart-title">
+                            <i class="fas fa-procedures"></i>
+                            Treatment Types Distribution
+                        </h5>
+                    </div>
+                    <div class="treatment-distribution-container">
+                        <div class="chart-container treatment-chart-wrapper">
+                            <canvas id="treatmentChart"></canvas>
+                        </div>
+                        <div class="treatment-legend" id="treatmentLegend">
+                            <!-- Legend will be generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Success Metrics -->
+            <div class="chart-card mt-4">
+                <div class="chart-header">
+                    <h5 class="chart-title">
+                        <i class="fas fa-chart-line"></i>
+                        IVF Success Metrics
+                    </h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Quarterly View
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Monthly View</a></li>
+                            <li><a class="dropdown-item" href="#">Quarterly View</a></li>
+                            <li><a class="dropdown-item" href="#">Yearly View</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="successMetricsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<%- include("footer.ejs") %>
