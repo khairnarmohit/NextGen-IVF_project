@@ -1,5 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var fileUpload = require("express-fileupload");
 var ejs = require("ejs");
 
 var userRouter = require('./routes/userRoutes.js');
@@ -9,6 +10,7 @@ var app = express();
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
+app.use(fileUpload());
 app.use(express.static("public/"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
