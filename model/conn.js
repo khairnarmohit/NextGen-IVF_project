@@ -2,10 +2,10 @@ var mysql = require("mysql2");
 var util = require("util");
 
 var conn = mysql.createConnection({
-  host: "bhjwaswlf68ospas7oh3-mysql.services.clever-cloud.com",
-  user: "uvetuzf7eqyshtcu",
-  password: "JaV2bOZtAYjgyeZODNId",
-  database: "bhjwaswlf68ospas7oh3",
+  host: "bprlqrokrwlzpporvdd4-mysql.services.clever-cloud.com",
+  user: "uvxpln6bip7zygue",
+  password: "MrfPkWRNWp90aBliN40L",
+  database: "bprlqrokrwlzpporvdd4",
   port: "3306"
 });
 
