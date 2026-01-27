@@ -12,7 +12,7 @@
                 <!-- Breadcrumb -->
               <h4 class="breadcrumb-title mb-4">
                     Home <span class="mx-2">›</span>
-                    <a  class="text-decoration-none">Treatments</a>
+                    <a class="text-decoration-none">Treatments</a>
                 </h4>
             </div>
         </div>
@@ -21,87 +21,40 @@
 
 
 <section>
-    <div class="container">
-        <div class="row mt-5 mb-5">
-            <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                <i class="fa-solid fa-microscope fs-1 pb-4 treatment-icon"></i>
-                <h3>In Vitro Fertilization</h3>
-                <p class="pt-3 pb-3">
-                    In Vitro Fertilization (IVF) Lab fertilization of eggs for a
-                     higher success rate.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-              <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                <i class="fa-solid fa-egg fa-snowflake fs-1 pb-4 treatment-icon"></i>
-                <h3>Egg Freezing</h3>
-                <p class="pt-3 pb-3">
-                    Preserve your eggs today to protect your fertility for the future.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-              <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                <i class="fa-solid fa-seedling fs-1 pb-4 treatment-icon "></i>
-                <h3>Embryo Freezing</h3>
-                <p class="pt-3 pb-3">
-                    High-quality embryos from IVF are frozen for future use.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-            
+  <div class="container">
+    <div class="row mt-5 mb-5">
+
+      <% treatments.forEach(t => { %>
+
+        <div class="col-md-4 mb-4">
+          <div class="card card-body treatment-card p-5 border-1">
+          <!-- style="--bg-image: url('/uploads/<%= t.treatment_image %>');" -->
+
+
+            <!-- ICON (HTML from DB) -->
+             <span class="treatment-icon fs-1 mb-3">
+            <%- t.treatment_icon %>
+            </span>
+
+            <h3><%= t.treatment_title %></h3>
+
+            <p class="pt-3 pb-3">
+              <%= t.treatment_short %>
+            </p>
+
+            <a href="/treatment-details/<%= t.treatment_id %>" class="fs-4 treatment-link">
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+          </div>
         </div>
-        <div class="row mt-5 mb-5">
-            <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                <i class="fa-solid fa-microscope fs-1 pb-4 treatment-icon"></i>
-                <h3>Fertility Preservation</h3>
-                <p class="pt-3 pb-3">
-                    Egg, sperm, or embryo freezing options for patients.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-              <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                    <i class="fa-solid fa-dna fs-1 pb-4 treatment-icon"></i>
-                <h3>PGT (Genetic Testing)</h3>
-                <p class="pt-3 pb-3">
-                    Screen embryos for genetic conditions to ensure normal and healthy development.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-              <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                    <i class="fa-solid fa-heart-circle-plus fs-1 pb-4 treatment-icon"></i>
-                <h3>Donor Programs</h3>
-                <p class="pt-3 pb-3">
-                    Donor egg and sperm options for higher success rates.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-        </div>
+
+      <% }) %>
+
     </div>
+  </div>
 </section>
+
 
 <section class="cta-section bg-body-secondary text-dark py-5">
   <div class="container">

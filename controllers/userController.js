@@ -24,23 +24,61 @@ exports.getAboutPage = (req, res) => {
 
 
 
-exports.getTreatmentPage = (req,res) => {
-  try{
-    res.render("user/treatments");
-  }catch (error) {
-    console.error(error);
-    res.status(500).render("error", {message: "Treatment Page Error"})
-  }
-}
 
-exports.getDoctorsPage = (req, res) => {
-  try{
-    res.render("user/doctors");
+
+exports.getTreatmentPage = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM treatments";
+    const treatments = await exe(sql);
+
+    res.render("user/treatments", {
+      treatments: treatments
+    });
+
   } catch (error) {
     console.error(error);
-    res.status(500).render("error", { message: "Doctors Page Error" });
+    res.status(500).render("error", {
+      message: "Treatment Page Error"
+    });
   }
 };
+
+exports.getTreatmentDetailsPage = async (req, res) => {
+  try {
+    const treatmentId = req.params.id;
+    const sql = "SELECT * FROM treatments WHERE treatment_id = ?";
+    const results = await exe(sql, [treatmentId]);
+    if (results.length === 0) {
+      res.status(404).render("error", { message: "Treatment Not Found" });
+    } else {
+      res.render("user/treatment_details", {
+        treatment: results[0]
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Treatment Details Page Error" });
+  }
+};
+
+
+exports.getDoctorsPage = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM doctors";
+    const doctors = await exe(sql);
+
+    res.render("user/doctors", { doctors });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Doctors Page Error"
+    });
+  }
+};
+
+
+
+
 
 exports.getContactPage = (req, res) => {
   try{

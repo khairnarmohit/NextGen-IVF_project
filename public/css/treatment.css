@@ -59,6 +59,7 @@
     content: "";
     position: absolute;
     inset: 0;
+    /* background: var(--bg-image) center / cover no-repeat; */
     background: url("/treatment-1.jpg") center / cover no-repeat;
     z-index: -2;
     opacity: 0;

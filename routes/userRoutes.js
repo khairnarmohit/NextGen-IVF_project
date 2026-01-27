@@ -23,6 +23,6 @@ router.get("/privacy", userController.getPrivacyPage);
 
 router.get("/appointment", userController.getAppointmentPage);
 
-
+router.get('/treatment-details/:id', userController.getTreatmentDetailsPage);
 
 module.exports = router;

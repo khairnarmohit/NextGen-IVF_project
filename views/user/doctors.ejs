@@ -514,70 +514,52 @@
     </div>
 </header>
 
-  <section class="container py-5" id="core-doctors">
-    <div class="section-header">
-      <h2>Our IVF Specialists</h2>
-      <p>
-        A dedicated team of fertility experts delivering advanced reproductive care
-        with compassion, precision, and technology.
-      </p>
-    </div>
+<section class="container py-5" id="core-doctors">
+  <div class="section-header text-center mb-5">
+    <h2>Our IVF Specialists</h2>
+    <p>
+      A dedicated team of fertility experts delivering advanced reproductive care
+      with compassion, precision, and technology.
+    </p>
+  </div>
 
-    <div class="row g-4">
+  <div class="row g-4">
 
-      <!-- Doctor 1 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="doctor-card">
-          <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d" class="doctor-img" alt="">
-          <div class="doctor-info">
-            <h3 class="doctor-name">Dr. Priya Sharma</h3>
+    <% if (doctors.length > 0) { %>
+      <% doctors.forEach(doctor => { %>
 
-            <p class="doctor-degree">MBBS, MD, DNB (Obs & Gyn)</p>
-            <span class="doctor-specialization">IVF Specialist</span>
-            <div class="doctor-experience">
-              <i class="fa-solid fa-award"></i>
-              <span>18+ Years Experience</span>
+        <div class="col-lg-4 col-md-6">
+          <div class="doctor-card h-100">
+            <img 
+              src="/uploads/<%= doctor.doctor_photo %>" 
+              class="doctor-img" 
+              alt="<%= doctor.doctor_name %>">
+
+            <div class="doctor-info">
+              <h3 class="doctor-name"><%= doctor.doctor_name %></h3>
+
+              <p class="doctor-degree"><%= doctor.doctor_qual %></p>
+
+              <span class="doctor-specialization">
+                <%= doctor.doctor_specialist %>
+              </span>
+
+              <div class="doctor-experience">
+                <i class="fa-solid fa-award"></i>
+                <span><%= doctor.doctor_exp %>+ Years Experience</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Doctor 2 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="doctor-card">
-          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2" class="doctor-img" alt="">
-          <div class="doctor-info">
-            <h3 class="doctor-name">Dr. Rajesh Kumar</h3>
+      <% }) %>
+    <% } else { %>
+      <p class="text-center">No doctors available</p>
+    <% } %>
 
-            <p class="doctor-degree">PhD (Embryology)</p>
-            <span class="doctor-specialization">Clinical Embryologist</span>
-            <div class="doctor-experience">
-              <i class="fa-solid fa-award"></i>
-              <span>15+ Years Experience</span>
-            </div>
-          </div>
-        </div>
-      </div>
+  </div>
+</section>
 
-      <!-- Doctor 3 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="doctor-card">
-          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d" class="doctor-img" alt="">
-          <div class="doctor-info">
-            <h3 class="doctor-name">Dr. Anjali Mehta</h3>
-
-            <p class="doctor-degree">MD, Fellowship RM</p>
-            <span class="doctor-specialization">Andrologist</span>
-            <div class="doctor-experience">
-              <i class="fa-solid fa-award"></i>
-              <span>12+ Years Experience</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
 
   <section class="visiting-doctor-section">
     <div class="container">
