@@ -1,0 +1,58 @@
+<%- include("navbar.ejs") %>
+
+<div class="container py-4">
+
+  <!-- Form Card (Always Visible) -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Edit Why Choose Us</h5>
+    </div>
+
+    <div class="card-body">
+      <form action="/admin/update-why-choose-us" method="POST">
+
+        <!-- Hidden Field for Why Choose Us ID -->
+        <input type="hidden" name="whychooseus_id" value="<%= whychooseusone[0].whychooseus_id %>">
+
+        <!-- Row 1 -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="whychooseus_name" class="form-label">Title*</label>
+            <input type="text" name="whychooseus_name" class="form-control" id="whychooseus_name"
+              placeholder="Enter Title" value="<%= whychooseusone[0].whychooseus_name %>" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="whychooseus_icon" class="form-label">Icon*</label>
+            <select name="whychooseus_icon" class="form-control" id="whychooseus_icon" required>
+              <option value="" disabled selected>--Select Icon--</option>
+              <option value="fas fa-chart-line" <%= whychooseusone[0].whychooseus_icon == "fas fa-chart-line" ? "selected" : "" %>>Chart Line</option>
+              <option value="fas fa-microscope" <%= whychooseusone[0].whychooseus_icon == "fas fa-microscope" ? "selected" : "" %>>Laboratory</option>
+              <option value="fas fa-user-md" <%= whychooseusone[0].whychooseus_icon == "fas fa-user-md" ? "selected" : "" %>>Team</option>
+              <option value="fas fa-heart" <%= whychooseusone[0].whychooseus_icon == "fas fa-heart" ? "selected" : "" %>>Heart</option>  
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <label for="whychooseus_desc" class="form-label">Description*</label>
+            <textarea name="whychooseus_desc" class="form-control" id="whychooseus_desc" rows="4"
+              placeholder="Enter Description" required><%= whychooseusone[0].whychooseus_desc %></textarea>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-end">
+          <button type="submit" class="btn btn-success px-4">
+            <i class="bi bi-save me-1"></i> Update Why Choose Us
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("footer.ejs") %>

@@ -16,7 +16,10 @@ router.get("/doctors", userController.getDoctorsPage);
 
 router.get("/contact", userController.getContactPage);
 
+
 router.post("/save-enquiry", userController.saveEnquiry);
+
+
 
 
 
