@@ -1,628 +1,646 @@
 <%- include("navbar.ejs") %>
 
-<style>
-  /* Internal CSS for Contact Page */
-  :root {
-    --primary: #1e88e5;
-    --primary-dark: #1565c0;
-    --secondary: #e3f2fd;
-    --background: #ffffff;
-    --text: #263238;
-    --text-light: #546e7a;
-    --accent: #43a047;
-    --light-gray: #f8f9fa;
-    --border-radius: 16px;
-  }
-
-  body {
-    font-family: 'Roboto', sans-serif;
-    color: var(--text);
-    overflow-x: hidden;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-  }
-
-  /* Hero Section */
-  .contact-hero {
-    background: linear-gradient(135deg, var(--secondary) 0%, #ffffff 100%);
-    color: var(--text);
-    padding: 100px 0 50px;
-    margin-bottom: 40px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .contact-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.4;
-  }
-
-  .contact-hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .contact-hero .lead {
-    font-size: 1.3rem;
-    opacity: 0.95;
-    position: relative;
-    z-index: 1;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  /* Main Layout */
-  .contact-container {
-    padding: 60px 0 30px;
-  }
-
-  /* Contact Info Sidebar */
-  .contact-sidebar {
-    background: var(--secondary);
-    border-radius: 20px;
-    padding: 40px 30px;
-    height: 100%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  }
-
-  .contact-sidebar h3 {
-    color: var(--text);
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid var(--primary);
-  }
-
-  .contact-item {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .contact-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  }
-
-  .contact-icon {
-    width: 60px;
-    height: 60px;
-    background: var(--primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    color: white;
-    font-size: 24px;
-  }
-
-  .contact-item h5 {
-    color: var(--text);
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-  }
-
-  .contact-item p {
-    color: var(--text-light);
-    margin-bottom: 0;
-    line-height: 1.6;
-  }
-
-  .contact-item .highlight {
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 1.2rem;
-    margin-top: 8px;
-  }
-
-  /* Business Hours */
-  .hours-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .hours-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  }
-
-  .hours-list li:last-child {
-    border-bottom: none;
-  }
-
-  .day {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .time {
-    color: var(--primary);
-    font-weight: 600;
-  }
-
-  /* Contact Form */
-  .contact-form-wrapper {
-    background: white;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    height: 100%;
-  }
-
-  .contact-form-wrapper h2 {
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-
-  .form-subtitle {
-    color: var(--text-light);
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-  }
-
-  .form-label {
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 8px;
-    font-family: 'Poppins', sans-serif;
-  }
-
-  .form-control,
-  .form-select {
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 12px 16px;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-  }
-
-  .form-control:focus,
-  .form-select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.1);
-  }
-
-  textarea.form-control {
-    min-height: 150px;
-    resize: vertical;
-  }
-
-  .btn-submit {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 14px 40px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
-    width: 100%;
-  }
-
-  .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4);
-    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
-  }
-
-  /* Map Section - FIXED */
-  .map-section {
-    margin: 40px 0 0 0;
-    padding: 0;
-  }
-
-  .map-wrapper {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    height: 400px;
-    margin: 0;
-  }
-
-  .map-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-
-  /* Social Media Section */
-  .social-section {
-    background: var(--secondary);
-    border-radius: 20px;
-    padding: 40px;
-    margin: 40px 0;
-    text-align: center;
-  }
-
-  .social-section h3 {
-    color: var(--text);
-    margin-bottom: 30px;
-  }
-
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .social-icon {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: white;
-    color: var(--primary);
-    font-size: 24px;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .social-icon:hover {
-    transform: translateY(-5px) scale(1.1);
-    color: white;
-  }
-
-  .social-icon.facebook:hover { background: #1877f2; }
-  .social-icon.instagram:hover { 
-    background: radial-gradient(circle at 30% 30%, 
-      #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-  }
-  .social-icon.youtube:hover { background: #ff0000; }
-  .social-icon.twitter:hover { background: #1da1f2; }
-  .social-icon.linkedin:hover { background: #0a66c2; }
-
-  /* Breadcrumb */
-  .breadcrumb-nav {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    margin-top: 15px;
-  }
-
-  .breadcrumb-nav .text-primary {
-    color: var(--primary) !important;
-    font-weight: 600;
-  }
-
-  /* Responsive */
-  @media (max-width: 992px) {
-    .contact-hero h1 {
-      font-size: 2.5rem;
+  <style>
+    /* Internal CSS for Contact Page */
+    :root {
+      --primary: #1e88e5;
+      --primary-dark: #1565c0;
+      --secondary: #e3f2fd;
+      --background: #ffffff;
+      --text: #263238;
+      --text-light: #546e7a;
+      --accent: #43a047;
+      --light-gray: #f8f9fa;
+      --border-radius: 16px;
     }
-    
-    .contact-sidebar {
-      margin-bottom: 40px;
-    }
-    
-    .contact-form-wrapper {
-      padding: 30px;
-    }
-  }
 
-  @media (max-width: 768px) {
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+    }
+
+    /* Hero Section */
     .contact-hero {
-      padding: 80px 0 40px;
+      background: linear-gradient(135deg, var(--secondary) 0%, #ffffff 100%);
+      color: var(--text);
+      padding: 100px 0 50px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
     }
-    
+
+    .contact-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+
     .contact-hero h1 {
-      font-size: 2rem;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
     }
-    
+
     .contact-hero .lead {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Main Layout */
+    .contact-container {
+      padding: 60px 0 30px;
+    }
+
+    /* Contact Info Sidebar */
+    .contact-sidebar {
+      background: var(--secondary);
+      border-radius: 20px;
+      padding: 40px 30px;
+      height: 100%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .contact-sidebar h3 {
+      color: var(--text);
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .contact-item {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 24px;
+    }
+
+    .contact-item h5 {
+      color: var(--text);
+      margin-bottom: 10px;
       font-size: 1.1rem;
     }
-    
-    .map-wrapper {
-      height: 300px;
-    }
-    
-    .social-icon {
-      width: 50px;
-      height: 50px;
-      font-size: 20px;
-    }
-  }
 
-  @media (max-width: 576px) {
-    .contact-form-wrapper,
-    .contact-sidebar {
-      padding: 25px 20px;
+    .contact-item p {
+      color: var(--text-light);
+      margin-bottom: 0;
+      line-height: 1.6;
     }
-    
+
+    .contact-item .highlight {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-top: 8px;
+    }
+
+    /* Business Hours */
+    .hours-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hours-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .hours-list li:last-child {
+      border-bottom: none;
+    }
+
+    .day {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .time {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Contact Form */
+    .contact-form-wrapper {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      height: 100%;
+    }
+
+    .contact-form-wrapper h2 {
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+      color: var(--text-light);
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .form-control,
+    .form-select {
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 40px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+      width: 100%;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4);
+      background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    }
+
+    /* Map Section - FIXED */
+    .map-section {
+      margin: 40px 0 0 0;
+      padding: 0;
+    }
+
     .map-wrapper {
-      height: 250px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      height: 400px;
+      margin: 0;
     }
-    
+
+    .map-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Social Media Section */
+    .social-section {
+      background: var(--secondary);
+      border-radius: 20px;
+      padding: 40px;
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .social-section h3 {
+      color: var(--text);
+      margin-bottom: 30px;
+    }
+
     .social-icons {
-      gap: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
-    
-    .social-icon {
-      width: 45px;
-      height: 45px;
-      font-size: 18px;
-    }
-  }
-</style>
 
-<!-- Hero Section -->
-<section class="contact-hero">
-  <div class="container">
-    <div class="row justify-content-center text-center">
-      <div class="col-lg-10">
-        <h1>
-          <!-- <i class="fas fa-envelope-open-text me-3"></i> -->
-          Get In Touch 
-        </h1>
-       
-        <div class="breadcrumb-nav">
-          Home / <span class="text-primary">Contact Us</span>
+    .social-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: white;
+      color: var(--primary);
+      font-size: 24px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .social-icon:hover {
+      transform: translateY(-5px) scale(1.1);
+      color: white;
+    }
+
+    .social-icon.facebook:hover {
+      background: #1877f2;
+    }
+
+    .social-icon.instagram:hover {
+      background: radial-gradient(circle at 30% 30%,
+          #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+    }
+
+    .social-icon.youtube:hover {
+      background: #ff0000;
+    }
+
+    .social-icon.twitter:hover {
+      background: #1da1f2;
+    }
+
+    .social-icon.linkedin:hover {
+      background: #0a66c2;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb-nav {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 15px;
+    }
+
+    .breadcrumb-nav .text-primary {
+      color: var(--primary) !important;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .contact-hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .contact-sidebar {
+        margin-bottom: 40px;
+      }
+
+      .contact-form-wrapper {
+        padding: 30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-hero {
+        padding: 80px 0 40px;
+      }
+
+      .contact-hero h1 {
+        font-size: 2rem;
+      }
+
+      .contact-hero .lead {
+        font-size: 1.1rem;
+      }
+
+      .map-wrapper {
+        height: 300px;
+      }
+
+      .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+
+      .contact-form-wrapper,
+      .contact-sidebar {
+        padding: 25px 20px;
+      }
+
+      .map-wrapper {
+        height: 250px;
+      }
+
+      .social-icons {
+        gap: 15px;
+      }
+
+      .social-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+      }
+    }
+  </style>
+
+  <!-- Hero Section -->
+  <section class="contact-hero">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-10">
+          <h1>
+            <!-- <i class="fas fa-envelope-open-text me-3"></i> -->
+            Get In Touch
+          </h1>
+
+          <div class="breadcrumb-nav">
+            Home / <span class="text-primary">Contact Us</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Main Contact Section -->
-<section class="contact-container">
-  <div class="container">
-    <div class="row g-5">
-      <!-- Left Sidebar - Contact Information -->
-      <div class="col-lg-4">
-        <div class="contact-sidebar">
-          <h3><i class="fas fa-info-circle me-2"></i> Contact Information</h3>
-          
-          <!-- Address -->
-          <div class="contact-item">
-            <div class="contact-icon">
-              <i class="fas fa-map-marker-alt"></i>
+  <!-- Main Contact Section -->
+  <section class="contact-container">
+    <div class="container">
+      <div class="row g-5">
+        <!-- Left Sidebar - Contact Information -->
+        <div class="col-lg-4">
+          <div class="contact-sidebar">
+            <h3><i class="fas fa-info-circle me-2"></i> Contact Information</h3>
+
+            <!-- Address -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <h5>Our Location</h5>
+              <!-- <p>Visit us at our clinic for personalized consultation and care.</p> -->
+              <div class="highlight">
+                123 Ipsum Road, Loremton<br>
+                Dolorshire L01 2RM<br>
+                United Kingdom
+              </div>
             </div>
-            <h5>Our Location</h5>
-            <!-- <p>Visit us at our clinic for personalized consultation and care.</p> -->
-            <div class="highlight">
-              123 Ipsum Road, Loremton<br>
-              Dolorshire L01 2RM<br>
-              United Kingdom
+
+            <!-- Phone & Email -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <h5>Call or Email</h5>
+              <p>Reach out for personalized IVF support and consultation.</p>
+              <div class="highlight">
+                <i class="fas fa-phone-alt me-2"></i> +91 7020399653<br>
+                <i class="fas fa-envelope me-2"></i> info@domainname.com
+              </div>
             </div>
-          </div>
-          
-          <!-- Phone & Email -->
-          <div class="contact-item">
-            <div class="contact-icon">
-              <i class="fas fa-phone-alt"></i>
+
+            <!-- Business Hours -->
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="far fa-clock"></i>
+              </div>
+              <h5>Schedule Hours</h5>
+              <p>We're here to serve you during these hours:</p>
+              <ul class="hours-list">
+                <li>
+                  <span class="day">Monday - Friday</span>
+                  <span class="time">08:00 - 22:00</span>
+                </li>
+                <li>
+                  <span class="day">Saturday</span>
+                  <span class="time">08:00 - 17:00</span>
+                </li>
+                <li>
+                  <span class="day">Sunday</span>
+                  <span class="time">08:00 - 14:00</span>
+                </li>
+              </ul>
             </div>
-            <h5>Call or Email</h5>
-            <p>Reach out for personalized IVF support and consultation.</p>
-            <div class="highlight">
-              <i class="fas fa-phone-alt me-2"></i> +91 7020399653<br>
-              <i class="fas fa-envelope me-2"></i> info@domainname.com
-            </div>
-          </div>
-          
-          <!-- Business Hours -->
-          <div class="contact-item">
-            <div class="contact-icon">
-              <i class="far fa-clock"></i>
-            </div>
-            <h5>Schedule Hours</h5>
-            <p>We're here to serve you during these hours:</p>
-            <ul class="hours-list">
-              <li>
-                <span class="day">Monday - Friday</span>
-                <span class="time">08:00 - 22:00</span>
-              </li>
-              <li>
-                <span class="day">Saturday</span>
-                <span class="time">08:00 - 17:00</span>
-              </li>
-              <li>
-                <span class="day">Sunday</span>
-                <span class="time">08:00 - 14:00</span>
-              </li>
-            </ul>
-          </div>
 
             <div class="container">
-    <h3>Connect With Us On Social Media</h3>
- 
-    
-    <div class="social-icons">
-      <a href="#" class="social-icon facebook" aria-label="Facebook">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="#" class="social-icon instagram" aria-label="Instagram">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="#" class="social-icon youtube" aria-label="YouTube">
-        <i class="fab fa-youtube"></i>
-      </a>
-      <a href="#" class="social-icon twitter" aria-label="Twitter">
-        <i class="fab fa-twitter"></i>
-      </a>
-     
-    </div>
-    
+              <h3>Connect With Us On Social Media</h3>
 
-  </div>
-        </div>
-      </div>
-      
-      <!-- Right Side - Contact Form -->
-      <div class="col-lg-8">
-        <div class="contact-form-wrapper">
-          <h2>Send Us a Message</h2>
-          <p class="form-subtitle">
-            Have questions or need assistance? Fill out the form below and our team will get back to you within 24 hours.
-          </p>
-          
-          <form id="contactForm">
-            <div class="row g-4">
-              <div class="col-md-6">
-                <label class="form-label">First Name *</label>
-                <input type="text" class="form-control" placeholder="Enter your first name" required>
+
+              <div class="social-icons">
+                <a href="#" class="social-icon facebook" aria-label="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon instagram" aria-label="Instagram">
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon youtube" aria-label="YouTube">
+                  <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="social-icon twitter" aria-label="Twitter">
+                  <i class="fab fa-twitter"></i>
+                </a>
+
               </div>
-              
-              <div class="col-md-6">
-                <label class="form-label">Last Name *</label>
-                <input type="text" class="form-control" placeholder="Enter your last name" required>
-              </div>
-              
-              <div class="col-md-6">
-                <label class="form-label">Email Address *</label>
-                <input type="email" class="form-control" placeholder="your.email@example.com" required>
-              </div>
-              
-              <div class="col-md-6">
-                <label class="form-label">Phone Number *</label>
-                <input type="tel" class="form-control" placeholder="+91 00000 00000" required>
-              </div>
-              
-              <div class="col-12">
-                <label class="form-label">Subject *</label>
-                <select class="form-select" required>
-                  <option value="" disabled selected>Select a subject</option>
-                  <option>Schedule an Appointment</option>
-                  <option>Initial Consultation</option>
-                  <option>Treatment Information</option>
-                  <option>Billing & Insurance</option>
-                  <option>General Inquiry</option>
-                  <option>Feedback</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              
-              <div class="col-12">
-                <label class="form-label">Message *</label>
-                <textarea class="form-control" rows="6" placeholder="Please tell us how we can help you..." required></textarea>
-              </div>
-              
-              <div class="col-12">
-                <div class="form-check mb-4">
-                  <input class="form-check-input" type="checkbox" id="consent" required>
-                  <label class="form-check-label" for="consent">
-                    I agree to the privacy policy and terms of service
-                  </label>
-                </div>
-                
-                <button type="submit" class="btn-submit">
-                  <i class="fas fa-paper-plane me-2"></i> Send Message
-                </button>
-              </div>
+
+
             </div>
-          </form>
-          <section class="map-section">
-          <div class="map-wrapper">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.490950783924!2d74.72815460566439!3d19.105421312773604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdcb17ca9d749e5%3A0x516744f9b2f35ec9!2sA2Z%20IT%20HUB%20PVT.%20LTD.!5e1!3m2!1sen!2sin!4v1769189574450!5m2!1sen!2sin"
-              loading="lazy" 
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen>
-            </iframe>
           </div>
-        </section>
+        </div>
 
+        <!-- Right Side - Contact Form -->
+        <div class="col-lg-8">
+          <div class="contact-form-wrapper">
+            <h2>Send Us a Message</h2>
+            <p class="form-subtitle">
+              Have questions or need assistance? Fill out the form below and our team will get back to you within 24
+              hours.
+            </p>
+
+            <form id="contactForm">
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="form-label">First Name *</label>
+                  <input type="text" class="form-control" placeholder="Enter your first name" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Last Name *</label>
+                  <input type="text" class="form-control" placeholder="Enter your last name" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Email Address *</label>
+                  <input type="email" class="form-control" placeholder="your.email@example.com" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Phone Number *</label>
+                  <input type="tel" class="form-control" placeholder="+91 00000 00000" required>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Subject *</label>
+                  <select class="form-select" required>
+                    <option value="" disabled selected>Select a subject</option>
+                    <option>Schedule an Appointment</option>
+                    <option>Initial Consultation</option>
+                    <option>Treatment Information</option>
+                    <option>Billing & Insurance</option>
+                    <option>General Inquiry</option>
+                    <option>Feedback</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Message *</label>
+                  <textarea class="form-control" rows="6" placeholder="Please tell us how we can help you..."
+                    required></textarea>
+                </div>
+
+                <div class="col-12">
+                  <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="consent" required>
+                    <label class="form-check-label" for="consent">
+                      I agree to the privacy policy and terms of service
+                    </label>
+                  </div>
+
+                  <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane me-2"></i> Send Message
+                  </button>
+                </div>
+              </div>
+            </form>
+            <section class="map-section">
+              <div class="map-wrapper">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.490950783924!2d74.72815460566439!3d19.105421312773604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdcb17ca9d749e5%3A0x516744f9b2f35ec9!2sA2Z%20IT%20HUB%20PVT.%20LTD.!5e1!3m2!1sen!2sin!4v1769189574450!5m2!1sen!2sin"
+                  loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>
+                </iframe>
+              </div>
+            </section>
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<script>
-  // Form submission handler
-  document.getElementById('contactForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    
-    // Basic validation
-    const requiredFields = this.querySelectorAll('[required]');
-    let valid = true;
-    
-    requiredFields.forEach(field => {
-      if (!field.value.trim()) {
-        valid = false;
-        field.classList.add('is-invalid');
-      } else {
-        field.classList.remove('is-invalid');
-      }
-    });
-    
-    if (!valid) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-    
-    // Get form data
-    const formData = {
-      firstName: this.querySelector('input[type="text"]:nth-of-type(1)').value,
-      lastName: this.querySelector('input[type="text"]:nth-of-type(2)').value,
-      email: this.querySelector('input[type="email"]').value,
-      phone: this.querySelector('input[type="tel"]').value,
-      subject: this.querySelector('select').value,
-      message: this.querySelector('textarea').value
-    };
-    
-    // Simulate form submission
-    console.log('Form submitted:', formData);
-    
-    // Show success message
-    alert('Thank you for your message! We will get back to you within 24 hours.');
-    
-    // Reset form
-    this.reset();
-  });
-  
-  // Add smooth scrolling
-  document.addEventListener('DOMContentLoaded', function() {
-    // Remove invalid class on input
-    document.querySelectorAll('.form-control, .form-select').forEach(input => {
-      input.addEventListener('input', function() {
-        this.classList.remove('is-invalid');
-      });
-    });
-    
-    // Add animation to contact items on scroll
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
+  <script>
+    // Form submission handler
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Basic validation
+      const requiredFields = this.querySelectorAll('[required]');
+      let valid = true;
+
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          valid = false;
+          field.classList.add('is-invalid');
+        } else {
+          field.classList.remove('is-invalid');
         }
       });
-    }, observerOptions);
-    
-    // Observe contact items
-    document.querySelectorAll('.contact-item').forEach(item => {
-      item.style.opacity = '0';
-      item.style.transform = 'translateY(20px)';
-      item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      observer.observe(item);
-    });
-  });
-</script>
 
-<%- include("footer.ejs") %>
+      if (!valid) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      // Get form data
+      const formData = {
+        firstName: this.querySelector('input[type="text"]:nth-of-type(1)').value,
+        lastName: this.querySelector('input[type="text"]:nth-of-type(2)').value,
+        email: this.querySelector('input[type="email"]').value,
+        phone: this.querySelector('input[type="tel"]').value,
+        subject: this.querySelector('select').value,
+        message: this.querySelector('textarea').value
+      };
+
+      // Simulate form submission
+      console.log('Form submitted:', formData);
+
+      // Show success message
+      alert('Thank you for your message! We will get back to you within 24 hours.');
+
+      // Reset form
+      this.reset();
+    });
+
+    // Add smooth scrolling
+    document.addEventListener('DOMContentLoaded', function () {
+      // Remove invalid class on input
+      document.querySelectorAll('.form-control, .form-select').forEach(input => {
+        input.addEventListener('input', function () {
+          this.classList.remove('is-invalid');
+        });
+      });
+
+      // Add animation to contact items on scroll
+      const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe contact items
+      document.querySelectorAll('.contact-item').forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(item);
+      });
+    });
+  </script>
+
+  <%- include("footer.ejs") %>

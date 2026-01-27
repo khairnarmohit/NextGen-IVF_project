@@ -1,6 +1,62 @@
 <%- include("navbar.ejs") %>
 
-<h1>Philosophy</h1>
+  <div class="container py-3">
+    <div class="card shadow-sm border-0">
 
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Update Philosophy</h5>
+      </div>
 
-<%- include("footer.ejs") %>
+      <div class="card-body">
+        <form action="/admin/update-philosophy" method="POST" enctype="multipart/form-data">
+
+          <div class="row g-3">
+
+            <!-- Image Upload -->
+            <div class="col-md-6">
+              <label for="philosophy_image" class="form-label">Image*</label>
+              <input type="file" name="philosophy_image" id="philosophy_image" accept="image/*" class="form-control">
+
+              <!-- Keep Old Image -->
+              <input type="hidden" name="philosophy_image" value="<%= vision_mission_info[0].philosophy_image %>">
+
+              <div class="form-text">
+                Only JPG, JPEG images are allowed
+              </div>
+            </div>
+
+            <!-- Image Preview -->
+            <div class="col-md-6 text-center">
+              <label class="form-label d-block">Preview</label>
+              <img src="/uploads/<%= vision_mission_info[0].philosophy_image %>" alt="Philosophy Image"
+                class="img-thumbnail" style="max-height: 140px;">
+            </div>
+
+            <!-- Vision -->
+            <div class="col-12">
+              <label for="vision_desc" class="form-label">Vision*</label>
+              <textarea class="form-control" name="vision_desc" id="vision_desc" rows="3" placeholder="Enter Our Vision"
+                required><%= vision_mission_info[0].vision_desc %></textarea>
+            </div>
+
+            <!-- Mission -->
+            <div class="col-12">
+              <label for="mission_desc" class="form-label">Mission*</label>
+              <textarea class="form-control" name="mission_desc" id="mission_desc" rows="3"
+                placeholder="Enter Our Mission" required><%= vision_mission_info[0].mission_desc %></textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="col-12 text-end">
+              <button type="submit" class="btn btn-success px-4">
+                <i class="fas fa-save me-1"></i> Update Philosophy
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include("footer.ejs") %>

@@ -1,0 +1,257 @@
+<%- include("navbar.ejs") %>
+
+  <div class="container py-4">
+
+    <!-- Achievements Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addAchievementForm">
+        <i class="fas fa-plus me-1"></i> Add Milestones
+      </button>
+    </div>
+
+    <!-- Achievement Form -->
+    <div class="collapse" id="addAchievementForm">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+          <h6 class="mb-0">Add New Milestones</h6>
+        </div>
+
+        <div class="card-body">
+          <form action="/admin/save-milestones" method="POST">
+
+            <div class="row g-3 mb-3">
+
+              <div class="col-md-4">
+                <label class="form-label">Award Title *</label>
+                <input type="text" name="achievement_title" class="form-control" placeholder="Enter Title"
+                  autocomplete="off" required>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Icon *</label>
+                <select name="achievement_icon" class="form-select" required>
+                  <option value="" disabled selected>-- Select Icon --</option>
+                  <option value="fas fa-baby">Happy Clients</option>
+                  <option value="fas fa-calendar-alt">Experiences</option>
+                  <option value="fas fa-user-md">Team / Doctors</option>
+                  <option value="fas fa-award">Awards</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Counter *</label>
+                <input type="number" name="achievement_counter" class="form-control" min="0" placeholder="Enter Counter"
+                  required>
+              </div>
+
+            </div>
+
+            <div class="text-end">
+              <button type="submit" class="btn btn-success">
+                <i class="fas fa-save me-1"></i> Save Milestones
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Achievements Table -->
+  <div class="container mb-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-0">
+        <table class="table table-bordered table-hover mb-0 align-middle">
+          <thead class="table-light">
+            <tr>
+              <th width="70">#</th>
+              <th>Title</th>
+              <th width="100" class="text-center">Icon</th>
+              <th width="120">Counter</th>
+              <th width="140" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (achievements_info.length> 0) { %>
+              <% for (var i=0; i < achievements_info.length; i++) { %>
+                <tr>
+                  <td>
+                    <%= i + 1 %>
+                  </td>
+                  <td>
+                    <%= achievements_info[i].achievement_title %>
+                  </td>
+                  <td class="text-center">
+                    <i class="<%= achievements_info[i].achievement_icon %> text-primary fs-4"></i>
+                  </td>
+                  <td>
+                    <%= achievements_info[i].achievement_counter %>
+                  </td>
+                  <td class="text-center">
+                    <a href="/admin/edit-milestones/<%= achievements_info[i].achievement_id %>"
+                      class="btn btn-warning btn-sm me-1">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="/admin/delete-milestones/<%= achievements_info[i].achievement_id %>"
+                      onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% } %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="5" class="text-center text-muted py-4">No Achievements Found</td>
+                    </tr>
+                    <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container py-4">
+
+    <!-- Awards Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addAwardForm">
+        <i class="fas fa-plus me-1"></i> Add Award
+      </button>
+    </div>
+
+    <!-- Award Form -->
+    <div class="collapse" id="addAwardForm">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+          <h6 class="mb-0">Add New Award</h6>
+        </div>
+
+        <div class="card-body">
+          <form action="/admin/save-awards" method="POST">
+
+            <div class="row g-3 mb-3">
+
+              <!-- 1. Title -->
+              <div class="col-md-4">
+                <label class="form-label">Award Title *</label>
+                <input type="text" name="award_title" class="form-control" placeholder="Enter Award Title"
+                  autocomplete="off" required>
+              </div>
+
+              <!-- 2. Year -->
+              <div class="col-md-4">
+                <label class="form-label">Award Year *</label>
+                <input type="number" name="award_year" class="form-control" min="1900" max="2100"
+                  placeholder="Enter Year" autocomplete="off" required>
+              </div>
+
+              <!-- 3. Issue -->
+              <div class="col-md-4">
+                <label class="form-label">Issue by *</label>
+                <input type="text" name="award_issue" class="form-control" autocomplete="off"
+                  placeholder="Enter Issue by" required>
+              </div>
+
+              <!-- 4. Icon -->
+              <div class="col-md-4">
+                <label class="form-label">Icon *</label>
+                <select name="award_icon" class="form-select" required>
+                  <option value="" disabled selected>-- Select Icon --</option>
+                  <option value="fas fa-trophy">Trophy</option>
+                  <option value="fas fa-certificate">Certificate</option>
+                  <option value="fas fa-medal">Medal</option>
+                  <option value="fas fa-globe-americas">Worldwide</option>
+                </select>
+              </div>
+
+              <!-- 5. Description (Full Width) -->
+              <div class="col-md-8">
+                <label class="form-label">Description *</label>
+                <textarea name="award_desc" class="form-control" rows="1" autocomplete="off"
+                  placeholder="Enter Award Description" required></textarea>
+              </div>
+
+            </div>
+
+            <!-- Submit -->
+            <div class="text-end">
+              <button type="submit" class="btn btn-success">
+                <i class="fas fa-save me-1"></i> Save Award
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Awards Table -->
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Award Title</th>
+              <th>Year</th>
+              <th>Icon</th>
+              <th>Issue by</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (awards_info.length> 0) { %>
+              <% for (let i=0; i < awards_info.length; i++) { %>
+                <tr>
+                  <td>
+                    <%= i+1 %>
+                  </td>
+                  <td>
+                    <%= awards_info[i].award_title %>
+                  </td>
+                  <td>
+                    <%= awards_info[i].award_year %>
+                  </td>
+                  <td class="text-center">
+                    <i class="<%= awards_info[i].award_icon %> h4 text-primary"></i>
+                  </td>
+                  <td>
+                    <%= awards_info[i].award_issue %>
+                  </td>
+
+                  <td>
+                    <%= awards_info[i].award_desc %>
+                  </td>
+                  <td width="120" class="text-center">
+                    <a href="/admin/edit-awards/<%= awards_info[i].award_id %>" class="btn btn-warning btn-sm">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="/admin/delete-awards/<%= awards_info[i].award_id %>"
+                      onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% } %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="6" class="text-center text-muted py-4">No Awards Found</td>
+                    </tr>
+                    <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <%- include("footer.ejs") %>

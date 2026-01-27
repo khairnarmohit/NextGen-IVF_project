@@ -1,5 +1,63 @@
-<%- include("navbar.ejs")  %>
+<%- include("navbar.ejs") %>
 
-<h1>About</h1>
 
-<%- include("footer.ejs")  %>
+
+<div class="container py-4 position-relative" style="z-index: 1000;">
+
+  <!-- Card -->
+  <div class="card shadow-sm border-0 position-relative" style="z-index: 1001;">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Update About</h5>
+    </div>
+
+    <div class="card-body">
+      <form action="/admin/update-about" method="POST" enctype="multipart/form-data">
+
+        <!-- Row 1 -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="about_title" class="form-label">About Title</label>
+            <input type="text" name="about_title" class="form-control" id="about_title" value="<%= about_info[0].about_title %>"
+              placeholder="Enter About Title" autocomplete="off" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="about_image" class="form-label">About Image</label>
+            <input type="file" name="about_image" class="form-control" id="about_image" accept="image/*">
+
+            <input type="hidden" name="about_image_old" value="<%= about_info[0].about_image %>">
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <label for="about_desc" class="form-label">About Description</label>
+            <textarea name="about_desc" id="about_desc" class="form-control" rows="5"
+              placeholder="Enter Description"><%= about_info[0].about_desc %></textarea>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-end mt-4">
+          <button type="submit" class="btn btn-success px-4" id="updateBtn">
+            <i class="fas fa-save me-1"></i> Update About
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.3.0/classic/ckeditor.js"></script>
+<script>
+  ClassicEditor
+    .create(document.querySelector('#about_desc'))
+    .catch(error => {
+      console.error('CKEditor error:', error);
+    });
+</script>
+
+<%- include("footer.ejs") %>
