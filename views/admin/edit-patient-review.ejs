@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Review</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/admin/patient-review">
+                <i class="fas fa-arrow-left me-2"></i>Back to Reviews
+            </a>
+            <span class="navbar-text text-white">Edit Review</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Update Review Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="/admin/patient-review/update" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="patients_review_id" value="<%= info.patients_review_id %>">
+                            <!-- Hidden input to keep old photo name if not changed -->
+                            <input type="hidden" name="old_photo" value="<%= info.patients_review_photo %>">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Patient Name</label>
+                                    <input type="text" class="form-control" name="patients_review_name" value="<%= info.patients_review_name %>" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" name="patients_review_address" value="<%= info.patients_review_address %>" required>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Date</label>
+                                    <input type="date" class="form-control" name="patients_review_date" value="<%= info.patients_review_date %>" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Change Photo</label>
+                                    <input type="file" class="form-control" name="patients_review_photo" accept="image/*">
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" name="patients_review_desc" rows="5" required><%= info.patients_review_desc %></textarea>
+                            </div>
+
+                            <!-- Show current photo preview -->
+                            <div class="mt-3 text-center">
+                                <label class="form-label text-muted">Current Photo</label><br>
+                                <img src="/uploads/<%= info.patients_review_photo %>" class="rounded-circle border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                            </div>
+
+                            <div class="mt-4 text-end">
+                                <a href="/admin/patient-review" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Update Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
