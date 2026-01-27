@@ -1,0 +1,78 @@
+<%- include("navbar.ejs") %>
+
+  <div class="container py-4">
+
+    <!-- Awards Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+    </div>
+
+    <!-- Award Form (Always Visible) -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white">
+        <h6 class="mb-0">Add Update</h6>
+      </div>
+
+      <div class="card-body">
+        <form action="/admin/update-awards" method="POST">
+
+          <div class="row g-3 mb-3">
+
+            <input type="hidden" name="award_id" value="<%= awardone[0].award_id %>">
+
+            <!-- 1. Title -->
+            <div class="col-md-4">
+              <label class="form-label">Award Title *</label>
+              <input type="text" name="award_title" class="form-control" placeholder="Enter Award Title" value="<%= awardone[0].award_title %>"
+                autocomplete="off" required>
+            </div>
+
+            <!-- 2. Year -->
+            <div class="col-md-4">
+              <label class="form-label">Award Year *</label>
+              <input type="number" name="award_year" class="form-control" min="1900" max="2100" value="<%= awardone[0].award_year %>" placeholder="Enter Year"
+                autocomplete="off" required>
+            </div>
+
+            <!-- 3. Issue By -->
+            <div class="col-md-4">
+              <label class="form-label">Issued By *</label>
+              <input type="text" name="award_issue" class="form-control" value="<%= awardone[0].award_issue %>" placeholder="Enter Issued By"
+                autocomplete="off" required>
+            </div>
+
+            <!-- 4. Icon -->
+            <div class="col-md-4">
+              <label class="form-label">Icon *</label>
+              <select name="award_icon" class="form-select" required>
+                <option value="" disabled>-- Select Icon --</option>
+                <option value="fas fa-trophy <%= awardone[0].award_icon == 'fas fa-trophy' ? 'selected' : '' %>">Trophy</option>
+                <option value="fas fa-certificate <%= awardone[0].award_icon == 'fas fa-certificate' ? 'selected' : '' %>">Certificate</option>
+                <option value="fas fa-medal <%= awardone[0].award_icon == 'fas fa-medal' ? 'selected' : '' %>">Medal</option>
+                <option value="fas fa-globe-americas <%= awardone[0].award_icon == 'fas fa-globe-americas' ? 'selected' : '' %>">Worldwide</option>
+              </select>
+            </div>
+
+            <!-- 5. Description -->
+            <div class="col-md-8">
+              <label class="form-label">Description *</label>
+              <textarea name="award_desc" class="form-control" rows="1" placeholder="Enter Award Description"
+                autocomplete="off" required><%= awardone[0].award_desc %></textarea>
+            </div>
+
+          </div>
+
+          <!-- Submit -->
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-save me-1"></i> Update Award
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+
+  <%- include("footer.ejs") %>

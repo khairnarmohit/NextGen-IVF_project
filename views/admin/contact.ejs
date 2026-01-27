@@ -1,0 +1,185 @@
+<%- include("navbar.ejs") %>
+
+  <div class="container py-4 position-relative" style="z-index: 1000;">
+    <div class="card shadow-sm border-0 position-relative" style="z-index: 1001;">
+
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Update Contact</h5>
+      </div>
+
+      <div class="card-body">
+        <form action="/admin/update-contact" method="POST">
+
+          <!-- Phone + Email -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Phone</label>
+              <input type="tel" name="phone" class="form-control" placeholder="Enter Phone"
+                value="<%= contact[0].phone %>" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control" placeholder="Enter Email"
+                value="<%= contact[0].email %>" required>
+            </div>
+          </div>
+
+          <!-- Timings -->
+          <div class="row mb-3">
+
+            <!-- Mon - Fri -->
+            <div class="col-md-4">
+              <label class="form-label">Monday - Friday</label>
+              <div class="row g-2">
+                <div class="col-6">
+                  <input type="time" name="mon_start" class="form-control" value="<%= contact[0].mon_start %>">
+                </div>
+                <div class="col-6">
+                  <input type="time" name="mon_end" class="form-control" value="<%= contact[0].mon_end %>">
+                </div>
+              </div>
+            </div>
+
+            <!-- Saturday -->
+            <div class="col-md-4">
+              <label class="form-label">Saturday</label>
+              <div class="row g-2">
+                <div class="col-6">
+                  <input type="time" name="sat_start" class="form-control" value="<%= contact[0].sat_start %>">
+                </div>
+                <div class="col-6">
+                  <input type="time" name="sat_end" class="form-control" value="<%= contact[0].sat_end %>">
+                </div>
+              </div>
+            </div>
+
+            <!-- Sunday -->
+            <div class="col-md-4">
+              <label class="form-label">Sunday</label>
+              <div class="row g-2">
+                <div class="col-6">
+                  <input type="time" name="sun_start" class="form-control" value="<%= contact[0].sun_start %>">
+                </div>
+                <div class="col-6">
+                  <input type="time" name="sun_end" class="form-control" value="<%= contact[0].sun_end %>">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Address -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label class="form-label">Address</label>
+              <textarea name="address" class="form-control" rows="2" required>
+<%= contact[0].address %>
+    </textarea>
+            </div>
+          </div>
+
+          <!-- Map Address + Button -->
+          <div class="row mb-3 align-items-end">
+
+            <div class="col-md-11">
+              <label class="form-label">Map Address (Embed / Text)</label>
+              <textarea name="map_address" class="form-control" rows="5"><%= contact[0].map_address %></textarea>
+            </div>
+
+            <div class="col-md-1 d-grid">
+              <button type="button" class="btn btn-success h-100" data-bs-toggle="modal"
+                data-bs-target="#mapPreviewModal" onclick="previewMap()">
+                <i class="fas fa-map-marker-alt me-1"></i> View
+              </button>
+          </div>
+
+
+      </div>
+
+
+      <!-- Social Links -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label class="form-label">Facebook</label>
+          <input type="url" name="facebook" class="form-control" value="<%= contact[0].facebook %>">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Instagram</label>
+          <input type="url" name="instagram" class="form-control" value="<%= contact[0].instagram %>">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">YouTube</label>
+          <input type="url" name="youtube" class="form-control" value="<%= contact[0].youtube %>">
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Twitter</label>
+          <input type="url" name="twitter" class="form-control" value="<%= contact[0].twitter %>">
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="text-end mt-4">
+        <button type="submit" class="btn btn-success px-4">
+          <i class="fas fa-save me-1"></i> Update Contact
+        </button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+  </div>
+
+  <!-- Map Preview Modal -->
+  <div class="modal fade" id="mapPreviewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Map Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <div id="mapPreviewContainer" class="ratio ratio-16x9">
+            <!-- Map will load here -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function previewMap() {
+      const mapData = document.querySelector('textarea[name="map_address"]').value.trim();
+      const container = document.getElementById('mapPreviewContainer');
+
+      if (!mapData) {
+        container.innerHTML = '<p class="text-danger p-3">No map address or embed code found.</p>';
+        return;
+      }
+
+      // If user pasted iframe embed code
+      if (mapData.includes('<iframe')) {
+        container.innerHTML = mapData;
+      }
+      // If user pasted only address or link
+      else {
+        const encoded = encodeURIComponent(mapData);
+        container.innerHTML = `
+      <iframe 
+        src="https://www.google.com/maps?q=${encoded}&output=embed"
+        width="100%" height="100%" style="border:0;"
+        allowfullscreen="" loading="lazy">
+      </iframe>
+    `;
+      }
+    }
+  </script>
+
+
+  <%- include("footer.ejs") %>

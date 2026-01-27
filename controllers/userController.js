@@ -89,6 +89,44 @@ exports.getContactPage = (req, res) => {
   }
 };
 
+exports.saveEnquiry = async (req, res) => {
+  try {
+    const {
+      enquiry_first,
+      enquiry_last,
+      enquiry_email,
+      enquiry_number,
+      enquiry_subject,
+      enquiry_message
+    } = req.body;
+
+    // First + Last combine
+    const enquiry_name = enquiry_first + " " + enquiry_last;
+
+    const sql = `
+      INSERT INTO enquiry
+      (enquiry_name, enquiry_email, enquiry_number, enquiry_subject, enquiry_message)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    await exe(sql, [
+      enquiry_name,
+      enquiry_email,
+      enquiry_number,
+      enquiry_subject,
+      enquiry_message
+    ]);
+
+    // success redirect
+    res.redirect("/contact");
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Enquiry insert error");
+  }
+};
+
+
 
 
 

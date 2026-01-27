@@ -1,0 +1,106 @@
+<%- include("navbar.ejs") %>
+
+
+  <div class="container py-4">
+
+    <!-- Add Button -->
+    <div class="mb-3">
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addTreatmentForm">
+        <i class="fas fa-plus me-1"></i> Add Why Choose Us
+      </button>
+    </div>
+
+    <!-- Collapse Form -->
+    <div class="collapse" id="addTreatmentForm">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Add New Why Choose Us</h5>
+        </div>
+
+        <div class="card-body">
+          <form action="/admin/save-why-choose-us" method="POST">
+
+            <!-- Row 1 -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="whychooseus_name" class="form-label">Title*</label>
+                <input type="text" name="whychooseus_name" class="form-control" id="whychooseus_name"
+                  placeholder="Enter Title" autocomplete="off" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="whychooseus_icon" class="form-label">Icon*</label>
+                <select name="whychooseus_icon" class="form-control" id="whychooseus_icon" required>
+                  <option value="" disabled selected>--Select Icon--</option>
+                  <option value="fas fa-chart-line">Chart Line</option>
+                  <option value="fas fa-microscope">Laboratory</option>
+                  <option value="fas fa-user-md">Team</option>
+                  <option value="fas fa-heart">Heart</option>
+
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label for="whychooseus_desc" class="form-label">Description*</label>
+                <textarea name="whychooseus_desc" class="form-control" id="whychooseus_desc" rows="4"
+                  placeholder="Enter Description" required></textarea>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-end">
+              <button type="submit" class="btn btn-success px-4">
+                <i class="fas fa-save me-1"></i> Save Why Choose Us
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Sr.No.</th>
+              <th>Title</th>
+              <th>Icon</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (var i=0; i < whychooseus_info.length; i++) { %>
+              <tr>
+                <td>
+                  <%= i + 1 %>
+                </td>
+                <td>
+                  <%= whychooseus_info[i].whychooseus_name %>
+                </td>
+                <td><i class="<%= whychooseus_info[i].whychooseus_icon %> text-primary"></i></td>
+                <td>
+                  <%= whychooseus_info[i].whychooseus_desc %>
+                </td>
+                <td>
+                  <a href="/admin/edit-why-choose-us/<%= whychooseus_info[i].whychooseus_id %>" type="button"
+                    class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+                  <a href="/admin/delete-why-choose-us/<%= whychooseus_info[i].whychooseus_id %>" type="button"
+                    onclick="return confirm('Are you sure you want to delete this Why Choose Us?')"
+                    class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <%- include("footer.ejs") %>

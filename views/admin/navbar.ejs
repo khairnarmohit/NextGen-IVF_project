@@ -9,6 +9,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts -->
@@ -291,7 +298,13 @@
       display: flex;
       flex-direction: column;
       width: calc(100% - var(--sidebar-width));
+
+      position: relative;
+      /* 🔥 ADD */
+      z-index: 1100;
+      /* 🔥 ADD */
     }
+
 
     @media (max-width: 768px) {
       #content {
@@ -316,7 +329,24 @@
       background: rgba(0, 0, 0, 0.5);
       z-index: 999;
       backdrop-filter: blur(2px);
+      pointer-events: none;
+      /* 🔥 IMPORTANT */
     }
+
+    .sidebar-overlay.visible {
+      display: block;
+      pointer-events: auto;
+      /* only clickable on mobile when visible */
+    }
+
+    /* Force disable overlay on desktop */
+    @media (min-width: 769px) {
+      .sidebar-overlay {
+        display: none !important;
+        pointer-events: none !important;
+      }
+    }
+
 
     .sidebar-overlay.visible {
       display: block;
@@ -1067,12 +1097,12 @@
         <span>Director's Message</span>
       </a>
 
-      <a class="nav-link" href="/why-choose-us">
+      <a class="nav-link" href="/admin/why-choose-us">
         <i class="fa-solid fa-thumbs-up"></i>
         <span>Why Choose Us</span>
       </a>
 
-      <a class="nav-link" href="/achievements">
+      <a class="nav-link" href="/admin/achievements">
         <i class="fa-solid fa-trophy"></i>
         <span>Achievements</span>
       </a>
@@ -1097,7 +1127,7 @@
         <span>Appointments</span>
       </a>
 
-      <a class="nav-link" href="/enquiry">
+      <a class="nav-link" href="/admin/enquiry">
         <i class="fa-solid fa-comments"></i>
         <span>Enquiry</span>
       </a>
@@ -1112,7 +1142,17 @@
         <span>Gallery</span>
       </a>
 
+
+      <a class="nav-link" href="/admin/contact">
+
+      <!-- privacy -->
+       <a class="nav-link" href="/admin/privacy">
+        <i class="fa-solid fa-image"></i>
+        <span>Privacy</span>
+      </a>
+
       <a class="nav-link" href="/contact">
+
         <i class="fa-solid fa-envelope"></i>
         <span>Contact</span>
       </a>

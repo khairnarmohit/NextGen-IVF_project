@@ -1,6 +1,176 @@
 <%- include("navbar.ejs") %>
 
-<h1>Patient Review</h1>
+<!-- <h1>Patient Review</h1> -->
+
+
+
+<div class="container mt-4">
+        
+    <div class="d-flex justify-content-start mb-3">
+        
+        <% if(editData) { %>
+            <a href="/admin/patient-review" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add More Review
+            </a>
+        <% } else { %>
+            <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addReviewCollapse">
+                <i class="fas fa-plus me-2"></i>Add More Review
+            </button>
+        <% } %>
+    </div>
+
+    <!-- Add -->
+    
+    <div class="collapse mb-4 <%= editData ? 'd-none' : '' %>" id="addReviewCollapse">
+        <div class="card shadow-sm border-primary">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0"><i class="fas fa-user-plus me-2"></i>Add New Review</h6>
+            </div>
+            <div class="card-body">
+                <form action="/admin/patient-review/save" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-4 border-end">
+                            <label class="form-label fw-bold">Patient Photo</label>
+                            <input type="file" class="form-control mb-3" name="patients_review_photo" accept="image/*" required>
+                            <div class="border bg-light rounded mx-auto d-flex align-items-center justify-content-center text-muted" style="width: 120px; height: 120px; overflow: hidden;">
+                                <span><i class="fas fa-image fa-2x"></i></span>
+                            </div>
+                            <label class="form-label fw-bold mt-3">Review Date</label>
+                            <input type="date" class="form-control" name="patients_review_date" required>
+                        </div>
+                        <div class="col-md-8 ps-md-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Patient Name</label>
+                                    <input type="text" class="form-control" name="patients_review_name" placeholder="John Doe" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" name="patients_review_address" placeholder="New York" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" name="patients_review_desc" rows="5" placeholder="Write the review..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Save Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit -->
+    
+    <% if(editData) { %>
+        <div class="collapse mb-4 show">
+            <div class="card shadow-sm border-warning">
+                <div class="card-header bg-primary text-dark">
+                    <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Review</h6>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/patient-review/update" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="patients_review_id" value="<%= editData.patients_review_id %>">
+                        <input type="hidden" name="old_photo" value="<%= editData.patients_review_photo %>">
+
+                        <div class="row">
+                            <div class="col-md-4 border-end">
+                                <label class="form-label fw-bold">Change Photo</label>
+                                <input type="file" class="form-control mb-3" name="patients_review_photo" accept="image/*">
+                                <div class="border bg-light rounded mx-auto d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; overflow: hidden;">
+                                    <img src="/uploads/<%= editData.patients_review_photo %>" style="width:100%; height:100%; object-fit:cover;">
+                                </div>
+                                <label class="form-label fw-bold mt-3">Review Date</label>
+                                <input type="date" class="form-control" name="patients_review_date" value="<%= editData.patients_review_date %>" required>
+                            </div>
+                            <div class="col-md-8 ps-md-4">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Patient Name</label>
+                                        <input type="text" class="form-control" name="patients_review_name" value="<%= editData.patients_review_name %>" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" class="form-control" name="patients_review_address" value="<%= editData.patients_review_address %>" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" name="patients_review_desc" rows="5" required><%= editData.patients_review_desc %></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <a href="/admin/patient-review" class="btn btn-secondary me-2">Cancel</a>
+                            <button type="submit" class="btn btn-warning text-white"><i class="fas fa-save me-2"></i>Update Review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+
+    <!-- list -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Patient</th>
+                            <th>Review Content</th>
+                            <th>Details</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(list.length > 0) { %>
+                            <% list.map(function(item){ %>
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <img src="/uploads/<%= item.patients_review_photo %>" class="rounded-circle border me-3" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/50'">
+                                            <div>
+                                                <h6 class="mb-0 fw-bold text-primary"><%= item.patients_review_name %></h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0 text-truncate" style="max-width: 300px;"><%= item.patients_review_desc %></p>
+                                    </td>
+                                    <td>
+                                        <div class="text-primary fw-bold"><i class="fas fa-map-marker-alt me-1"></i> <%= item.patients_review_address %></div>
+                                        <small class="text-muted"><%= item.patients_review_date %></small>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <a href="/admin/patient-review?edit=<%= item.patients_review_id %>" class="btn btn-sm btn-outline-primary me-1">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        
+                                        <a href="/admin/patient-review/delete/<%= item.patients_review_id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="4" class="text-center p-5">No reviews found.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script for Bootstrap Collapse -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 <%- include("footer.ejs")  %>

@@ -1,7 +1,7 @@
 var mysql = require("mysql2");
 var util = require("util");
 
-var conn = mysql.createConnection({
+var conn = mysql.createPool({
   host: "bprlqrokrwlzpporvdd4-mysql.services.clever-cloud.com",
   user: "uvxpln6bip7zygue",
   password: "MrfPkWRNWp90aBliN40L",
@@ -11,8 +11,7 @@ var conn = mysql.createConnection({
 
 var exe = util.promisify(conn.query).bind(conn);
 
-
-conn.connect((err) => {
+conn.getConnection((err, connection) => {
   if (err) {
     console.error("Error connecting to the database:", err);
     return;
