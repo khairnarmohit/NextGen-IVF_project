@@ -103,8 +103,6 @@ exports.postUpdatePhilosophy = async (req, res) => {
 
 
 
-exports.getPatientReviewPage = (req, res) => {
-
 exports.getDirectorsMessagePage = async (req, res) => {
 
   try {
@@ -453,20 +451,6 @@ exports.getGalleryPage = async (req, res) => {
    var gallery = await exe(sql);
    var packet = {gallery};
     res.render("admin/gallery",packet);
-
-// exports.getPatientReviewPage = (req, res) => { 
-//   try {
-//     res.render('admin/patient-review');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "Patient Review Page Error" });
-//   }
-// };
-
-exports.getGalleryPage = (req, res) => {
-  try {
-    res.render("admin/gallery");
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Gallery Page Error" });

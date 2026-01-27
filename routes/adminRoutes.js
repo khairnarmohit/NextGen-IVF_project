@@ -70,9 +70,6 @@ router.post("/doctor_update/:id", adminController.postDoctorUpdate);
 
 router.get("/doctor_delete/:id", adminController.getDoctorDelete);
 
-module.exports = router;
-
-
 router.post("/save-gallery", adminController.postGalleryImage);
 
 router.post("/gallery/delete/:image_id", adminController.deleteGalleryImage);
@@ -88,13 +85,13 @@ router.post("/update-contact", adminController.postUpdateContact);
 
 
 // privacy page
-router.get("/privacy", adminController.getPrivacyPage);
+// router.get("/privacy", adminController.getPrivacyPage);
 
 
 // pateint review
 router.get("/patient-review", adminController.getPatientReviewPage);
 
-// router.get("/patient-review/edit/:id", adminController.getEditPatientReviewPage); 
+// router.get("/patient-review/edit/:id", adminController.getEditPatientReviewPage);  // Function not defined
 // -----------------------------------------------------
 
 router.post("/patient-review/save", adminController.saveReview);
@@ -107,8 +104,6 @@ router.get("/privacy", adminController.getPrivacyPage);
 router.post("/privacy/save", adminController.savePrivacy);
 router.post("/privacy/update", adminController.updatePrivacy);
 router.get("/privacy/delete/:id", adminController.deletePrivacy);
-
-
 
 
 
