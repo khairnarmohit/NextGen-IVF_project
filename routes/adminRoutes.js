@@ -50,6 +50,9 @@ router.get("/patient-review", adminController.getPatientReviewPage);
 router.get("/gallery", adminController.getGalleryPage);
 
 
+router.get("/privacy", adminController.getPrivacyPage);
+
+
 router.get("/treatment", adminController.getTreatmentPage);
 
 router.post("/treatment_save", adminController.postTreatmentSave);
@@ -88,18 +91,18 @@ router.post("/update-contact", adminController.postUpdateContact);
 // router.get("/privacy", adminController.getPrivacyPage);
 
 
-// pateint review
 router.get("/patient-review", adminController.getPatientReviewPage);
+
+
 
 // router.get("/patient-review/edit/:id", adminController.getEditPatientReviewPage);  // Function not defined
 // -----------------------------------------------------
+
 
 router.post("/patient-review/save", adminController.saveReview);
 router.post("/patient-review/update", adminController.updateReview);
 router.get("/patient-review/delete/:id", adminController.deleteReview);
 
-
-// privacy
 router.get("/privacy", adminController.getPrivacyPage);
 router.post("/privacy/save", adminController.savePrivacy);
 router.post("/privacy/update", adminController.updatePrivacy);

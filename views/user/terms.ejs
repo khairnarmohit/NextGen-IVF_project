@@ -1,0 +1,269 @@
+<%- include("navbar.ejs") %>
+
+
+  <style type="text/css">
+    /* Custom CSS for IVF Clinic Privacy Policy Page */
+
+    /* ================================
+   Terms & Conditions Page Only
+   ================================ */
+
+    /* .terms-page-wrapper {
+      --primary-color: #2bb0c0;
+      --primary-dark: #1d8c9a;
+      --secondary-color: #d0f3f9;
+      --text-color: #333;
+      --light-bg: #f8f9fa;
+      --dark-bg: #343a40;
+
+      font-family: 'Open Sans', sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+      padding-top: 76px;
+    } */
+
+    /* Headings */
+    .terms-page-wrapper h1,
+    .terms-page-wrapper h2,
+    .terms-page-wrapper h3,
+    .terms-page-wrapper h4,
+    .terms-page-wrapper h5,
+    .terms-page-wrapper h6 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+    }
+
+    /* Container */
+    .terms-page-wrapper .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .terms-page-wrapper .header-section {
+      background-color: var(--secondary-color);
+      padding: 60px 0 40px;
+      margin-bottom: 40px;
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    .terms-page-wrapper .header-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Clinic Logo */
+    .terms-page-wrapper .clinic-logo {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      margin-bottom: 30px;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+
+    .terms-page-wrapper .clinic-logo i {
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+
+    /* Titles */
+    .terms-page-wrapper .page-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    .terms-page-wrapper .page-subtitle {
+      font-size: 1.25rem;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Breadcrumb */
+    .terms-page-wrapper .breadcrumb {
+      background-color: transparent;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .terms-page-wrapper .breadcrumb-item a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .terms-page-wrapper .breadcrumb-item.active {
+      color: #6c757d;
+    }
+
+    .terms-page-wrapper .breadcrumb-item+.breadcrumb-item::before {
+      color: #6c757d;
+    }
+
+    /* Card */
+    .terms-page-wrapper .policy-card {
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .terms-page-wrapper .policy-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Section Titles */
+    .terms-page-wrapper .section-title {
+      color: var(--primary-dark);
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(43, 176, 192, 0.2);
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <div class="terms-page-wrapper">
+    <!-- Header Section -->
+    <header class="header-section">
+      <div class="container">
+        <div class="header-content">
+          <div class="clinic-logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>NextGen IVF Clinic</span>
+          </div>
+          <h1 class="page-title">Terms & Conditions</h1>
+          <p class="page-subtitle">Please read these terms and conditions carefully before using our services.</p>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+              <li class="breadcrumb-item">Home</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Terms & Conditions</a></li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="main-content py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="policy-card card shadow-sm border-0">
+              <div class="card-body p-4 p-md-5">
+
+                <!-- Introduction -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">1. Introduction</h2>
+                  <p>Welcome to Harmony IVF & Fertility Clinic. These Terms and Conditions outline the rules and
+                    regulations for the use of our website and services.
+
+                    By accessing this website and using our services, we assume you accept these terms and conditions.
+                    Do not continue to use our services if you do not agree to all of the terms and conditions stated on
+                    this page.</p>
+                </section>
+
+                <!-- Information We Collect -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">2. Acceptance of Terms</h2>
+                  <p>By scheduling appointments, accessing our website, or using any of our services, you acknowledge
+                    that you have read, understood, and agree to be bound by these Terms and Conditions.<br>
+
+                    These terms apply to all visitors, patients, and users of our website and services. If you disagree
+                    with any part of these terms, you must not use our website or services.</p>
+
+                </section>
+
+                <!-- How We Use Your Information -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">3. Appointment & Consultation Policy</h2>
+                  <p>Appointments can be scheduled via phone, online portal, or in person. We require 24 hours notice
+                    for cancellations or rescheduling to avoid cancellation fees.
+
+                    Please arrive 15 minutes before your scheduled appointment time. Late arrivals may result in reduced
+                    consultation time or rescheduling.</p>
+
+                </section>
+
+                <!-- Data Protection & Security -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">4. Patient Responsibilities</h2>
+                  <p>Patients are responsible for providing accurate and complete medical history, disclosing all
+                    current medications, and following prescribed treatment plans.
+
+                    You must inform us of any changes in your health status and comply with all pre- and post-treatment
+                    instructions provided by our medical team.</p>
+                </section>
+
+                <!-- Cookies & Tracking -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">5. Privacy & Confidentiality</h2>
+                  <p>Payment is due at the time of service unless prior arrangements have been made. We accept cash,
+                    credit cards, and approved insurance plans.
+
+                    Patients are responsible for understanding their insurance coverage and for any charges not covered
+                    by their insurance provider.</p>
+                </section>
+
+                <!-- Third-Party Sharing -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">6. Treatment Results Disclaimer</h2>
+                  <p>We are committed to protecting your personal and medical information in compliance with HIPAA
+                    regulations and applicable privacy laws.
+
+                    Your medical records are confidential and will only be disclosed with your written consent or as
+                    required by law for treatment, payment, or healthcare operations.</p>
+                </section>
+
+                <!-- Patient Rights -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">7. Intellectual Property Rights</h2>
+                  <p>You have specific rights regarding your health information:
+
+                    Access to Data Request to view and obtain copies of your medical records.
+                    Correction of Data Request amendments to your records if you believe information is inaccurate or
+                    incomplete.
+                    Deletion Request Request deletion of your information, subject to legal and medical record-keeping
+                    requirements.
+                    Restriction of Use Request limitations on how we use or disclose your information.
+                    Confidential Communications Request alternative methods or locations for receiving communications
+                    from us.</p>
+                </section>
+
+                <!-- Policy Updates -->
+                <section class="mb-5">
+                  <h2 class="h3 mb-3 section-title">8. Limitation of Liability</h2>
+                  <p>Individual treatment results may vary based on multiple factors including age, medical history, and
+                    specific health conditions.
+
+                    While we strive for the best possible outcomes, we cannot guarantee specific results from any
+                    fertility treatment or medical procedure.</p>
+                </section>
+
+                <!-- Contact Information -->
+                <section class="mb-4">
+                  <h2 class="h3 mb-3 section-title">9. Changes to Terms</h2>
+                  <p>We reserve the right to modify these Terms and Conditions at any time. Changes will be effective
+                    immediately upon posting to our website.
+
+                    It is your responsibility to review these terms periodically. Continued use of our services after
+                    changes constitutes acceptance of the modified terms.</p>
+
+                </section>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+  <%- include("footer.ejs") %>

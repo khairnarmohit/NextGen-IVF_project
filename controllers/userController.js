@@ -102,9 +102,12 @@ exports.getDoctorsPage = async (req, res) => {
 
 
 
-exports.getContactPage = (req, res) => {
+exports.getContactPage = async (req, res) => {
   try{
-    res.render("user/contact");
+    var sql = "SELECT * FROM contact Where contact_id = 2";
+    var contact = await exe(sql);
+    var packet = { contact };
+    res.render("user/contact", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Contact Page Error" });
@@ -247,5 +250,15 @@ exports.saveAppointment = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Appointment insert error");
+  }
+};
+
+
+exports.getTermsPage = (req, res) => {
+  try{
+    res.render("user/terms");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Terms Page Error" });
   }
 };
