@@ -942,6 +942,7 @@ exports.getDoctorDelete = async (req, res) => {
 };
 
 
+
 exports.getHeroPage = async (req, res) => {
   try {
     
@@ -997,3 +998,176 @@ exports.postUpdateHero = async (req, res) => {
     res.status(500).render("error", { message: "Update Hero Section Error" });
   }
 }; 
+
+exports.getVisitorDoctorsPage = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM visitor_doctors  ORDER BY visitor_doctor_id  DESC";
+    const visitorDoctors = await exe(sql);
+    res.render("admin/visitor-doctors", { visitorDoctors });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Doctors Page Error"
+    });
+  }
+};
+
+exports.postVisitorDoctorSave = async (req, res) => {
+  try {
+    const d = req.body;
+    // image upload
+    let filename = "";
+    if (req.files && req.files.visitor_doctor_photo) {
+      const image = req.files.visitor_doctor_photo;
+      filename = Date.now() + "_" + image.name;
+      await image.mv("public/uploads/" + filename);
+    }
+    const sql = `
+      INSERT INTO visitor_doctors
+      (visitor_doctor_name, visitor_doctor_qual, visitor_doctor_photo, visitor_doctor_date, visitor_doctor_time)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+    await exe(sql, [
+      d.visitor_doctor_name,
+      d.visitor_doctor_qual,
+      filename,
+      d.visitor_doctor_date,
+      d.visitor_doctor_time
+    ]);
+    res.redirect("/admin/visitor-doctors");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Error saving visitor doctor"
+    });
+  }
+};
+
+exports.getVisitorDoctorEdit = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const sql = "SELECT * FROM visitor_doctors WHERE visitor_doctor_id = ?";
+    const result = await exe(sql, [id]);
+    res.render("admin/visitor-doctors-edit", {
+      visitorDoctor: result[0]
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { 
+      message: "Error editing visitor doctor"
+    });
+  }
+};
+
+exports.postVisitorDoctorUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const d = req.body;
+    let sql, values;
+
+    if (req.files && req.files.visitor_doctor_photo) {
+      // New photo uploaded
+      const image = req.files.visitor_doctor_photo;
+      const filename = Date.now() + "_" + image.name;
+      await image.mv("public/uploads/" + filename);
+
+      sql = `
+        UPDATE visitor_doctors
+        SET visitor_doctor_name = ?, visitor_doctor_qual = ?, visitor_doctor_photo = ?, visitor_doctor_date = ?, visitor_doctor_time = ?
+        WHERE visitor_doctor_id = ?
+      `;
+      values = [
+        d.visitor_doctor_name,
+        d.visitor_doctor_qual,
+        filename,
+        d.visitor_doctor_date,
+        d.visitor_doctor_time,
+        id
+      ];
+    } else {
+      // No new photo, update other fields only
+      sql = `
+        UPDATE visitor_doctors
+        SET visitor_doctor_name = ?, visitor_doctor_qual = ?, visitor_doctor_date = ?, visitor_doctor_time = ?
+        WHERE visitor_doctor_id = ?
+      `;
+      values = [
+        d.visitor_doctor_name,
+        d.visitor_doctor_qual,
+        d.visitor_doctor_date,
+        d.visitor_doctor_time,
+        id
+      ];
+    }
+
+    await exe(sql, values);
+    res.redirect("/admin/visitor-doctors");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Error updating visitor doctor"
+    });
+  }
+};
+
+exports.getVisitorDoctorDelete = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const sql = "DELETE FROM visitor_doctors WHERE visitor_doctor_id = ?";
+    await exe(sql, [id]);
+    res.redirect("/admin/visitor-doctors");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Error deleting visitor doctor"
+    });
+  }
+};
+
+exports.postAppointmentSave = async (req, res) => {
+  try {
+    const d = req.body;
+    const sql = `
+      INSERT INTO appointments
+      (patient_fullname, patient_email, patient_mobile,
+       patient_gender, patient_age, doctor_id,
+       appointment_date)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    await exe(sql, [
+      d.patient_fullname,
+      d.patient_email,
+      d.patient_mobile,
+      d.patient_gender,
+      d.patient_age,
+      d.doctor_id || null,
+      d.appointment_date,
+    ]);
+
+    res.redirect("/appointment");
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Appointment Save Error");
+  }
+};
+
+exports.getAppointmentsListPage = async (req, res) => {
+  try {
+    const sql = `
+      SELECT a.*, d.doctor_name
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      ORDER BY a.patient_id  DESC
+    `;
+    const appointments = await exe(sql);
+    res.render("admin/appointments-list", { appointments });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Appointments List Page Error"
+    });
+  }
+};
+

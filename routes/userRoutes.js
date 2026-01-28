@@ -28,6 +28,13 @@ router.get("/privacy", userController.getPrivacyPage);
 
 router.get("/appointment", userController.getAppointmentPage);
 
+router.post("/save-appointment", userController.saveAppointment);
+
 router.get('/treatment-details/:id', userController.getTreatmentDetailsPage);
 
+
+
+router.get("/terms", userController.getTermsPage);
+
 module.exports = router;
+
