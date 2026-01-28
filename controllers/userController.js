@@ -62,12 +62,34 @@ exports.getTreatmentDetailsPage = async (req, res) => {
 };
 
 
+// exports.getDoctorsPage = async (req, res) => {
+//   try {
+//     const sql = "SELECT * FROM doctors";
+//     const doctors = await exe(sql);
+
+//     res.render("user/doctors", { doctors });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).render("error", {
+//       message: "Doctors Page Error"
+//     });
+//   }
+// };
 exports.getDoctorsPage = async (req, res) => {
   try {
-    const sql = "SELECT * FROM doctors";
-    const doctors = await exe(sql);
+    // Normal doctors
+    const Sql = "SELECT * FROM doctors";
+    const doctors = await exe(Sql);
 
-    res.render("user/doctors", { doctors });
+    // Visiting doctors
+    const visitingSql = "SELECT * FROM visitor_doctors ";
+    const visitingDoctors = await exe(visitingSql);
+
+    res.render("user/doctors", {
+      doctors,
+      visitingDoctors
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
@@ -159,11 +181,71 @@ exports.getPrivacyPage = (req, res) => {
 };
 
 
-exports.getAppointmentPage = (req, res) => {
-  try{
-    res.render("user/appointment");
+// exports.getAppointmentPage = async (req, res) => {
+//   try{
+//     var sql = "SELECT * FROM doctors";
+//     const doctors = await exe(sql);
+//     res.render("user/appointment", { doctors });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).render("error", { message: "Appointment Page Error" });
+//   }
+// };
+exports.getAppointmentPage = async (req, res) => {
+  try {
+    // Our Doctors
+    const doctorsSql = "SELECT * FROM doctors";
+    const doctors = await exe(doctorsSql);
+
+    // Visiting Doctors
+    const visitingSql = "SELECT * FROM visitor_doctors";
+    const visitingDoctors = await exe(visitingSql);
+
+    res.render("user/appointment", {
+      doctors,
+      visitingDoctors
+    });
+
   } catch (error) {
     console.error(error);
-    res.status(500).render("error", { message: "Appointment Page Error" });
+    res.status(500).render("error", {
+      message: "Appointment Page Error"
+    });
+  }
+};
+
+exports.saveAppointment = async (req, res) => {
+  try {
+    const {
+      patient_fullname,
+      patient_email,
+      patient_mobile,
+      patient_gender,
+      patient_age,
+      doctor_id,
+      appointment_date
+    } = req.body;
+
+    const sql = `
+      INSERT INTO appointments
+      (patient_fullname, patient_email, patient_mobile, patient_gender, patient_age, doctor_id, appointment_date)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    await exe(sql, [
+      patient_fullname,
+      patient_email,
+      patient_mobile,
+      patient_gender,
+      patient_age,
+      doctor_id,
+      appointment_date
+    ]);
+
+    res.redirect("/appointment");
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Appointment insert error");
   }
 };

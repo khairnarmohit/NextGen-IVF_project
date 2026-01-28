@@ -561,104 +561,75 @@
 </section>
 
 
-  <section class="visiting-doctor-section">
-    <div class="container">
+<section class="visiting-doctor-section">
+  <div class="container">
 
-      <div class="visiting-doctor-header">
-        <h2>Visiting Doctors</h2>
-        <p>Renowned fertility specialists visiting our
+    <div class="visiting-doctor-header">
+      <h2>Visiting Doctors</h2>
+      <p>
+        Renowned fertility specialists visiting our
         center on scheduled days to provide expert consultation and care.
-          </p>
-          <!-- </div> -->
-        </div>
+      </p>
+    </div>
 
+    <div class="row g-4 justify-content-center">
 
-        <!-- Visiting Doctor 1 -->
-        <div class="row g-4 justify-content-center">
-        <div class="col-lg-4 col-md-6">
-          <div class="visiting-doctor-card">
+      <% if (visitingDoctors && visitingDoctors.length > 0) { %>
+        <% for (let i = 0; i < visitingDoctors.length; i++) { %>
 
-            <img
-              src="https://static.vecteezy.com/system/resources/thumbnails/026/375/249/small/ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg"
-              class="visiting-doctor-img" alt="Doctor">
-            <div class="visiting-doctor-info">
-              <h3 class="visiting-doctor-name">Dr. Sanjay Patel</h3>
-              <p class="visiting-doctor-degree">MD, FRCOG – Fertility Specialist</p>
-              <div class="visiting-schedule-box">
-                <div class="visiting-schedule-item">
-                  <div class="visiting-schedule-left">
-                    <i class="fa-solid fa-calendar-days"></i><span>Date</span>
+          <div class="col-lg-4 col-md-6">
+            <div class="visiting-doctor-card">
+
+              <img
+                src="/uploads/<%= visitingDoctors[i].visitor_doctor_photo %>"
+                class="visiting-doctor-img"
+                alt="<%= visitingDoctors[i].visitor_doctor_name %>">
+
+              <div class="visiting-doctor-info">
+                <h3 class="visiting-doctor-name">
+                  <%= visitingDoctors[i].visitor_doctor_name  %>
+                </h3>
+
+                <p class="visiting-doctor-degree">
+                  <%= visitingDoctors[i].visitor_doctor_qual %>
+                </p>
+
+                <div class="visiting-schedule-box">
+
+                  <div class="visiting-schedule-item">
+                    <div class="visiting-schedule-left">
+                      <i class="fa-solid fa-calendar-days"></i>
+                      <span>Date</span>
+                    </div>
+                    <div class="visiting-schedule-right">
+                      <%= visitingDoctors[i].visitor_doctor_date %>
+                    </div>
                   </div>
-                  <div class="visiting-schedule-right">5th, 12th, 20th</div>
-                </div>
-                <div class="visiting-schedule-item">
-                  <div class="visiting-schedule-left">
-                    <i class="fa-solid fa-clock"></i><span>Time</span>
-                  </div>
-                  <div class="visiting-schedule-right">10 AM – 4 PM</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Visiting Doctor 2 -->
-        <div class="col-lg-4 col-md-6">
-          <div class="visiting-doctor-card">
+                  <div class="visiting-schedule-item">
+                    <div class="visiting-schedule-left">
+                      <i class="fa-solid fa-clock"></i>
+                      <span>Time</span>
+                    </div>
+                    <div class="visiting-schedule-right">
+                      <%= visitingDoctors[i].visitor_doctor_time %>
+                    </div>
+                  </div>
 
-            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d" class="visiting-doctor-img"
-              alt="Doctor">
-            <div class="visiting-doctor-info">
-              <h3 class="visiting-doctor-name">Dr. Priya Sharma</h3>
-              <p class="visiting-doctor-degree">MBBS, MD, DNB (Obs & Gyn)</p>
-              <div class="visiting-schedule-box">
-                <div class="visiting-schedule-item">
-                  <div class="visiting-schedule-left">
-                    <i class="fa-solid fa-calendar-days"></i><span>Date</span>
-                  </div>
-                  <div class="visiting-schedule-right">6th, 14th, 21st</div>
-                </div>
-                <div class="visiting-schedule-item">
-                  <div class="visiting-schedule-left">
-                    <i class="fa-solid fa-clock"></i><span>Time</span>
-                  </div>
-                  <div class="visiting-schedule-right">11 AM – 3 PM</div>
                 </div>
               </div>
+
             </div>
           </div>
-        </div>
 
-        <!-- Visiting Doctor 3 -->
-        <div class="col-lg-4 col-md-6">
-          <div class="visiting-doctor-card">
-
-            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2" class="visiting-doctor-img"
-              alt="Doctor">
-            <div class="visiting-doctor-info">
-              <h3 class="visiting-doctor-name">Dr. Rajesh Kumar</h3>
-              <p class="visiting-doctor-degree">PhD (Embryology)</p>
-              <div class="visiting-schedule-box">
-                <div class="visiting-schedule-item">
-                  <div class="visiting-schedule-left">
-                    <i class="fa-solid fa-calendar-days"></i><span>Date</span>
-                  </div>
-                  <div class="visiting-schedule-right">7th, 15th, 22nd</div>
-                </div>
-                <div class="visiting-schedule-item">
-                  <div class="visiting-schedule-left">
-                    <i class="fa-solid fa-clock"></i><span>Time</span>
-                  </div>
-                  <div class="visiting-schedule-right">9 AM – 2 PM</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
+        <% } %>
+      <% } else { %>
+        <p class="text-center">No visiting doctors available</p>
+      <% } %>
 
     </div>
-  </section>
+  </div>
+</section>
+
 
   <%- include("footer.ejs") %>

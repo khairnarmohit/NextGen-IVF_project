@@ -1,0 +1,113 @@
+<%- include('navbar.ejs') %>
+
+
+<div class="container py-4">
+
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-warning text-dark">
+      <h5 class="mb-0">Edit Visiting Doctor</h5>
+    </div>
+
+    <div class="card-body">
+      <form
+        action="/admin/visitor_doctor_update/<%= visitorDoctor.visitor_doctor_id %>"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+
+        <!-- Row 1 -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Doctor Name</label>
+            <input
+              type="text"
+              name="visitor_doctor_name"
+              class="form-control"
+              value="<%= visitorDoctor.visitor_doctor_name %>"
+              
+            >
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Qualification</label>
+            <input
+              type="text"
+              name="visitor_doctor_qual"
+              class="form-control"
+              value="<%= visitorDoctor.visitor_doctor_qual %>"
+              
+            >
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Visiting Date</label>
+            <input
+              type="text"
+              name="visitor_doctor_date"
+              class="form-control"
+              value="<%= visitorDoctor.visitor_doctor_date %>"
+              
+            >
+            
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Visiting Time</label>
+            <input
+              type="text"
+              name="visitor_doctor_time"
+              class="form-control"
+              value="<%= visitorDoctor.visitor_doctor_time %>"
+              
+            >
+          </div>
+        </div>
+
+        <!-- Current Photo -->
+        <div class="mb-3">
+          <label class="form-label">Current Photo</label><br>
+          <img
+            src="/uploads/<%= visitorDoctor.visitor_doctor_photo %>"
+            width="100"
+            class="rounded border mb-2"
+          >
+          <input type="hidden" name="existing_photo" value="<%= visitorDoctor.visitor_doctor_photo %>">
+        </div>
+
+        <!-- Change Photo -->
+        <div class="mb-3">
+          <label class="form-label">Change Photo (Optional)</label>
+          <input
+            type="file"
+            name="visitor_doctor_photo"
+            class="form-control"
+            accept="image/*"
+          >
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-end">
+          <button type="submit" class="btn btn-success px-4">
+            <i class="fas fa-save me-1"></i> Update
+          </button>
+
+          <a
+            href="/admin/visitor-doctors"
+            class="btn btn-secondary ms-2"
+          >
+            Cancel
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+
+
+
+<%- include('footer.ejs') %>

@@ -105,7 +105,19 @@ router.post("/privacy/save", adminController.savePrivacy);
 router.post("/privacy/update", adminController.updatePrivacy);
 router.get("/privacy/delete/:id", adminController.deletePrivacy);
 
+router.get("/visitor-doctors", adminController.getVisitorDoctorsPage);
 
+router.post("/visitor_doctor_save", adminController.postVisitorDoctorSave);
+
+router.get('/visitor-doctor-edit/:id', adminController.getVisitorDoctorEdit);
+
+router.post('/visitor_doctor_update/:id', adminController.postVisitorDoctorUpdate);
+
+router.get('/visitor_doctor_delete/:id', adminController.getVisitorDoctorDelete);
+
+router.post('/appointment-save', adminController.postAppointmentSave);
+
+router.get('/appointments-list', adminController.getAppointmentsListPage);
 
 module.exports = router;
 
