@@ -108,23 +108,10 @@ router.post("/privacy/save", adminController.savePrivacy);
 router.post("/privacy/update", adminController.updatePrivacy);
 router.get("/privacy/delete/:id", adminController.deletePrivacy);
 
-
+router.get("/hero", adminController.getHeroPage);
+router.post("/update-hero", adminController.postUpdateHero);
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

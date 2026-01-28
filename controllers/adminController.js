@@ -940,3 +940,60 @@ exports.getDoctorDelete = async (req, res) => {
     });
   }
 };
+
+
+exports.getHeroPage = async (req, res) => {
+  try {
+    
+    var sql = "SELECT * FROM hero WHERE hero_id = 1";
+    var hero_info = await exe(sql);
+
+    
+    if (hero_info.length == 0) {
+      hero_info = [{ hero_heading: "", hero_background: "" }];
+    } else {
+      hero_info = hero_info[0];
+    }
+
+    var packet = { hero_info };
+    res.render("admin/hero", packet);
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Hero Section Error" });
+  }
+};
+
+
+exports.postUpdateHero = async (req, res) => {
+  try {
+    var data = req.body;
+    var old_video = data.old_hero_background;
+    var filename = old_video;
+
+    
+    if (req.files && req.files.hero_background) {
+      filename = Date.now() + "_" + req.files.hero_background.name;
+      await req.files.hero_background.mv("public/uploads/" + filename);
+    }
+
+    
+    var checkSql = "SELECT * FROM hero WHERE hero_id = 1";
+    var checkResult = await exe(checkSql);
+
+    if (checkResult.length > 0) {
+      
+      var sql =
+        "UPDATE hero SET hero_heading = ?, hero_background = ? WHERE hero_id = 1";
+      await exe(sql, [data.hero_heading, filename]);
+    } else {
+     
+      var sql = "INSERT INTO hero (hero_heading, hero_background) VALUES (?, ?)";
+      await exe(sql, [data.hero_heading, filename]);
+    }
+
+    res.redirect("/admin/hero");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Update Hero Section Error" });
+  }
+}; 

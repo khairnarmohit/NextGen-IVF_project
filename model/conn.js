@@ -6,7 +6,7 @@ var conn = mysql.createPool({
   user: "uvxpln6bip7zygue",
   password: "MrfPkWRNWp90aBliN40L",
   database: "bprlqrokrwlzpporvdd4",
-  port: "3306"
+  port: "3306",
 });
 
 var exe = util.promisify(conn.query).bind(conn);
