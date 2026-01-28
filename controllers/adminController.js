@@ -40,14 +40,6 @@ exports.getDirectorsMessagePage = (req, res) => {
 };
 
 
-// exports.getPatientReviewPage = (req, res) => { 
-//   try {
-//     res.render('admin/patient-review');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "Patient Review Page Error" });
-//   }
-// };
 
 
 exports.getGalleryPage = (req, res) => {
@@ -60,24 +52,6 @@ exports.getGalleryPage = (req, res) => {
 };
 
 
-// 
-// exports.getPrivacyPage = (req, res) => {
-//   try {
-//     res.render('admin/privacy');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "privacy Page Error" });
-//   }
-// };
-
-
-
-
-// pateint-review
-
-// var exe = require("../model/conn.js");
-
-// ... existing functions ...
 
 exports.getPatientReviewPage = async (req, res) => { 
   try {
@@ -156,13 +130,6 @@ exports.deleteReview = async (req, res) => {
   }
 };
 
-
-
-
-// privacy
-// ... existing imports ...
-
-// ... existing functions (getAdminDashboard, etc.) ...
 
 exports.getPrivacyPage = async (req, res) => {
   try {
