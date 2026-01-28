@@ -1,0 +1,64 @@
+<%- include("navbar.ejs") %>
+
+  <div class="container py-4">
+
+    <!-- Achievements Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+
+    </div>
+
+    <!-- Achievement Form (Always Visible) -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white">
+        <h6 class="mb-0">Update Milestones</h6>
+      </div>
+
+      <div class="card-body">
+        <form action="/admin/update-milestones" method="POST">
+
+          <div class="row g-3 mb-3">
+
+            <input type="hidden" name="achievement_id" value="<%= achievementone[0].achievement_id %>">
+
+            <div class="col-md-4">
+              <label class="form-label">Milestones Title *</label>
+              <input type="text" name="achievement_title" class="form-control" placeholder="Enter Title"
+                value="<%= achievementone[0].achievement_title %>" autocomplete="off" required>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Milestones Icon *</label>
+              <select name="achievement_icon" class="form-select" required>
+                <option value="" disabled selected>-- Select Icon --</option>
+                <option value="fas fa-baby" <%=achievementone[0].achievement_icon==='fas fa-baby' ? 'selected' : '' %>
+                  >Happy Clients</option>
+                <option value="fas fa-calendar-alt" <%=achievementone[0].achievement_icon==='fas fa-calendar-alt'
+                  ? 'selected' : '' %>>Experiences</option>
+                <option value="fas fa-user-md" <%=achievementone[0].achievement_icon==='fas fa-user-md' ? 'selected'
+                  : '' %>>Team / Doctors</option>
+                <option value="fas fa-award" <%=achievementone[0].achievement_icon==='fas fa-award' ? 'selected' : '' %>
+                  >Awards</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Milestones Counter *</label>
+              <input type="number" name="achievement_counter" class="form-control" min="0" placeholder="Enter Counter" value="<%= achievementone[0].achievement_counter %>"
+                required>
+            </div>
+
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-save me-1"></i> Update Milestones
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <%- include("footer.ejs") %>

@@ -15,6 +15,14 @@ router.get("/treatments" , userController.getTreatmentPage)
 router.get("/doctors", userController.getDoctorsPage);
 
 router.get("/contact", userController.getContactPage);
+
+
+router.post("/save-enquiry", userController.saveEnquiry);
+
+
+
+
+
 router.get("/patient-stories", userController.getPatientStoriesPage);
 
 router.get("/faq", userController.getFaqPage);
@@ -23,6 +31,6 @@ router.get("/privacy", userController.getPrivacyPage);
 
 router.get("/appointment", userController.getAppointmentPage);
 
-
+router.get('/treatment-details/:id', userController.getTreatmentDetailsPage);
 
 module.exports = router;

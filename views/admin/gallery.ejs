@@ -1,5 +1,45 @@
 <%- include("navbar.ejs") %>
 
-<h1>Gallery</h1>
+ <div class="container ">
+    <h2 class="text-primary mt-2">Add Photo</h2>
+    <div class="row  p-4 mt-2">
+      <div class="col-10">
+        <form action="/admin/save-gallery" method="POST" enctype="multipart/form-data">
+        <label class="form-label">upload Photo</label>
+        <input type="file" class="form-control" name="image_name">
+      </div>
+      <div class="col-2">
+        <button class="btn btn-primary mt-4" type="submit">Add Photo</button>
+      </div>
+      </form>
+    </div>
+ </div>
+
+
+<div class="container my-5">
+    <h2 class="text-primary">All Photos</h2>
+    <div class="row  p-4">
+        <% for(let i = 0; i < gallery.length; i++) { %>
+        <div class="col-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="/uploads/<%= gallery[i].image_name %>" class="card-img-top" alt="Gallery Image">
+                
+                <div class="card-footer text-center">
+                    <!-- Delete Form -->
+                    <form action="/admin/gallery/delete/<%= gallery[i].image_id %>" method="POST">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>
+
+
+
 
 <%- include("footer.ejs") %>

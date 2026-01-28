@@ -1,5 +1,81 @@
 <%- include("navbar.ejs") %>
 
-<h1>Director's Message</h1>
+  <div class="container py-3">
+    <div class="card shadow-sm border-0">
+
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Update Director's Message</h5>
+      </div>
+
+      <div class="card-body">
+        <form action="/admin/update-directors-message" method="POST" enctype="multipart/form-data">
+
+          <div class="row g-3">
+
+            <!-- Title -->
+            <div class="col-md-6">
+              <label for="director_title" class="form-label">Title*</label>
+              <input type="text" name="director_title" id="director_title" class="form-control"
+                placeholder="Enter Title" value="<%= director_msg_info[0].director_title %>" autocomplete="off" required>
+            </div>
+
+            <!-- Director Image -->
+            <div class="col-md-6">
+              <label for="director_image" class="form-label">Director Image</label>
+              <input type="file" name="director_image" id="director_image" accept="image/*" class="form-control">
+
+              <!-- Keep Old Image -->
+              <input type="hidden" name="old_director_image" value="<%= director_msg_info[0].director_image %>">
+
+              <div class="form-text"><small>Only JPG, JPEG, PNG images are allowed</small></div>
+
+            </div>
+
+            <!-- Director Name -->
+            <div class="col-md-6">
+              <label for="director_name" class="form-label">Director Name*</label>
+              <input type="text" name="director_name" id="director_name" class="form-control"
+                placeholder="Enter Director Name" value="<%= director_msg_info[0].director_name %>" autocomplete="off" required>
+            </div>
+
+            <!-- Designation -->
+            <div class="col-md-6">
+              <label for="director_designation" class="form-label">Director Designation*</label>
+              <input type="text" name="director_designation" id="director_designation" class="form-control"
+                placeholder="Enter Director Designation" value="<%= director_msg_info[0].director_designation %>" autocomplete="off" required>
+            </div>
+
+            <!-- Description -->
+            <div class="col-12">
+              <label for="director_desc" class="form-label">Director Description*</label>
+              <textarea name="director_desc" id="director_desc" class="form-control" rows="5"
+                placeholder="Enter Director Description"><%= director_msg_info[0].director_desc %></textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="col-12 text-end">
+              <button type="submit" class="btn btn-success px-4">
+                <i class="fas fa-save me-1"></i> Update Director's Message
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
+
+<script>
+  ClassicEditor
+    .create(document.querySelector('#director_desc'), {
+      placeholder: 'Enter Director Description'
+    })
+    .catch(error => {
+      console.error('CKEditor init error:', error);
+    });
+</script>
 
 <%- include("footer.ejs") %>
+
