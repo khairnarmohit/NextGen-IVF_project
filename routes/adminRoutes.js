@@ -47,14 +47,17 @@ router.get("/delete-awards/:id", adminController.getDeleteAwards);
 
 router.get("/patient-review", adminController.getPatientReviewPage);
 
+
+// gallery secrion
 router.get("/gallery", adminController.getGalleryPage);
-
-
 router.post("/save-gallery", adminController.postGalleryImage);
-
 router.post("/gallery/delete/:image_id", adminController.deleteGalleryImage);
 
+
+// enquiry
 router.get("/enquiry", adminController.getEnquiryPage);
+router.get("/enquiry/delete/:enquiry_id", adminController.getDeleteEnquiry);
+
 
 
 router.get("/contact", adminController.getContactPage);
@@ -85,12 +88,22 @@ router.post("/privacy/save", adminController.savePrivacy);
 router.post("/privacy/update", adminController.updatePrivacy);
 router.get("/privacy/delete/:id", adminController.deletePrivacy);
 
+// faq
+router.get("/faq", adminController.getFaqPage);
+// add faq service
+router.post('/save_faq_type', adminController.saveFaqType);
+// add faq
+
+
+
+
+
+
 
 
 
 
 module.exports = router;
-
 
 
 

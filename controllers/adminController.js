@@ -103,7 +103,7 @@ exports.postUpdatePhilosophy = async (req, res) => {
 
 
 
-exports.getPatientReviewPage = (req, res) => {
+
 
 exports.getDirectorsMessagePage = async (req, res) => {
 
@@ -447,31 +447,11 @@ exports.getPatientReviewPage = (req, res) => {
 
 
 
-exports.getGalleryPage = async (req, res) => {
-  try {
-    var sql ="SELECT * FROM gallery";
-   var gallery = await exe(sql);
-   var packet = {gallery};
-    res.render("admin/gallery",packet);
 
-// exports.getPatientReviewPage = (req, res) => { 
-//   try {
-//     res.render('admin/patient-review');
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "Patient Review Page Error" });
-//   }
-// };
 
-exports.getGalleryPage = (req, res) => {
-  try {
-    res.render("admin/gallery");
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Gallery Page Error" });
-  }
-};
+
+
 
 exports.getContactPage = async (req, res) => {
   try {
@@ -643,8 +623,7 @@ exports.getPrivacyPage = async (req, res) => {
         editData = editResult[0];
       }
     }
-
-    res.render('admin/privacy', { "list": data, "editData": editData });
+ res.render('admin/privacy', { "list": data, "editData": editData });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Privacy Page Error" });
@@ -691,6 +670,20 @@ exports.deletePrivacy = async (req, res) => {
 };
 
 
+
+exports.getGalleryPage = async  (req, res) => {
+  try {
+    var sql = `SELECT * FROM gallery`;
+    var gallery = await exe(sql);
+    var packet = {gallery}
+    res.render("admin/gallery",packet);
+} catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Gallery Page Error" });
+  }
+};
+
+
 exports.postGalleryImage = async (req, res) => {
   try {
     let filename = "";
@@ -712,14 +705,10 @@ res.redirect("/admin/gallery");
 exports.deleteGalleryImage = async (req, res) => {
     try {
         const image_id = req.params.image_id;
-
-        // DB मधून row delete करा
         const sqlDel = "DELETE FROM gallery WHERE image_id = ?";
         await exe(sqlDel, [image_id]);
-
-        res.redirect("/admin/gallery");
-
-    } catch (err) {
+         res.redirect("/admin/gallery");
+        } catch (err) {
         console.error(err);
         res.status(500).send("Delete failed");
     }
@@ -729,19 +718,58 @@ exports.deleteGalleryImage = async (req, res) => {
 
 
 
-exports.getEnquiryPage = (req, res) => {
+exports.getEnquiryPage = async (req, res) => {
   try {
-    res.render('admin/enquiry');
+    var sql = `SELECT * FROM enquiry`;
+     var  enquiry= await exe(sql);
+     var packet = { enquiry};
+    res.render('admin/enquiry',packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Enquiry Page Error" });
   }
 };
 
+exports.getDeleteEnquiry = async (req, res) => {
+  try {
+    const enquiry_id = req.params.enquiry_id; // 🔥 इथे घ्या
+     const sql = "DELETE FROM enquiry WHERE enquiry_id = ?";
+    await exe(sql, [enquiry_id]);
+    res.redirect("/admin/enquiry");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Enquiry delete failed");
+  }
+};
 
 
 
+// faq
+exports.getFaqPage = async (req, res) => {
+  try {
+   
+    const sql = "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
+    const faqTypes = await exe(sql); // result = array of objects
+    res.render("admin/faq", { faqTypes });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error loading FAQ page");
+  }
+};
 
+
+exports.saveFaqType = async (req, res) => {
+  try {
+    const d = req.body; // form data
+    const sql = `INSERT INTO  faq_type  (faq_service) VALUES ('${d.faq_service}')`;
+    await exe(sql); 
+    res.redirect("/admin/faq"); 
+  } catch (error) {
+    console.error(error);
+    res.send("Error saving FAQ Type");
+  }
+};
+;
 
 
 
