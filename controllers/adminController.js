@@ -2,11 +2,7 @@ var exe = require("../model/conn.js");
 
 exports.getAdminDashboard = (req, res) => {
   try {
-
     res.render('admin/dashboard');
-
-    
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Admin Dashboard Page Error" });

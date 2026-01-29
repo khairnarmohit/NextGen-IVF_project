@@ -1,8 +1,22 @@
 var exe = require("../model/conn.js");
 
-exports.getAboutPage = (req, res) => {
+exports.getAboutPage = async (req, res) => {
   try{
-    res.render("user/about");
+    var sql = "SELECT * FROM about WHERE about_id = ?";
+    var aboutinfo = await exe(sql, [1]);
+
+    var sql2 = "SELECT * FROM vision_mission WHERE vision_mission_id = ?";
+    var vision_mission = await exe(sql2, [1]);
+
+    var sql3 = "SELECT * FROM director_msg WHERE director_msg_id = ?";
+    var director_msg = await exe(sql3, [1]);
+
+    var sql4 = "SELECT * FROM whychooseus";
+    var whychooseus = await exe(sql4);
+
+    var packet = { aboutinfo, vision_mission, director_msg, whychooseus };
+    console.log(packet);
+    res.render("user/about", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "About Page Error" });

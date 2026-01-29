@@ -1,440 +1,371 @@
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            // Simulate loading
-            setTimeout(() => {
-                document.getElementById('loadingSpinner').classList.add('hidden');
-                initializeDashboard();
-            }, 800);
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.querySelectorAll(".dropdown-toggle-custom").forEach(toggle => {
+        toggle.addEventListener("click", function () {
+            const parent = this.closest(".sidebar-dropdown");
+            const submenu = this.nextElementSibling;
+
+            parent.classList.toggle("active");
+
+            if (submenu.style.display === "block") {
+                submenu.style.display = "none";
+            } else {
+                submenu.style.display = "block";
+            }
         });
-        
-        function initializeDashboard() {
-            // Initialize sidebar toggle state
-            let isSidebarCollapsed = false;
-            let isMobile = window.innerWidth <= 768;
-            
-            // Get DOM elements
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebarToggleContainer = document.getElementById('sidebarToggleContainer');
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
-            
-            // Initialize sidebar state from localStorage if available
-            const savedState = localStorage.getItem('sidebarCollapsed');
-            if (savedState !== null) {
-                isSidebarCollapsed = savedState === 'true';
-                if (isSidebarCollapsed && !isMobile) {
-                    sidebar.classList.add('collapsed');
-                    content.classList.add('collapsed');
-                    updateSidebarToggleIcon();
-                }
-            }
-            
-            // Desktop sidebar toggle (button outside sidebar)
-            if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', toggleSidebar);
-            }
-            
-            // Mobile menu toggle
-            if (mobileMenuToggle) {
-                mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-            }
-            
-            // Close mobile sidebar when clicking overlay
-            if (sidebarOverlay) {
-                sidebarOverlay.addEventListener('click', closeMobileMenu);
-            }
-            
-            // Close mobile sidebar when clicking outside on mobile
-            document.addEventListener('click', (event) => {
-                if (isMobile && sidebar.classList.contains('mobile-open') && 
-                    !sidebar.contains(event.target) && 
-                    mobileMenuToggle && !mobileMenuToggle.contains(event.target)) {
-                    closeMobileMenu();
-                }
-            });
-            
-            // Handle window resize
-            let resizeTimeout;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(handleResize, 200);
-            });
-            
-            // Fullscreen toggle
-            const fullscreenToggle = document.getElementById('fullscreenToggle');
-            if (fullscreenToggle) {
-                fullscreenToggle.addEventListener('click', toggleFullscreen);
-            }
-            
-            // Notification button
-            const notificationBtn = document.getElementById('notificationBtn');
-            if (notificationBtn) {
-                notificationBtn.addEventListener('click', showNotifications);
-            }
-            
-            // Action buttons
-            document.getElementById('newAppointmentBtn')?.addEventListener('click', () => showAlert('New Appointment'));
-            document.getElementById('addPatientBtn')?.addEventListener('click', () => showAlert('Add Patient'));
-            document.getElementById('newReportBtn')?.addEventListener('click', () => showAlert('New Report'));
-            document.getElementById('exportDataBtn')?.addEventListener('click', () => showAlert('Export Data'));
-            
-            // Initialize charts with responsive settings
-            initCharts();
-            
-            // Add hover effects to cards
-            initCardHoverEffects();
-            
-            // Functions
-            function toggleSidebar() {
-                if (isMobile) return; // Don't toggle on mobile
-                
-                isSidebarCollapsed = !isSidebarCollapsed;
-                
-                if (isSidebarCollapsed) {
-                    sidebar.classList.add('collapsed');
-                    content.classList.add('collapsed');
-                    // Save state to localStorage
-                    localStorage.setItem('sidebarCollapsed', 'true');
-                } else {
-                    sidebar.classList.remove('collapsed');
-                    content.classList.remove('collapsed');
-                    // Save state to localStorage
-                    localStorage.setItem('sidebarCollapsed', 'false');
-                }
-                
+    });
+</script>
+
+
+<script>
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function () {
+        // Simulate loading
+        setTimeout(() => {
+            document.getElementById('loadingSpinner').classList.add('hidden');
+            initializeDashboard();
+        }, 800);
+    });
+
+    function initializeDashboard() {
+        // Initialize sidebar toggle state
+        let isSidebarCollapsed = false;
+        let isMobile = window.innerWidth <= 768;
+
+        // Get DOM elements
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarToggleContainer = document.getElementById('sidebarToggleContainer');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        // Initialize sidebar state from localStorage if available
+        const savedState = localStorage.getItem('sidebarCollapsed');
+        if (savedState !== null) {
+            isSidebarCollapsed = savedState === 'true';
+            if (isSidebarCollapsed && !isMobile) {
+                sidebar.classList.add('collapsed');
+                content.classList.add('collapsed');
                 updateSidebarToggleIcon();
             }
-            
-            function toggleMobileMenu() {
-                if (!isMobile) return;
-                
-                if (sidebar.classList.contains('mobile-open')) {
+        }
+
+        // Desktop sidebar toggle (button outside sidebar)
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', toggleSidebar);
+        }
+
+        // Mobile menu toggle
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Close mobile sidebar when clicking overlay
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeMobileMenu);
+        }
+
+        // Close mobile sidebar when clicking outside on mobile
+        document.addEventListener('click', (event) => {
+            if (isMobile && sidebar.classList.contains('mobile-open') &&
+                !sidebar.contains(event.target) &&
+                mobileMenuToggle && !mobileMenuToggle.contains(event.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(handleResize, 200);
+        });
+
+        // Fullscreen toggle
+        const fullscreenToggle = document.getElementById('fullscreenToggle');   
+        if (fullscreenToggle) {
+            fullscreenToggle.addEventListener('click', toggleFullscreen);
+        }
+
+        // Notification button
+        const notificationBtn = document.getElementById('notificationBtn');
+        if (notificationBtn) {
+            notificationBtn.addEventListener('click', showNotifications);
+        }
+
+
+        // Initialize charts with responsive settings
+        initCharts();
+
+        // Add hover effects to cards
+        initCardHoverEffects();
+
+        // Functions
+        function toggleSidebar() {
+            if (isMobile) return; // Don't toggle on mobile
+
+            isSidebarCollapsed = !isSidebarCollapsed;
+
+            if (isSidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                content.classList.add('collapsed');
+                // Save state to localStorage
+                localStorage.setItem('sidebarCollapsed', 'true');
+            } else {
+                sidebar.classList.remove('collapsed');
+                content.classList.remove('collapsed');
+                // Save state to localStorage
+                localStorage.setItem('sidebarCollapsed', 'false');
+            }
+
+            updateSidebarToggleIcon();
+        }
+
+        function toggleMobileMenu() {
+            if (!isMobile) return;
+
+            if (sidebar.classList.contains('mobile-open')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        }
+
+        function openMobileMenu() {
+            if (!isMobile) return;
+            sidebar.classList.add('mobile-open');
+            sidebarOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            if (!isMobile) return;
+            sidebar.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        function updateSidebarToggleIcon() {
+            if (!sidebarToggle) return;
+            const icon = sidebarToggle.querySelector('i');
+            if (isSidebarCollapsed) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            }
+        }
+
+        function handleResize() {
+            const newIsMobile = window.innerWidth <= 768;
+
+            if (newIsMobile !== isMobile) {
+                isMobile = newIsMobile;
+
+                // Reset mobile menu state on resize to desktop
+                if (!isMobile) {
                     closeMobileMenu();
-                } else {
-                    openMobileMenu();
+                    sidebar.classList.remove('mobile-open');
+                    sidebarOverlay.classList.remove('visible');
+                    document.body.style.overflow = '';
                 }
             }
-            
-            function openMobileMenu() {
-                if (!isMobile) return;
-                sidebar.classList.add('mobile-open');
-                sidebarOverlay.classList.add('visible');
-                document.body.style.overflow = 'hidden';
+
+            // Update charts on resize
+            if (window.appointmentsChart) {
+                window.appointmentsChart.resize();
             }
-            
-            function closeMobileMenu() {
-                if (!isMobile) return;
-                sidebar.classList.remove('mobile-open');
-                sidebarOverlay.classList.remove('visible');
-                document.body.style.overflow = '';
+            if (window.treatmentChart) {
+                window.treatmentChart.resize();
             }
-            
-            function updateSidebarToggleIcon() {
-                if (!sidebarToggle) return;
-                const icon = sidebarToggle.querySelector('i');
-                if (isSidebarCollapsed) {
-                    icon.classList.remove('fa-chevron-left');
-                    icon.classList.add('fa-chevron-right');
-                } else {
-                    icon.classList.remove('fa-chevron-right');
-                    icon.classList.add('fa-chevron-left');
-                }
-            }
-            
-            function handleResize() {
-                const newIsMobile = window.innerWidth <= 768;
-                
-                if (newIsMobile !== isMobile) {
-                    isMobile = newIsMobile;
-                    
-                    // Reset mobile menu state on resize to desktop
-                    if (!isMobile) {
-                        closeMobileMenu();
-                        sidebar.classList.remove('mobile-open');
-                        sidebarOverlay.classList.remove('visible');
-                        document.body.style.overflow = '';
-                    }
-                }
-                
-                // Update charts on resize
-                if (window.appointmentsChart) {
-                    window.appointmentsChart.resize();
-                }
-                if (window.treatmentChart) {
-                    window.treatmentChart.resize();
-                }
-                if (window.successMetricsChart) {
-                    window.successMetricsChart.resize();
-                }
-            }
-            
-            function toggleFullscreen() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => {
-                        console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                    });
-                    fullscreenToggle.innerHTML = '<i class="fas fa-compress"></i>';
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                        fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
-                    }
-                }
-            }
-            
-            function showNotifications() {
-                alert('You have 5 unread notifications:\n\n1. New patient registration\n2. Lab results ready\n3. Appointment reminder\n4. Payment received\n5. System update available');
-            }
-            
-            function showAlert(action) {
-                alert(`${action} feature would open here.`);
-            }
-            
-            function initCardHoverEffects() {
-                const statCards = document.querySelectorAll('.stat-card');
-                statCards.forEach(card => {
-                    card.addEventListener('mouseenter', () => {
-                        card.style.transform = 'translateY(-5px)';
-                    });
-                    
-                    card.addEventListener('mouseleave', () => {
-                        card.style.transform = 'translateY(0)';
-                    });
+            // if (window.successMetricsChart) {
+            //     window.successMetricsChart.resize();
+            // }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
                 });
+                fullscreenToggle.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenToggle.innerHTML = '<i class="fas fa-expand"></i>';
+                }
             }
         }
-        
-        function initCharts() {
-            // Monthly Appointments Chart with responsive settings
-            const appointmentsCtx = document.getElementById('appointmentsChart');
-            if (appointmentsCtx) {
-                window.appointmentsChart = new Chart(appointmentsCtx.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        datasets: [{
-                            label: 'Appointments',
-                            data: [45, 52, 60, 55, 70, 65, 80, 75, 85, 90, 95, 100],
-                            borderColor: '#0d6efd',
-                            backgroundColor: 'rgba(13, 110, 253, 0.08)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: '#0d6efd',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2,
-                            pointRadius: 4,
-                            pointHoverRadius: 6
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                titleFont: { size: 12 },
-                                bodyFont: { size: 13 },
-                                padding: 10,
-                                cornerRadius: 6
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: { 
-                                    drawBorder: false,
-                                    color: 'rgba(0, 0, 0, 0.05)'
-                                },
-                                ticks: {
-                                    font: { size: 10 },
-                                    padding: 5,
-                                    maxTicksLimit: 6
-                                }
-                            },
-                            x: {
-                                grid: { 
-                                    display: false
-                                },
-                                ticks: {
-                                    font: { size: 10 },
-                                    padding: 5,
-                                    maxTicksLimit: 12
-                                }
-                            }
-                        }
-                    }
+
+        function showNotifications() {
+            alert('You have 5 unread notifications:\n\n1. New patient registration\n2. Lab results ready\n3. Appointment reminder\n4. Payment received\n5. System update available');
+        }
+
+        function showAlert(action) {
+            alert(`${action} feature would open here.`);
+        }
+
+        function initCardHoverEffects() {
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
                 });
-            }
-            
-            // Treatment Distribution Chart with responsive settings
-            const treatmentCtx = document.getElementById('treatmentChart');
-            if (treatmentCtx) {
-                const treatmentData = {
-                    labels: ['IVF', 'IUI', 'Fertility Tests', 'Consultation', 'Embryo Freezing'],
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        }
+    }
+
+    function initCharts() {
+        // Monthly Appointments Chart with responsive settings
+        const appointmentsCtx = document.getElementById('appointmentsChart');
+        if (appointmentsCtx) {
+            window.appointmentsChart = new Chart(appointmentsCtx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                        data: [40, 20, 15, 15, 10],
-                        backgroundColor: [
-                            '#0d6efd',
-                            '#1e88e5',
-                            '#1565c0',
-                            '#0d6efd',
-                            '#1e88e5'
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 10
+                        label: 'Appointments',
+                        data: [45, 52, 60, 55, 70, 65, 80, 75, 85, 90, 95, 100],
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13, 110, 253, 0.08)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#0d6efd',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
                     }]
-                };
-                
-                window.treatmentChart = new Chart(treatmentCtx.getContext('2d'), {
-                    type: 'doughnut',
-                    data: treatmentData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                bodyFont: { size: 12 },
-                                padding: 8,
-                                cornerRadius: 6,
-                                callbacks: {
-                                    label: function(context) {
-                                        const label = context.label || '';
-                                        const value = context.raw || 0;
-                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                        const percentage = Math.round((value / total) * 100);
-                                        return `${label}: ${value}% (${percentage}% of total)`;
-                                    }
-                                }
-                            }
-                        },
-                        cutout: '60%'
-                    }
-                });
-                
-                // Create custom legend for treatment chart
-                const legendContainer = document.getElementById('treatmentLegend');
-                if (legendContainer) {
-                    treatmentData.labels.forEach((label, index) => {
-                        const legendItem = document.createElement('div');
-                        legendItem.className = 'legend-item';
-                        
-                        const colorBox = document.createElement('div');
-                        colorBox.className = 'legend-color';
-                        colorBox.style.backgroundColor = treatmentData.datasets[0].backgroundColor[index];
-                        
-                        const labelText = document.createElement('span');
-                        labelText.textContent = `${label} (${treatmentData.datasets[0].data[index]}%)`;
-                        
-                        legendItem.appendChild(colorBox);
-                        legendItem.appendChild(labelText);
-                        legendContainer.appendChild(legendItem);
-                    });
-                }
-            }
-            
-            // Success Metrics Chart
-            const successMetricsCtx = document.getElementById('successMetricsChart');
-            if (successMetricsCtx) {
-                window.successMetricsChart = new Chart(successMetricsCtx.getContext('2d'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-                        datasets: [
-                            {
-                                label: 'IVF Success Rate (%)',
-                                data: [62, 65, 68, 71],
-                                backgroundColor: 'rgba(13, 110, 253, 0.8)',
-                                borderColor: '#0d6efd',
-                                borderWidth: 1,
-                                borderRadius: 4,
-                                hoverBackgroundColor: 'rgba(13, 110, 253, 1)'
-                            },
-                            {
-                                label: 'Patient Satisfaction',
-                                data: [88, 90, 92, 94],
-                                backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                                borderColor: '#10b981',
-                                borderWidth: 1,
-                                borderRadius: 4,
-                                hoverBackgroundColor: 'rgba(16, 185, 129, 1)'
-                            }
-                        ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: { size: 12 },
+                            bodyFont: { size: 13 },
+                            padding: 10,
+                            cornerRadius: 6
+                        }
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { 
-                                display: true,
-                                position: 'top',
-                                labels: {
-                                    font: { size: 11 },
-                                    padding: 10,
-                                    usePointStyle: true,
-                                    pointStyle: 'circle'
-                                }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false,
+                                color: 'rgba(0, 0, 0, 0.05)'
                             },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        label += context.raw;
-                                        if (context.datasetIndex === 0) {
-                                            label += '%';
-                                        }
-                                        return label;
-                                    }
-                                },
-                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                bodyFont: { size: 12 },
-                                padding: 8,
-                                cornerRadius: 6
+                            ticks: {
+                                font: { size: 10 },
+                                padding: 5,
+                                maxTicksLimit: 6
                             }
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                grid: { 
-                                    drawBorder: false,
-                                    color: 'rgba(0, 0, 0, 0.05)'
-                                },
-                                ticks: {
-                                    font: { size: 10 },
-                                    padding: 5,
-                                    maxTicksLimit: 6,
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
+                        x: {
+                            grid: {
+                                display: false
                             },
-                            x: {
-                                grid: { 
-                                    display: false
-                                },
-                                ticks: {
-                                    font: { size: 10 },
-                                    padding: 5
-                                }
+                            ticks: {
+                                font: { size: 10 },
+                                padding: 5,
+                                maxTicksLimit: 12
                             }
                         }
                     }
+                }
+            });
+        }
+
+        // Doctor Appointments Distribution Chart
+        const doctorCtx = document.getElementById('doctorAppointmentChart');
+        if (doctorCtx) {
+            const doctorAppointmentData = {
+                labels: [
+                    'Dr. Sharma',
+                    'Dr. Patel',
+                    'Dr. Mehta',
+                    'Dr. Khan',
+                    'Dr. Iyer'
+                ],
+                datasets: [{
+                    data: [35, 25, 20, 12, 8], // % or appointment share
+                    backgroundColor: [
+                        '#0d6efd',
+                        '#1e88e5',
+                        '#1565c0',
+                        '#42a5f5',
+                        '#90caf9'
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            };
+
+            window.doctorAppointmentChart = new Chart(doctorCtx.getContext('2d'), {
+                type: 'doughnut',
+                data: doctorAppointmentData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            bodyFont: { size: 12 },
+                            padding: 8,
+                            cornerRadius: 6,
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} appointments (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            // Custom Legend
+            const legendContainer = document.getElementById('doctorAppointmentLegend');
+            if (legendContainer) {
+                legendContainer.innerHTML = '';
+                doctorAppointmentData.labels.forEach((label, index) => {
+                    const legendItem = document.createElement('div');
+                    legendItem.className = 'legend-item';
+
+                    const colorBox = document.createElement('div');
+                    colorBox.className = 'legend-color';
+                    colorBox.style.backgroundColor =
+                        doctorAppointmentData.datasets[0].backgroundColor[index];
+
+                    const labelText = document.createElement('span');
+                    labelText.textContent = `${label} (${doctorAppointmentData.datasets[0].data[index]}%)`;
+
+                    legendItem.appendChild(colorBox);
+                    legendItem.appendChild(labelText);
+                    legendContainer.appendChild(legendItem);
                 });
             }
         }
-    </script>
+
+
+    }
+</script>
 </body>
+
 </html>
