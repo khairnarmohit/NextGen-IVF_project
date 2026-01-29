@@ -103,6 +103,10 @@ exports.postUpdatePhilosophy = async (req, res) => {
 
 
 
+
+
+
+
 exports.getDirectorsMessagePage = async (req, res) => {
 
   try {
@@ -445,6 +449,13 @@ exports.getPatientReviewPage = (req, res) => {
 
 
 
+
+
+
+
+
+
+
 exports.getGalleryPage = async (req, res) => {
   try {
     var sql ="SELECT * FROM gallery";
@@ -456,6 +467,7 @@ exports.getGalleryPage = async (req, res) => {
     res.status(500).render("error", { message: "Gallery Page Error" });
   }
 };
+
 
 exports.getContactPage = async (req, res) => {
   try {
@@ -602,8 +614,7 @@ exports.getPrivacyPage = async (req, res) => {
         editData = editResult[0];
       }
     }
-
-    res.render('admin/privacy', { "list": data, "editData": editData });
+ res.render('admin/privacy', { "list": data, "editData": editData });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Privacy Page Error" });
@@ -650,6 +661,20 @@ exports.deletePrivacy = async (req, res) => {
 };
 
 
+
+exports.getGalleryPage = async  (req, res) => {
+  try {
+    var sql = `SELECT * FROM gallery`;
+    var gallery = await exe(sql);
+    var packet = {gallery}
+    res.render("admin/gallery",packet);
+} catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Gallery Page Error" });
+  }
+};
+
+
 exports.postGalleryImage = async (req, res) => {
   try {
     let filename = "";
@@ -671,14 +696,10 @@ res.redirect("/admin/gallery");
 exports.deleteGalleryImage = async (req, res) => {
     try {
         const image_id = req.params.image_id;
-
-        // DB मधून row delete करा
         const sqlDel = "DELETE FROM gallery WHERE image_id = ?";
         await exe(sqlDel, [image_id]);
-
-        res.redirect("/admin/gallery");
-
-    } catch (err) {
+         res.redirect("/admin/gallery");
+        } catch (err) {
         console.error(err);
         res.status(500).send("Delete failed");
     }
@@ -688,19 +709,58 @@ exports.deleteGalleryImage = async (req, res) => {
 
 
 
-exports.getEnquiryPage = (req, res) => {
+exports.getEnquiryPage = async (req, res) => {
   try {
-    res.render('admin/enquiry');
+    var sql = `SELECT * FROM enquiry`;
+     var  enquiry= await exe(sql);
+     var packet = { enquiry};
+    res.render('admin/enquiry',packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Enquiry Page Error" });
   }
 };
 
+exports.getDeleteEnquiry = async (req, res) => {
+  try {
+    const enquiry_id = req.params.enquiry_id; // 🔥 इथे घ्या
+     const sql = "DELETE FROM enquiry WHERE enquiry_id = ?";
+    await exe(sql, [enquiry_id]);
+    res.redirect("/admin/enquiry");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Enquiry delete failed");
+  }
+};
 
 
 
+// faq
+exports.getFaqPage = async (req, res) => {
+  try {
+   
+    const sql = "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
+    const faqTypes = await exe(sql); // result = array of objects
+    res.render("admin/faq", { faqTypes });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error loading FAQ page");
+  }
+};
 
+
+exports.saveFaqType = async (req, res) => {
+  try {
+    const d = req.body; // form data
+    const sql = `INSERT INTO  faq_type  (faq_service) VALUES ('${d.faq_service}')`;
+    await exe(sql); 
+    res.redirect("/admin/faq"); 
+  } catch (error) {
+    console.error(error);
+    res.send("Error saving FAQ Type");
+  }
+};
+;
 
 
 
@@ -941,6 +1001,64 @@ exports.getDoctorDelete = async (req, res) => {
   }
 };
 
+
+
+exports.getHeroPage = async (req, res) => {
+  try {
+    
+    var sql = "SELECT * FROM hero WHERE hero_id = 1";
+    var hero_info = await exe(sql);
+
+    
+    if (hero_info.length == 0) {
+      hero_info = [{ hero_heading: "", hero_background: "" }];
+    } else {
+      hero_info = hero_info[0];
+    }
+
+    var packet = { hero_info };
+    res.render("admin/hero", packet);
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Hero Section Error" });
+  }
+};
+
+
+exports.postUpdateHero = async (req, res) => {
+  try {
+    var data = req.body;
+    var old_video = data.old_hero_background;
+    var filename = old_video;
+
+    
+    if (req.files && req.files.hero_background) {
+      filename = Date.now() + "_" + req.files.hero_background.name;
+      await req.files.hero_background.mv("public/uploads/" + filename);
+    }
+
+    
+    var checkSql = "SELECT * FROM hero WHERE hero_id = 1";
+    var checkResult = await exe(checkSql);
+
+    if (checkResult.length > 0) {
+      
+      var sql =
+        "UPDATE hero SET hero_heading = ?, hero_background = ? WHERE hero_id = 1";
+      await exe(sql, [data.hero_heading, filename]);
+    } else {
+     
+      var sql = "INSERT INTO hero (hero_heading, hero_background) VALUES (?, ?)";
+      await exe(sql, [data.hero_heading, filename]);
+    }
+
+    res.redirect("/admin/hero");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Update Hero Section Error" });
+  }
+}; 
+
 exports.getVisitorDoctorsPage = async (req, res) => {
   try {
     const sql = "SELECT * FROM visitor_doctors  ORDER BY visitor_doctor_id  DESC";
@@ -1138,6 +1256,7 @@ exports.getAppointmentsListPage = async (req, res) => {
 };
 
 
+
 exports.getCancelAppointment = async (req, res) => {
   try {
     const id = req.params.id;
@@ -1165,3 +1284,5 @@ exports.getCompleteAppointment = async (req, res) => {
     });
   }
 };
+
+

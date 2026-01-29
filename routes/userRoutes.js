@@ -20,9 +20,6 @@ router.get("/contact", userController.getContactPage);
 router.post("/save-enquiry", userController.saveEnquiry);
 
 
-
-
-
 router.get("/patient-stories", userController.getPatientStoriesPage);
 
 router.get("/faq", userController.getFaqPage);

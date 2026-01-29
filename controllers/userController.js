@@ -1,17 +1,5 @@
 var exe = require("../model/conn.js");
 
-exports.getHomePage = (req, res) => {
-  try{
-    res.render("user/home");
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Home Page Error" });
-  }
-};
-
-
-
-
 exports.getAboutPage = (req, res) => {
   try{
     res.render("user/about");
@@ -20,11 +8,6 @@ exports.getAboutPage = (req, res) => {
     res.status(500).render("error", { message: "About Page Error" });
   }
 };
-
-
-
-
-
 
 exports.getTreatmentPage = async (req, res) => {
   try {
@@ -330,3 +313,26 @@ exports.getTermsPage = (req, res) => {
     res.status(500).render("error", { message: "Terms Page Error" });
   }
 };
+
+exports.getHomePage = async (req, res) => {
+  try {
+    var sql = "SELECT * FROM hero WHERE hero_id = 1";
+    var hero_info = await exe(sql);
+
+    if (hero_info.length == 0) {
+      hero_info = [{
+        hero_heading: "Helping you build of the family of your dreams!",
+        hero_background: "baby_crawl_video.mp4" 
+      }];
+    } else {
+      hero_info = hero_info[0];
+    }
+    res.render("user/home", { hero_info });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Home Page Error" });
+  }
+};
+
+
+
