@@ -1,0 +1,49 @@
+<%- include('navbar.ejs') %>
+
+
+<div class="container my-5">
+  <h2 class="mb-4">Edit FAQ</h2>
+
+    <form action="/admin/edit_faq/<%= faq.faq_id %>" method="POST">
+      
+      <!-- FAQ Type Select -->
+      <div class="mb-3">
+        <label for="faqTypeSelect" class="form-label">Select FAQ Type</label>
+        <select class="form-select" id="faqTypeSelect" name="faq_type_id" required>
+          <option value="">-- Choose Type --</option>
+          <% faqTypes.forEach(type => { %>
+            <option value="<%= type.faq_type_id %>" 
+              <%= faq.faq_type_id == type.faq_type_id ? 'selected' : '' %>>
+              <%= type.faq_service %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+
+      <!-- FAQ Title -->
+      <div class="mb-3">
+        <label for="faqTitle" class="form-label">FAQ Title</label>
+        <input type="text" class="form-control" id="faqTitle" name="faq_title" 
+               value="<%= faq.faq_title %>" placeholder="Enter FAQ Title" required>
+      </div>
+
+      <!-- FAQ Description -->
+      <div class="mb-3">
+        <label for="faqDesc" class="form-label">FAQ Description</label>
+        <textarea class="form-control" id="faqDesc" name="faq_desc" rows="4" 
+                  placeholder="Enter FAQ Description" required><%= faq.faq_desc %></textarea>
+      </div>
+
+      <!-- Buttons -->
+      <button type="submit" class="btn btn-primary">Update FAQ</button>
+     
+
+    </form>
+  </div>
+</div>
+
+<%- include('footer.ejs') %>
+
+
+
+

@@ -114,9 +114,20 @@ router.get("/privacy/delete/:id", adminController.deletePrivacy);
 
 // faq
 router.get("/faq", adminController.getFaqPage);
-// add faq service
+
 router.post('/save_faq_type', adminController.saveFaqType);
-// add faq
+router.post('/save_faq', adminController.saveFaq);
+
+// Edit FAQ routes
+router.get("/edit_faq/:faq_id", adminController.editFaqForm);
+router.post("/edit_faq/:faq_id", adminController.updateFaq);
+
+
+// Delete
+router.get("/delete_faq/:faq_id", adminController.deleteFaq);
+
+
+
 
 
 

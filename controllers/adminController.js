@@ -736,23 +736,37 @@ exports.getDeleteEnquiry = async (req, res) => {
 
 
 // faq
+
 exports.getFaqPage = async (req, res) => {
   try {
-   
-    const sql = "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
-    const faqTypes = await exe(sql); // result = array of objects
-    res.render("admin/faq", { faqTypes });
-  } catch (error) {
+    const sqlTypes = "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
+    const faqTypes = await exe(sqlTypes); 
+
+    const sqlFaqs = `
+      SELECT 
+        f.faq_id,
+        f.faq_title,
+        f.faq_desc,
+        t.faq_service
+      FROM faq f
+      LEFT JOIN faq_type t ON f.faq_type_id = t.faq_type_id
+      ORDER BY f.faq_id DESC
+    `;
+    const faqs = await exe(sqlFaqs);
+
+    res.render("admin/faq", { faqTypes, faqs });
+} catch (error) {
     console.error(error);
     res.status(500).send("Error loading FAQ page");
   }
 };
 
 
+
 exports.saveFaqType = async (req, res) => {
   try {
-    const d = req.body; // form data
-    const sql = `INSERT INTO  faq_type  (faq_service) VALUES ('${d.faq_service}')`;
+    const d = req.body; 
+    const sql = `INSERT INTO  faq_type (faq_service) VALUES ('${d.faq_service}')`;
     await exe(sql); 
     res.redirect("/admin/faq"); 
   } catch (error) {
@@ -760,7 +774,73 @@ exports.saveFaqType = async (req, res) => {
     res.send("Error saving FAQ Type");
   }
 };
-;
+
+exports.saveFaq = async (req, res) => {
+  try {
+    const d = req.body;
+   const sql = `INSERT INTO faq (faq_type_id, faq_title, faq_desc)VALUES ('${d.faq_type_id}', '${d.faq_title}', '${d.faq_desc}')`;
+  await exe(sql);
+  res.redirect("/admin/faq");
+} catch (error) {
+    console.error(error);
+    res.send("Error saving FAQ");
+  }
+};
+
+
+
+// Show Edit FAQ Form
+exports.editFaqForm = async (req, res) => {
+  try {
+    const faq_id = req.params.faq_id;
+    const faqResult = await exe("SELECT * FROM faq WHERE faq_id = ?", [faq_id]);
+if (faqResult.length === 0) {
+      return res.send("FAQ not found"); 
+    }
+const faq = faqResult[0];
+const faqTypes = await exe("SELECT * FROM faq_type ORDER BY faq_service ASC");
+res.render("admin/edit_faq", { faq, faqTypes });
+} catch (error) {
+    console.error(error);
+    res.status(500).send("Error loading FAQ for edit");
+  }
+};
+// Update FAQ
+exports.updateFaq = async (req, res) => {
+  try {
+    const faq_id = req.params.faq_id;
+    const { faq_type_id, faq_title, faq_desc } = req.body;
+    await exe(
+      "UPDATE faq SET faq_type_id = ?, faq_title = ?, faq_desc = ? WHERE faq_id = ?",
+      [faq_type_id, faq_title, faq_desc, faq_id]
+    );
+    res.redirect("/admin/faq");
+} catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating FAQ");
+  }
+};
+
+
+// Delete FAQ
+exports.deleteFaq = async (req, res) => {
+  try {
+    const faq_id = req.params.faq_id;
+    const sql = `DELETE FROM faq WHERE faq_id = '${faq_id}'`;
+    await exe(sql);
+    res.redirect("/admin/faq");
+  } catch (error) {
+    console.error(error);
+    res.send("Error deleting FAQ");
+  }
+};
+
+
+
+
+
+
+
 
 
 
