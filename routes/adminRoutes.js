@@ -118,9 +118,15 @@ router.post('/visitor_doctor_update/:id', adminController.postVisitorDoctorUpdat
 
 router.get('/visitor_doctor_delete/:id', adminController.getVisitorDoctorDelete);
 
-router.post('/appointment-save', adminController.postAppointmentSave);
+// router.post('/appointment-save', adminController.postAppointmentSave); // Commented out - not implemented
 
 router.get('/appointments-list', adminController.getAppointmentsListPage);
+
+router.get('/appointments_cancel/:id', adminController.getCancelAppointment);
+
+router.get('/appointments_complete/:id', adminController.getCompleteAppointment);
+
+// router.get('/appointments-datefilter', adminController.getAppointmentsDateFilter);
 
 module.exports = router;
 
