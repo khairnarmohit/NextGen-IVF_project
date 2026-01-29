@@ -268,3 +268,24 @@ exports.getHomePage = async (req, res) => {
 
 
 
+
+
+
+
+
+
+exports.getPatientStoriesPage = async (req, res) => {
+  try {
+    var sql = "SELECT * FROM patients_review ORDER BY patients_review_id DESC";
+    var stories = await exe(sql);
+    var packet = {stories};
+
+    console.log(stories)
+
+    res.render("user/patient_stories", packet);
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Patient Stories Page Error" });
+  }
+};
+

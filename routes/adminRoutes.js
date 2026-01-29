@@ -84,17 +84,7 @@ router.get("/contact", adminController.getContactPage);
 
 router.post("/update-contact", adminController.postUpdateContact);
 
-
-
-
-
-
 router.get("/patient-review", adminController.getPatientReviewPage);
-
-
-
-
-
 
 router.post("/patient-review/save", adminController.saveReview);
 router.post("/patient-review/update", adminController.updateReview);
@@ -122,6 +112,11 @@ router.get('/visitor_doctor_delete/:id', adminController.getVisitorDoctorDelete)
 router.post('/appointment-save', adminController.postAppointmentSave);
 
 router.get('/appointments-list', adminController.getAppointmentsListPage);
+
+router.get("/terms", adminController.getTermsPage);
+router.post("/terms/save", adminController.saveTerm);
+router.post("/terms/update", adminController.updateTerm);
+router.get("/terms/delete/:id", adminController.deleteTerm);
 
 
 module.exports = router;

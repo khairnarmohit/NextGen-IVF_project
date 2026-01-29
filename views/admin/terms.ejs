@@ -1,34 +1,37 @@
 <%- include("navbar.ejs") %>
 
 <div class="container mt-4">
-        
+    
+    <!-- Header: Button on LEFT -->
     <div class="d-flex justify-content-start mb-3">
         
+        <!-- SMART BUTTON LOGIC -->
         <% if(editData) { %>
-            <a href="/admin/privacy" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Add More Section
+            <a href="/admin/terms" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add More Terms
             </a>
         <% } else { %>
-            <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addPrivacyCollapse">
-                <i class="fas fa-plus me-2"></i>Add More Section
+            <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addTermsCollapse">
+                <i class="fas fa-plus me-2"></i>Add More Terms
             </button>
         <% } %>
     </div>
 
-    <div class="collapse mb-4 <%= editData ? 'd-none' : '' %>" id="addPrivacyCollapse">
+    <!-- ADD TERMS COLLAPSE -->
+    <div class="collapse mb-4 <%= editData ? 'd-none' : '' %>" id="addTermsCollapse">
         <div class="card shadow-sm border-primary">
             <div class="card-header bg-primary text-white">
-                <h6 class="mb-0"><i class="fas fa-file-alt me-2"></i>Add New Privacy Section</h6>
+                <h6 class="mb-0"><i class="fas fa-file-contract me-2"></i>Add New Term Section</h6>
             </div>
             <div class="card-body">
-                <form action="/admin/privacy/save" method="post">
+                <form action="/admin/terms/save" method="post">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Section Title</label>
-                        <input type="text" class="form-control" name="privacy_title" placeholder="e.g. Introduction" required>
+                        <input type="text" class="form-control" name="term_title" placeholder="e.g. Introduction" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Description / Content</label>
-                        <textarea class="form-control" name="privacy_desc" rows="8" placeholder="Enter the privacy policy content here..." required></textarea>
+                        <textarea class="form-control" name="term_desc" rows="6" placeholder="Enter detailed terms..." required></textarea>
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Save Section</button>
@@ -38,27 +41,26 @@
         </div>
     </div>
 
-    <!-- edit -->
+    <!-- EDIT TERMS COLLAPSE -->
     <% if(editData) { %>
         <div class="collapse mb-4 show">
-            <div class="card shadow-sm border-warning">
+            <div class="card shadow-sm border-primary">
                 <div class="card-header bg-primary text-dark">
-                    <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Privacy Section</h6>
+                    <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Term Section</h6>
                 </div>
                 <div class="card-body">
-                    <form action="/admin/privacy/update" method="post">
-                        <input type="hidden" name="privacy_id" value="<%= editData.privacy_id %>">
-                        
+                    <form action="/admin/terms/update" method="post">
+                        <input type="hidden" name="term_id" value="<%= editData.term_id %>">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Section Title</label>
-                            <input type="text" class="form-control" name="privacy_title" value="<%= editData.privacy_title %>" required>
+                            <input type="text" class="form-control" name="term_title" value="<%= editData.term_title %>" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Description / Content</label>
-                            <textarea class="form-control" name="privacy_desc" rows="8" required><%= editData.privacy_desc %></textarea>
+                            <textarea class="form-control" name="term_desc" rows="6" required><%= editData.term_desc %></textarea>
                         </div>
                         <div class="text-end">
-                            <a href="/admin/privacy" class="btn btn-secondary me-2">Cancel</a>
+                            <a href="/admin/terms" class="btn btn-secondary me-2">Cancel</a>
                             <button type="submit" class="btn btn-success text-white"><i class="fas fa-save me-2"></i>Update Section</button>
                         </div>
                     </form>
@@ -68,7 +70,7 @@
     <% } %>
 
 
-    <!-- list -->
+    <!-- TERMS LIST TABLE -->
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -76,8 +78,8 @@
                     <thead class="table-light">
                         <tr>
                             <th class="ps-4" style="width: 20%;">Title</th>
-                            <th style="width: 60%;">Description</th>
-                            <th class="text-end pe-4" style="width: 20%;">Actions</th>
+                            <th style="width: 55%;">Description</th>
+                            <th class="text-end pe-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,18 +87,17 @@
                             <% list.map(function(item){ %>
                                 <tr>
                                     <td class="ps-4">
-                                        <h6 class="mb-0 fw-bold text-primary"><%= item.privacy_title %></h6>
-                                        <small class="text-muted">ID: <%= item.privacy_id %></small>
+                                        <h6 class="mb-0 fw-bold text-primary"><%= item.term_title %></h6>
                                     </td>
                                     <td>
-                                        <p class="mb-0 text-truncate" style="max-width: 500px;"><%= item.privacy_desc %></p>
+                                        <p class="mb-0 text-truncate" style="max-width: 500px;"><%= item.term_desc %></p>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="/admin/privacy?edit=<%= item.privacy_id %>" class="btn btn-sm btn-outline-primary me-1">
+                                        <a href="/admin/terms?edit=<%= item.term_id %>" class="btn btn-sm btn-outline-primary me-1">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
                                         
-                                        <a href="/admin/privacy/delete/<%= item.privacy_id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this section?')">
+                                        <a href="/admin/terms/delete/<%= item.term_id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this section?')">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </td>
@@ -104,7 +105,7 @@
                             <% }) %>
                         <% } else { %>
                             <tr>
-                                <td colspan="3" class="text-center p-5">No privacy sections found. Click "Add More Section" to create content.</td>
+                                <td colspan="3" class="text-center p-5">No terms sections found. Click "Add More Terms" to create content.</td>
                             </tr>
                         <% } %>
                     </tbody>

@@ -1171,3 +1171,72 @@ exports.getAppointmentsListPage = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
+exports.getTermsPage = async (req, res) => {
+  try {
+    
+    var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
+
+   
+    var editData = null;
+    if (req.query.edit) {
+      var editResult = await exe(`SELECT * FROM terms WHERE term_id='${req.query.edit}'`);
+      if (editResult.length > 0) {
+        editData = editResult[0];
+      }
+    }
+
+   
+    res.render('admin/terms', { "list": data, "editData": editData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Terms Page Error" });
+  }
+};
+
+exports.saveTerm = async (req, res) => {
+  try {
+    var d = req.body;
+    
+   
+    var sql = `INSERT INTO terms (term_title, term_desc, term_status) VALUES ('${d.term_title}', '${d.term_desc}', 1)`;
+    
+    await exe(sql);
+    res.redirect("/admin/terms");
+  } catch (error) {
+    console.log(error);
+    res.send("Error saving term");
+  }
+};
+
+exports.updateTerm = async (req, res) => {
+  try {
+    var d = req.body;
+    var sql = `UPDATE terms SET 
+              term_title='${d.term_title}',
+              term_desc='${d.term_desc}'
+              WHERE term_id='${d.term_id}'`;
+    await exe(sql);
+    res.redirect("/admin/terms");
+  } catch (error) {
+    console.log(error);
+    res.send("Error updating term");
+  }
+};
+
+exports.deleteTerm = async (req, res) => {
+  try {
+    var id = req.params.id;
+    var sql = `DELETE FROM terms WHERE term_id='${id}'`;
+    await exe(sql);
+    res.redirect("/admin/terms");
+  } catch (error) {
+    console.log(error);
+    res.send("Error deleting term");
+  }
+};

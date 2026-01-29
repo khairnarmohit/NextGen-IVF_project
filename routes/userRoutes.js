@@ -36,5 +36,11 @@ router.get('/treatment-details/:id', userController.getTreatmentDetailsPage);
 
 router.get("/terms", userController.getTermsPage);
 
+
+
+router.get("/patient_stories", userController.getPatientStoriesPage); // NEW ROUTE
+
+
+
 module.exports = router;
 
