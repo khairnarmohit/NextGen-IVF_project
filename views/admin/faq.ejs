@@ -1,0 +1,130 @@
+
+<%- include('navbar.ejs') %>
+
+<div class="container my-5">
+  <h2 class="mb-4">Manage FAQs</h2>
+
+  <!-- Buttons side by side -->
+  <div class="d-flex mb-3 gap-2">
+    <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#faqTypeForm" aria-expanded="false" aria-controls="faqTypeForm">
+      Add FAQ Type
+    </button>
+    <button class="btn btn-success " type="button" data-bs-toggle="collapse" data-bs-target="#faqForm" aria-expanded="false" aria-controls="faqForm">
+      Add FAQ
+    </button>
+  </div>
+
+  <!-- FAQ Type Form -->
+  <div class="collapse" id="faqTypeForm">
+    <div class="card card-body mb-3">
+      <form action="/admin/save_faq_type" method="POST">
+        <div class="mb-3">
+          <label for="faqService" class="form-label">FAQ Service Name</label>
+          <input type="text" class="form-control" id="faqService" name="faq_service" placeholder="Enter FAQ Service" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save FAQ Type</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FAQ Form -->
+  <div class="collapse" id="faqForm">
+    <div class="card card-body mb-3">
+      <form action="/admin/save_faq" method="POST">
+        <div class="mb-3">
+         <label for="faqTypeSelect" class="form-label">Select FAQ Type</label>
+<select class="form-select" id="faqTypeSelect" name="faq_type_id" required>
+  <option value="">-- Choose Type --</option>
+  <% faqTypes.forEach(type => { %>
+    <option value="<%= type.faq_type_id %>">
+      <%= type.faq_service %>
+    </option>
+  <% }) %>
+</select>
+
+
+        </div>
+        <div class="mb-3">
+          <label for="faqTitle" class="form-label">FAQ Title</label>
+          <input type="text" class="form-control" id="faqTitle" name="faq_title" placeholder="Enter FAQ Title" required>
+        </div>
+        <div class="mb-3">
+          <label for="faqDesc" class="form-label">FAQ Description</label>
+          <textarea class="form-control" id="faqDesc" name="faq_desc" rows="4" placeholder="Enter FAQ Description" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save FAQ</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+<!-- FAQ List Table -->
+<div class="container-fluid">
+  <h2 class="text-primary">FAQ List</h2>
+  <div class="row">
+    <div class="col-12">
+
+<table class="table table-bordered  mt-3">
+  <thead >
+    <tr>
+      <th>ID</th>
+      <th>FAQ Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+<tbody>
+  <% if (faqs && faqs.length > 0) { %>
+    
+    <% for (let i = 0; i < faqs.length; i++) { 
+    %>
+      <tr>
+        <td><%= i + 1 %></td>
+
+        <td><%= faqs[i].faq_service %></td>
+        <td>
+  <%= faqs[i].faq_title.length > 20 
+        ? faqs[i].faq_title.substring(0, 20) + '...' 
+        : faqs[i].faq_title %>
+</td>
+
+        <td><%= faqs[i].faq_desc %></td>
+        <td>
+          <a href="/admin/edit_faq/<%= faqs[i].faq_id %>" 
+             class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i>
+             
+          </a>
+          <br><br>
+
+          <a href="/admin/delete_faq/<%= faqs[i].faq_id %>" 
+             class="btn btn-sm btn-danger"
+             onclick="return confirm('Are you sure you want to delete this FAQ?');">
+             <i class="bi bi-trash"></i>
+          </a>
+        </td>
+      </tr>
+    <% } %>
+
+  <% } else { %>
+    <tr>
+      <td colspan="5" class="text-center text-muted">
+        No FAQs found
+      </td>
+    </tr>
+  <% } %>
+</tbody>
+
+</table>
+</div>
+</div>
+</div>
+
+
+
+
+ 
+
+
+
+<%- include('footer.ejs') %>

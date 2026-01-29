@@ -1,8 +1,22 @@
 var exe = require("../model/conn.js");
 
-exports.getAboutPage = (req, res) => {
+exports.getAboutPage = async (req, res) => {
   try{
-    res.render("user/about");
+    var sql = "SELECT * FROM about WHERE about_id = ?";
+    var aboutinfo = await exe(sql, [1]);
+
+    var sql2 = "SELECT * FROM vision_mission WHERE vision_mission_id = ?";
+    var vision_mission = await exe(sql2, [1]);
+
+    var sql3 = "SELECT * FROM director_msg WHERE director_msg_id = ?";
+    var director_msg = await exe(sql3, [1]);
+
+    var sql4 = "SELECT * FROM whychooseus";
+    var whychooseus = await exe(sql4);
+
+    var packet = { aboutinfo, vision_mission, director_msg, whychooseus };
+    console.log(packet);
+    res.render("user/about", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "About Page Error" });
@@ -200,6 +214,50 @@ exports.getAppointmentPage = async (req, res) => {
   }
 };
 
+// exports.saveAppointment = async (req, res) => {
+//   try {
+//     const {
+//       patient_fullname,
+//       patient_email,
+//       patient_mobile,
+//       patient_gender,
+//       patient_age,
+//       doctor_id,
+//       appointment_date
+//     } = req.body;
+
+//     // Parse doctor_id: 'd-1' for doctors, 'v-2' for visiting doctors
+//     let parsedDoctorId = null;
+//     if (doctor_id) {
+//       const [type, id] = doctor_id.split('-');
+//       parsedDoctorId = parseInt(id);  // store positive ID for both types
+//     }
+
+//     const sql = `
+//       INSERT INTO appointments
+//       (patient_fullname, patient_email, patient_mobile, patient_gender, patient_age, doctor_id, appointment_date)
+//       VALUES (?, ?, ?, ?, ?, ?, ?)
+//     `;
+
+//     await exe(sql, [
+//       patient_fullname,
+//       patient_email,
+//       patient_mobile,
+//       patient_gender,
+//       patient_age,
+//       parsedDoctorId,
+//       appointment_date
+//     ]);
+
+//     res.redirect("/appointment");
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Appointment insert error");
+//   }
+// };
+
+
 exports.saveAppointment = async (req, res) => {
   try {
     const {
@@ -212,10 +270,32 @@ exports.saveAppointment = async (req, res) => {
       appointment_date
     } = req.body;
 
+    let doctorId = null;
+    let visitorDoctorId = null;
+
+    if (doctor_id) {
+      const [type, id] = doctor_id.split("-");
+
+      if (type === "d") {
+        doctorId = parseInt(id);
+      } else if (type === "v") {
+        visitorDoctorId = parseInt(id);
+      }
+    }
+
     const sql = `
       INSERT INTO appointments
-      (patient_fullname, patient_email, patient_mobile, patient_gender, patient_age, doctor_id, appointment_date)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      (
+        patient_fullname,
+        patient_email,
+        patient_mobile,
+        patient_gender,
+        patient_age,
+        doctor_id,
+        visitor_doctor_id,
+        appointment_date
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     await exe(sql, [
@@ -224,7 +304,8 @@ exports.saveAppointment = async (req, res) => {
       patient_mobile,
       patient_gender,
       patient_age,
-      doctor_id,
+      doctorId,
+      visitorDoctorId,
       appointment_date
     ]);
 
@@ -235,6 +316,7 @@ exports.saveAppointment = async (req, res) => {
     res.status(500).send("Appointment insert error");
   }
 };
+
 
 
 exports.getTermsPage = (req, res) => {
