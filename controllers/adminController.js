@@ -2,11 +2,7 @@ var exe = require("../model/conn.js");
 
 exports.getAdminDashboard = (req, res) => {
   try {
-
     res.render('admin/dashboard');
-
-    
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Admin Dashboard Page Error" });
@@ -1264,45 +1260,69 @@ exports.getVisitorDoctorDelete = async (req, res) => {
   }
 };
 
-exports.postAppointmentSave = async (req, res) => {
-  try {
-    const d = req.body;
-    const sql = `
-      INSERT INTO appointments
-      (patient_fullname, patient_email, patient_mobile,
-       patient_gender, patient_age, doctor_id,
-       appointment_date)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    await exe(sql, [
-      d.patient_fullname,
-      d.patient_email,
-      d.patient_mobile,
-      d.patient_gender,
-      d.patient_age,
-      d.doctor_id || null,
-      d.appointment_date,
-    ]);
-
-    res.redirect("/appointment");
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Appointment Save Error");
-  }
-};
-
 exports.getAppointmentsListPage = async (req, res) => {
   try {
-    const sql = `
-      SELECT a.*, d.doctor_name
+    const date = req.query.date;
+    const doctor = req.query.doctor;
+
+    // ----------- APPOINTMENT LIST -----------
+    let sql = `
+      SELECT 
+        a.*,
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name
       FROM appointments a
       LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
-      ORDER BY a.patient_id  DESC
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'pending'
     `;
-    const appointments = await exe(sql);
-    res.render("admin/appointments-list", { appointments });
+
+    let params = [];
+
+    if (date) {
+      sql += ` AND DATE(a.appointment_date) = ? `;
+      params.push(date);
+    }
+
+    sql += ` ORDER BY a.patient_id ASC `;
+    const appointments = await exe(sql, params);
+
+    // ----------- DOCTOR SUMMARY -----------
+    let summarySql = `
+      SELECT 
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name,
+        COUNT(*) AS total
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'pending'
+    `;
+
+    let summaryParams = [];
+
+    if (date) {
+      summarySql += ` AND DATE(a.appointment_date) = ? `;
+      summaryParams.push(date);
+    }
+
+    summarySql += ` GROUP BY doctor_name `;
+    const doctorSummary = await exe(summarySql, summaryParams);
+
+    // ----------- RENDER -----------
+    res.render("admin/appointments-list", {
+      appointments,
+      doctorSummary,
+      selectedDate: date,
+      selectedDoctor: doctor 
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
@@ -1310,4 +1330,35 @@ exports.getAppointmentsListPage = async (req, res) => {
     });
   }
 };
+
+
+
+exports.getCancelAppointment = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const sql = "UPDATE appointments SET status = 'cancelled' WHERE patient_id = ?";
+    await exe(sql, [id]);
+    res.redirect("/admin/appointments-list");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Error cancelling appointment"
+    });
+  }
+};
+
+exports.getCompleteAppointment = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const sql = "UPDATE appointments SET status = 'completed' WHERE patient_id = ?";
+    await exe(sql, [id]);
+    res.redirect("/admin/appointments-list");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Error completing appointment"
+    });
+  }
+};
+
 

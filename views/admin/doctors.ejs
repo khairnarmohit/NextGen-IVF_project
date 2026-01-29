@@ -2,8 +2,11 @@
 
 <div class="container py-4">
 
-  <!-- Add Button -->
-  <div class="mb-3">
+<!-- Action Buttons Row -->
+<div class="row mb-3 align-items-center">
+  
+  <!-- Left: Add Doctor -->
+  <div class="col-md-4 col-6">
     <button
       class="btn btn-primary"
       data-bs-toggle="collapse"
@@ -12,6 +15,22 @@
       <i class="fas fa-plus me-1"></i> Add Doctor
     </button>
   </div>
+
+  <!-- Right: CSV & Print -->
+  <div class="col-md-8 col-6 text-end">
+    <div class="btn-group">
+      <button onclick="exportDoctorsCSV()" class="btn btn-success me-2">
+        <i class="fas fa-file-csv me-1"></i> Export CSV
+      </button>
+
+      <button onclick="printDoctors()" class="btn btn-secondary">
+        <i class="fas fa-print me-1"></i> Print
+      </button>
+    </div>
+  </div>
+
+</div>
+
 
   <!-- Collapse Form -->
   <div class="collapse" id="addDoctorForm">
@@ -82,7 +101,7 @@
   </div>
 </div>
 
-<div class="container py-4">
+<div id="printArea" class="container py-4">
 
   <div class="card shadow-sm border-0">
     <div class="card-header bg-primary text-white">
@@ -98,7 +117,7 @@
             <th>Name</th>
             <th>Qualification</th>
             <th>Specialist</th>
-            <th>Experience</th>
+            <th>Exp</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -121,7 +140,7 @@
                 <td><%= doctors[i].doctor_name %></td>
                 <td><%= doctors[i].doctor_qual %></td>
                 <td><%= doctors[i].doctor_specialist %></td>
-                <td class="badge text-bg-warning mt-4"><%= doctors[i].doctor_exp %></td>
+                <td><%= doctors[i].doctor_exp %></td>
 
                 <td>
                   <a
@@ -154,6 +173,51 @@
   </div>
 
 </div>
+
+<script>
+function exportDoctorsCSV() {
+  let csv = [];
+  let rows = document.querySelectorAll("#printArea table tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    let row = [], cols = rows[i].querySelectorAll("th, td");
+
+    for (let j = 0; j < cols.length; j++) {
+      // Skip Action & Photo column
+      if (j === 1 || j === 6) continue;
+
+      let text = cols[j].innerText.replace(/"/g, '""');
+      row.push('"' + text + '"');
+    }
+    csv.push(row.join(","));
+  }
+
+  let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+  let downloadLink = document.createElement("a");
+
+  downloadLink.download = "doctors_list.csv";
+  downloadLink.href = window.URL.createObjectURL(csvFile);
+  downloadLink.style.display = "none";
+
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
+</script>
+
+
+<script>
+  function printDoctors() {
+    const printContent = document.getElementById("printArea").innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    location.reload(); // reload to restore JS & layout
+  }
+</script>
+
 
 
 
