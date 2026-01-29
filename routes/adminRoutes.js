@@ -47,7 +47,10 @@ router.get("/delete-awards/:id", adminController.getDeleteAwards);
 
 router.get("/patient-review", adminController.getPatientReviewPage);
 
+
+// gallery secrion
 router.get("/gallery", adminController.getGalleryPage);
+
 
 
 router.get("/privacy", adminController.getPrivacyPage);
@@ -73,11 +76,15 @@ router.post("/doctor_update/:id", adminController.postDoctorUpdate);
 
 router.get("/doctor_delete/:id", adminController.getDoctorDelete);
 
-router.post("/save-gallery", adminController.postGalleryImage);
 
+router.post("/save-gallery", adminController.postGalleryImage);
 router.post("/gallery/delete/:image_id", adminController.deleteGalleryImage);
 
+
+// enquiry
 router.get("/enquiry", adminController.getEnquiryPage);
+router.get("/enquiry/delete/:enquiry_id", adminController.getDeleteEnquiry);
+
 
 
 router.get("/contact", adminController.getContactPage);
@@ -105,6 +112,17 @@ router.post("/privacy/save", adminController.savePrivacy);
 router.post("/privacy/update", adminController.updatePrivacy);
 router.get("/privacy/delete/:id", adminController.deletePrivacy);
 
+// faq
+router.get("/faq", adminController.getFaqPage);
+// add faq service
+router.post('/save_faq_type', adminController.saveFaqType);
+// add faq
+
+
+
+
+
+
 
 router.get("/hero", adminController.getHeroPage);
 router.post("/update-hero", adminController.postUpdateHero);
@@ -119,9 +137,17 @@ router.post('/visitor_doctor_update/:id', adminController.postVisitorDoctorUpdat
 
 router.get('/visitor_doctor_delete/:id', adminController.getVisitorDoctorDelete);
 
-router.post('/appointment-save', adminController.postAppointmentSave);
+// router.post('/appointment-save', adminController.postAppointmentSave); // Commented out - not implemented
 
 router.get('/appointments-list', adminController.getAppointmentsListPage);
+
+
+router.get('/appointments_cancel/:id', adminController.getCancelAppointment);
+
+router.get('/appointments_complete/:id', adminController.getCompleteAppointment);
+
+// router.get('/appointments-datefilter', adminController.getAppointmentsDateFilter);
+
 
 
 module.exports = router;

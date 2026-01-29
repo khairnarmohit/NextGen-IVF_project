@@ -1,0 +1,60 @@
+
+<%- include('navbar.ejs') %>
+
+<div class="container my-5">
+  <h2 class="mb-4">Manage FAQs</h2>
+
+  <!-- Buttons side by side -->
+  <div class="d-flex mb-3 gap-2">
+    <button class="btn btn-primary flex-fill" type="button" data-bs-toggle="collapse" data-bs-target="#faqTypeForm" aria-expanded="false" aria-controls="faqTypeForm">
+      Add FAQ Type
+    </button>
+    <button class="btn btn-success flex-fill" type="button" data-bs-toggle="collapse" data-bs-target="#faqForm" aria-expanded="false" aria-controls="faqForm">
+      Add FAQ
+    </button>
+  </div>
+
+  <!-- FAQ Type Form -->
+  <div class="collapse" id="faqTypeForm">
+    <div class="card card-body mb-3">
+      <form action="/admin/save_faq_type" method="POST">
+        <div class="mb-3">
+          <label for="faqService" class="form-label">FAQ Service Name</label>
+          <input type="text" class="form-control" id="faqService" name="faq_service" placeholder="Enter FAQ Service" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save FAQ Type</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FAQ Form -->
+  <div class="collapse" id="faqForm">
+    <div class="card card-body mb-3">
+      <form action="/admin/save_faq" method="POST">
+        <div class="mb-3">
+         <label for="faqTypeSelect" class="form-label">Select FAQ Type</label>
+<select class="form-select" id="faqTypeSelect" name="faq_type_id" required>
+  <option value="">-- Choose Type --</option>
+  <% faqTypes.forEach(type => { %>
+    <option value="<%= type.id %>"><%= type.faq_service %></option>
+  <% }) %>
+</select>
+
+        </div>
+        <div class="mb-3">
+          <label for="faqTitle" class="form-label">FAQ Title</label>
+          <input type="text" class="form-control" id="faqTitle" name="faq_title" placeholder="Enter FAQ Title" required>
+        </div>
+        <div class="mb-3">
+          <label for="faqDesc" class="form-label">FAQ Description</label>
+          <textarea class="form-control" id="faqDesc" name="faq_desc" rows="4" placeholder="Enter FAQ Description" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save FAQ</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+
+<%- include('footer.ejs') %>

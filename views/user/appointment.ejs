@@ -251,11 +251,11 @@
                             <div class="col-md-6">
                                 <label for="doctor_id" class="form-label">Select Doctor</label>
                             <select class="form-select" name="doctor_id">
-                            <option value="">Select Doctor</option>
+                            <!-- <option value="">Select Doctor</option> -->
 
                             <optgroup label="Our Doctors">
                                 <% for(let i=0;i<doctors.length;i++){ %>
-                                <option value="<%= doctors[i].doctor_id %>">
+                                <option value="d-<%= doctors[i].doctor_id %>">
                                     <%= doctors[i].doctor_name %>
                                 </option>
                                 <% } %>
@@ -263,7 +263,7 @@
 
                             <optgroup label="Visiting Doctors">
                                 <% for(let i=0;i<visitingDoctors.length;i++){ %>
-                                <option value="<%= visitingDoctors[i].visitor_doctor_id %>">
+                                <option value="v-<%= visitingDoctors[i].visitor_doctor_id %>">
                                     <%= visitingDoctors[i].visitor_doctor_name %>
                                 </option>
                                 <% } %>
