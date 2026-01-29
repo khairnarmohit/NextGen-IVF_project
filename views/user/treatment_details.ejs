@@ -1,0 +1,63 @@
+<%- include("navbar.ejs") %>
+
+<style>
+    body{
+        font-family: 'Poppins', sans-serif;
+    }
+    .about-section{
+        padding:60px 0;
+    }
+    .about-text{
+        font-size:17px;
+        line-height:1.8;
+        color:#555;
+    }
+    .about-img{
+        border-radius:12px;
+        object-fit:cover;
+        height:100%;
+    }
+</style>
+
+<section class="page-header text-center bg-body-secondary py-5 mb-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold text-dark mb-3 p-5">
+            <%= treatment.treatment_title %>
+        </h1>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item active"><a href="/treatments" class="text-decoration-none">Treatments</a></li>
+                <li class="breadcrumb-item active">
+                    <%= treatment.treatment_title %>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            
+            <!-- Image -->
+            <div class="col-lg-6 col-md-12">
+                <img 
+                  src="/uploads/<%= treatment.treatment_image %>" 
+                  class="img-fluid about-img w-100 h-100" 
+                  alt="<%= treatment.treatment_title %>">
+            </div>
+
+            <!-- Content -->
+            <div class="col-lg-6 col-md-12">
+                <p class="about-text">
+                    <%- treatment.treatment_long %>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<%- include("footer.ejs") %>

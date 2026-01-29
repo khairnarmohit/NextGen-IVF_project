@@ -1,0 +1,141 @@
+<%- include("navbar.ejs") %>
+
+<div class="container py-4">
+
+  <!-- Add Button -->
+  <div class="mb-3">
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="collapse"
+      data-bs-target="#addTreatmentForm"
+    >
+      <i class="fas fa-plus me-1"></i> Add Treatment
+    </button>
+  </div>
+
+  <!-- Collapse Form -->
+  <div class="collapse" id="addTreatmentForm">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Add New Treatment</h5>
+      </div>
+
+      <div class="card-body">
+        <form action="/admin/treatment_save" method="POST" enctype="multipart/form-data">
+
+          <!-- Row 1 -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Treatment Title</label>
+              <input type="text" name="treatment_title" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Short Description</label>
+              <input type="text" name="treatment_short" class="form-control" required>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Treatment Image</label>
+              <input type="file" name="treatment_image" class="form-control" accept="image/*" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Treatment Icon</label>
+              <input
+                type="text"
+                name="treatment_icon"
+                class="form-control"
+                placeholder='<i class="fas fa-dna"></i>'
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Long Description -->
+          <div class="mb-3">
+            <label class="form-label">Long Description</label>
+            <textarea
+            name="treatment_long"
+            id="treatment_long"
+            class="form-control"
+            rows="5"
+          ></textarea>
+          </div>
+
+          <!-- Submit -->
+          <div class="text-end">
+            <button type="submit" class="btn btn-success px-4">
+            <i class="fas fa-save me-1"></i> Save Treatment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container ">
+  <!-- <h3 class="mb-4">Treatments List</h3> -->
+
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="bg-primary text-white">
+      <tr>
+        <th>Sr.No</th>
+        <th>Image</th>
+        <th>Title</th>
+        <th>Short Desc</th>
+        <th>Icon</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% treatments.forEach((t, i) => { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td>
+            <img src="/uploads/<%= t.treatment_image %>" width="60">
+          </td>
+          <td><%= t.treatment_title %></td>
+          <td><%= t.treatment_short %></td>
+          <td class="text-primary fs-4"><%- t.treatment_icon %></td>
+          <td>
+            <a href="/admin/treatment_edit/<%= t.treatment_id %>" class="btn fw-bold btn-sm btn-warning"><i class="fa-regular fa-pen-to-square fw-bold"></i></a>
+            <a href="/admin/treatment_delete/<%= t.treatment_id %>" class="btn fw-bold btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this treatment?');"><i class="fa-regular fa-trash-can fw-bold"></i></a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+
+
+<script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+
+
+<script>
+  ClassicEditor.create(document.querySelector('#treatment_long'), {
+    toolbar: [
+      'heading',
+      'bold', 'italic', 'underline',
+      'bulletedList', 'numberedList',
+      'link',
+      'undo', 'redo'
+    ]
+  })
+  .then(editor => {
+    console.log('CKEditor loaded');
+  })
+  .catch(error => {
+    console.error(error);
+  });
+</script>
+
+
+
+<%- include("footer.ejs") %>

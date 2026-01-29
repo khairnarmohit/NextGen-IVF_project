@@ -1,9 +1,5 @@
 <%- include("navbar.ejs") %>
 
-<!-- <h1>Patient Review</h1> -->
-
-
-
 <div class="container mt-4">
         
     <div class="d-flex justify-content-start mb-3">
@@ -19,7 +15,6 @@
         <% } %>
     </div>
 
-    <!-- Add -->
     
     <div class="collapse mb-4 <%= editData ? 'd-none' : '' %>" id="addReviewCollapse">
         <div class="card shadow-sm border-primary">
@@ -42,11 +37,11 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Patient Name</label>
-                                    <input type="text" class="form-control" name="patients_review_name" placeholder="John Doe" required>
+                                    <input type="text" class="form-control" name="patients_review_name" placeholder="sakshi" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Location</label>
-                                    <input type="text" class="form-control" name="patients_review_address" placeholder="New York" required>
+                                    <input type="text" class="form-control" name="patients_review_address" placeholder="pune" required>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Description</label>
@@ -62,9 +57,7 @@
             </div>
         </div>
     </div>
-
-    <!-- edit -->
-    
+ 
     <% if(editData) { %>
         <div class="collapse mb-4 show">
             <div class="card shadow-sm border-warning">

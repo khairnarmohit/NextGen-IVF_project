@@ -1,45 +1,11 @@
 <%- include("navbar.ejs") %>
 
-
-
-<!-- 
-  1. Load Bootstrap CSS from CDN (Put this in your <head>) 
--->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-
-<!-- 
-  2. Load your custom CSS 
--->
 <link rel="stylesheet" href="hero_banner.css">
 
-<!-- <link rel="stylesheet" href="home.css"> -->
-<!-- About CSS -->
+<link rel="stylesheet" href="/css/home.css">
 
-   <!-- <link rel="stylesheet" href="/css/about.css" /> -->
-
-   <!-- footer -->
-    <!-- <link rel="stylesheet" href="/css/footer.css"> -->
-
-   <!-- <link rel="stylesheet" href="/css/about.css" /> -->
-
-   
-   <!-- <link rel="stylesheet" href="/css/hero_banner.css" /> -->
-
-   <!-- hoem -->
-
-   <link rel="stylesheet" href="/css/home.css">
-
-
-
-<!-- hero banner -->
 <section class="video-hero-container">
-    
-    <!-- Background Video -->
-    <!-- 
-       CHANGES:
-       1. Added preload="auto": Forces immediate buffering.
-       2. poster: This is the image shown while video loads (or on mobile).
-    -->
+   
     <video 
       class="video-background" 
       preload="auto" 
@@ -49,19 +15,15 @@
       playsinline 
       poster="/uploads/baby_crawl_image.jpeg"
     >
-        <!-- 
-           IMPORTANT: If the image path above is wrong, you might still see black.
-           For testing, you can use a placeholder URL:
-           poster="https://picsum.photos/seed/babyvideo/1920/1080"
-        -->
+        
         <source src="/uploads/baby_crawl_video.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
-    <!-- Dark Overlay -->
+    Dark Overlay
     <div class="overlay"></div>
 
-    <!-- Content Wrapper -->
+    Content Wrapper
     <div class="container h-100 content-wrapper">
         <div class="row h-100 align-items-center">
             
@@ -82,17 +44,14 @@
 
 <section class="section-padding" id="history">
     <div class="container">
-        <!-- <h1 class="About_text text-primary">About Us</h1> -->
+        <h1 class="About_text text-primary">About Us</h1>
         <div class="row align-items-center">
             
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <div class="history-content pe-lg-4">
                     <span class="section-subtitle">Our About</span>
                     <h2 class="section-title mb-4">NextGen IVF Center</h2>
-                    <!-- <div class="position-relative">
-                        
-                        <p class="lead text-secondary mb-4">Founded with a vision to bring world-class fertility care to our community.</p>
-                    </div> -->
+                   
                     <p class="text-secondary mb-4">
                         NextGen IVF started as a small clinic with a big dream: to make the joy of parenthood accessible to everyone. Over the years, we have grown into a state-of-the-art fertility center, pioneering advanced reproductive technologies and maintaining one of the highest success rates in the region.
                     </p>
@@ -106,7 +65,6 @@
             </div>
             <div class="col-lg-6">
                 <div class="img-frame">
-                    <!-- Placeholder for History Photo -->
                     <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="NextGen IVF History" class="img-fluid about_image">
                 </div>
             </div>

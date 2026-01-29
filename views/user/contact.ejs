@@ -419,9 +419,7 @@
               <h5>Our Location</h5>
               <!-- <p>Visit us at our clinic for personalized consultation and care.</p> -->
               <div class="highlight">
-                123 Ipsum Road, Loremton<br>
-                Dolorshire L01 2RM<br>
-                United Kingdom
+                <%= contact[0].address %>
               </div>
             </div>
 
@@ -433,8 +431,9 @@
               <h5>Call or Email</h5>
               <p>Reach out for personalized IVF support and consultation.</p>
               <div class="highlight">
-                <i class="fas fa-phone-alt me-2"></i> +91 7020399653<br>
-                <i class="fas fa-envelope me-2"></i> info@domainname.com
+                <i class="fas fa-phone-alt me-2"></i> +91 <%= contact[0].phone %><br>
+                  <i class="fas fa-envelope me-2"></i>
+                  <%= contact[0].email %>
               </div>
             </div>
 
@@ -448,15 +447,24 @@
               <ul class="hours-list">
                 <li>
                   <span class="day">Monday - Friday</span>
-                  <span class="time">08:00 - 22:00</span>
+                  <span class="time">
+                    <%= contact[0].mon_start.substring(0,5) %> -
+                      <%= contact[0].mon_end.substring(0,5) %>
+                  </span>
                 </li>
                 <li>
                   <span class="day">Saturday</span>
-                  <span class="time">08:00 - 17:00</span>
+                  <span class="time">
+                    <%= contact[0].sat_start.substring(0,5) %> -
+                      <%= contact[0].sat_end.substring(0,5) %>
+                  </span>
                 </li>
                 <li>
                   <span class="day">Sunday</span>
-                  <span class="time">08:00 - 14:00</span>
+                  <span class="time">
+                    <%= contact[0].sun_start.substring(0,5) %> -
+                      <%= contact[0].sun_end.substring(0,5) %>
+                  </span>
                 </li>
               </ul>
             </div>
@@ -466,48 +474,21 @@
 
 
               <div class="social-icons">
-                <a href="#" class="social-icon facebook" aria-label="Facebook">
+                <a href="<%= contact[0].facebook %>" target="_blank" class="social-icon facebook" aria-label="Facebook">
                   <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="#" class="social-icon instagram" aria-label="Instagram">
+                <a href="<%= contact[0].instagram %>" target="_blank" class="social-icon instagram"
+                  aria-label="Instagram">
                   <i class="fab fa-instagram"></i>
                 </a>
-                <a href="#" class="social-icon youtube" aria-label="YouTube">
+                <a href="<%= contact[0].youtube %>" target="_blank" class="social-icon youtube" aria-label="YouTube">
                   <i class="fab fa-youtube"></i>
                 </a>
-                <a href="#" class="social-icon twitter" aria-label="Twitter">
+                <a href="<%= contact[0].twitter %>" target="_blank" class="social-icon twitter" aria-label="Twitter">
                   <i class="fab fa-twitter"></i>
                 </a>
 
-
-  </div>
-        </div>
-      </div>
-      
-      <!-- Right Side - Contact Form -->
-      <div class="col-lg-8">
-  <div class="contact-form-wrapper">
-    <h2>Send Us a Message</h2>
-    <p class="form-subtitle">
-      Have questions or need assistance? Fill out the form below and our team will get back to you within 24 hours.
-    </p>
-
-    <form  method="post" action="/save-enquiry">
-      <div class="row g-4">
-
-        <!-- First Name -->
-        <div class="col-md-6">
-          <label class="form-label">First Name *</label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="Enter your first name"
-                 name="enquiry_first"
-                 required
-                 >
-
               </div>
-
-
             </div>
           </div>
         </div>
@@ -525,22 +506,25 @@
               <div class="row g-4">
                 <div class="col-md-6">
                   <label class="form-label">First Name *</label>
-                  <input type="text" class="form-control" placeholder="Enter your first name" required>
+                  <input type="text" class="form-control" placeholder="Enter your first name" autocomplete="off"
+                    required>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label">Last Name *</label>
-                  <input type="text" class="form-control" placeholder="Enter your last name" required>
+                  <input type="text" class="form-control" placeholder="Enter your last name" autocomplete="off"
+                    required>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label">Email Address *</label>
-                  <input type="email" class="form-control" placeholder="your.email@example.com" required>
+                  <input type="email" class="form-control" placeholder="your.email@example.com" autocomplete="off"
+                    required>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label">Phone Number *</label>
-                  <input type="tel" class="form-control" placeholder="+91 00000 00000" required>
+                  <input type="tel" class="form-control" placeholder="00000 00000" autocomplete="off" required>
                 </div>
 
                 <div class="col-12">
@@ -567,7 +551,8 @@
                   <div class="form-check mb-4">
                     <input class="form-check-input" type="checkbox" id="consent" required>
                     <label class="form-check-label" for="consent">
-                      I agree to the privacy policy and terms of service
+                      I agree to the <a class="text-decoration-none" href="/privacy">privacy policy</a> and <a
+                        class="text-decoration-none" href="/terms">terms of service</a>
                     </label>
                   </div>
 
@@ -579,156 +564,17 @@
             </form>
             <section class="map-section">
               <div class="map-wrapper">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.490950783924!2d74.72815460566439!3d19.105421312773604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdcb17ca9d749e5%3A0x516744f9b2f35ec9!2sA2Z%20IT%20HUB%20PVT.%20LTD.!5e1!3m2!1sen!2sin!4v1769189574450!5m2!1sen!2sin"
-                  loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>
-                </iframe>
+                <%- contact[0].map_address %>
               </div>
             </section>
 
           </div>
-
         </div>
-
-        <!-- Last Name -->
-        <div class="col-md-6">
-          <label class="form-label">Last Name *</label>
-          <input type="text"
-                 class="form-control"
-                 placeholder="Enter your last name"
-                 name="enquiry_last"
-                  required
-                >
-        </div>
-
-        <!-- Email -->
-        <div class="col-md-6">
-          <label class="form-label">Email Address *</label>
-          <input type="email"
-                 class="form-control"
-                 placeholder="your.email@example.com"
-                 name="enquiry_email"
-                  required
-                 >
-        </div>
-
-        <!-- Phone -->
-        <div class="col-md-6">
-          <label class="form-label">Phone Number *</label>
-          <input type="tel"
-                 class="form-control"
-                 placeholder="+91 00000 00000"
-                 name="enquiry_number"
-                  required
-                >
-        </div>
-
-        <!-- Subject -->
-        <div class="col-12">
-          <label class="form-label">Subject *</label>
-          <select class="form-select"
-                  name="enquiry_subject"
-                   required
-                >
-            <option value="" disabled selected>Select a subject</option>
-            <option value="Schedule an Appointment">Schedule an Appointment</option>
-            <option value="Initial Consultation">Initial Consultation</option>
-            <option value="Treatment Information">Treatment Information</option>
-            <option value="Billing & Insurance">Billing & Insurance</option>
-            <option value="General Inquiry">General Inquiry</option>
-            <option value="Feedback">Feedback</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <!-- Message -->
-        <div class="col-12">
-          <label class="form-label">Message *</label>
-          <textarea class="form-control"
-                    rows="6"
-                    placeholder="Please tell us how we can help you..."
-                    name="enquiry_message"
-                     required
-                   ></textarea>
-        </div>
-
-        <!-- Consent + Submit -->
-        <div class="col-12">
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="consent" required>
-            <label class="form-check-label" for="consent">
-              I agree to the privacy policy and terms of service
-            </label>
-          </div>
-
-          <button type="submit" class="btn-submit">
-            <i class="fas fa-paper-plane me-2"></i> Send Message
-          </button>
-        </div>
-
       </div>
-    </form>
-
-    <!-- Map -->
-    <section class="map-section">
-      <div class="map-wrapper">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.490950783924!2d74.72815460566439!3d19.105421312773604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdcb17ca9d749e5%3A0x516744f9b2f35ec9!2sA2Z%20IT%20HUB%20PVT.%20LTD.!5e1!3m2!1sen!2sin!4v1769189574450!5m2!1sen!2sin"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </section>
-
-  </div>
-</div>
-
     </div>
   </section>
 
   <script>
-    // Form submission handler
-    document.getElementById('contactForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      // Basic validation
-      const requiredFields = this.querySelectorAll('[required]');
-      let valid = true;
-
-      requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-          valid = false;
-          field.classList.add('is-invalid');
-        } else {
-          field.classList.remove('is-invalid');
-        }
-      });
-
-      if (!valid) {
-        alert('Please fill in all required fields.');
-        return;
-      }
-
-      // Get form data
-      const formData = {
-        firstName: this.querySelector('input[type="text"]:nth-of-type(1)').value,
-        lastName: this.querySelector('input[type="text"]:nth-of-type(2)').value,
-        email: this.querySelector('input[type="email"]').value,
-        phone: this.querySelector('input[type="tel"]').value,
-        subject: this.querySelector('select').value,
-        message: this.querySelector('textarea').value
-      };
-
-      // Simulate form submission
-      console.log('Form submitted:', formData);
-
-      // Show success message
-      alert('Thank you for your message! We will get back to you within 24 hours.');
-
-      // Reset form
-      this.reset();
-    });
 
     // Add smooth scrolling
     document.addEventListener('DOMContentLoaded', function () {
