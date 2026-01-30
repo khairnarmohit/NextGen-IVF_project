@@ -180,17 +180,6 @@ exports.getPrivacyPage = (req, res) => {
   }
 };
 
-
-// exports.getAppointmentPage = async (req, res) => {
-//   try{
-//     var sql = "SELECT * FROM doctors";
-//     const doctors = await exe(sql);
-//     res.render("user/appointment", { doctors });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "Appointment Page Error" });
-//   }
-// };
 exports.getAppointmentPage = async (req, res) => {
   try {
     // Our Doctors
@@ -213,49 +202,6 @@ exports.getAppointmentPage = async (req, res) => {
     });
   }
 };
-
-// exports.saveAppointment = async (req, res) => {
-//   try {
-//     const {
-//       patient_fullname,
-//       patient_email,
-//       patient_mobile,
-//       patient_gender,
-//       patient_age,
-//       doctor_id,
-//       appointment_date
-//     } = req.body;
-
-//     // Parse doctor_id: 'd-1' for doctors, 'v-2' for visiting doctors
-//     let parsedDoctorId = null;
-//     if (doctor_id) {
-//       const [type, id] = doctor_id.split('-');
-//       parsedDoctorId = parseInt(id);  // store positive ID for both types
-//     }
-
-//     const sql = `
-//       INSERT INTO appointments
-//       (patient_fullname, patient_email, patient_mobile, patient_gender, patient_age, doctor_id, appointment_date)
-//       VALUES (?, ?, ?, ?, ?, ?, ?)
-//     `;
-
-//     await exe(sql, [
-//       patient_fullname,
-//       patient_email,
-//       patient_mobile,
-//       patient_gender,
-//       patient_age,
-//       parsedDoctorId,
-//       appointment_date
-//     ]);
-
-//     res.redirect("/appointment");
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Appointment insert error");
-//   }
-// };
 
 
 exports.saveAppointment = async (req, res) => {
@@ -331,7 +277,11 @@ exports.getTermsPage = (req, res) => {
 exports.getHomePage = async (req, res) => {
   try {
     var sql = "SELECT * FROM hero WHERE hero_id = 1";
+    var treatment = "SELECT * FROM treatments LIMIT 3";
+    var doctors = "SELECT * FROM doctors LIMIT 3";
     var hero_info = await exe(sql);
+    var treatments = await exe(treatment);
+    var doctors = await exe(doctors);
 
     if (hero_info.length == 0) {
       hero_info = [{
@@ -341,7 +291,7 @@ exports.getHomePage = async (req, res) => {
     } else {
       hero_info = hero_info[0];
     }
-    res.render("user/home", { hero_info });
+    res.render("user/home", { hero_info, treatments, doctors });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Home Page Error" });

@@ -1281,4 +1281,239 @@ exports.getCompleteAppointment = async (req, res) => {
   }
 };
 
+exports.getCompletedAppointmentsPage = async (req, res) => {
+  try {
+    const date = req.query.date;
+    const doctor = req.query.doctor;
 
+    // ----------- APPOINTMENT LIST -----------
+    let sql = `
+      SELECT 
+        a.*,
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'completed'
+    `;
+
+    let params = [];
+
+    if (date) {
+      sql += ` AND DATE(a.appointment_date) = ? `;
+      params.push(date);
+    }
+
+    sql += ` ORDER BY a.patient_id ASC `;
+    const appointments = await exe(sql, params);
+
+    // ----------- DOCTOR SUMMARY -----------
+    let summarySql = `
+      SELECT 
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name,
+        COUNT(*) AS total
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'completed'
+    `;
+
+    let summaryParams = [];
+
+    if (date) {
+      summarySql += ` AND DATE(a.appointment_date) = ? `;
+      summaryParams.push(date);
+    }
+
+    summarySql += ` GROUP BY doctor_name `;
+    const doctorSummary = await exe(summarySql, summaryParams);
+
+    // ----------- RENDER -----------
+    res.render("admin/appointments-completed", {
+      appointments,
+      doctorSummary,
+      selectedDate: date,
+      selectedDoctor: doctor 
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Appointments List Page Error"
+    });
+  }
+};
+
+// exports.getCancelledAppointmentsPage = async (req, res) => {
+//   try {
+//     const sql = `
+
+exports.getCancelledAppointmentsPage = async (req, res) => {
+  try {
+    const date = req.query.date;
+    const doctor = req.query.doctor;
+
+    // ----------- APPOINTMENT LIST -----------
+    let sql = `
+      SELECT 
+        a.*,
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'cancelled'
+    `;
+
+    let params = [];
+
+    if (date) {
+      sql += ` AND DATE(a.appointment_date) = ? `;
+      params.push(date);
+    }
+
+    sql += ` ORDER BY a.patient_id ASC `;
+    const appointments = await exe(sql, params);
+
+    // ----------- DOCTOR SUMMARY -----------
+    let summarySql = `
+      SELECT 
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name,
+        COUNT(*) AS total
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'cancelled'
+    `;
+
+    let summaryParams = [];
+
+    if (date) {
+      summarySql += ` AND DATE(a.appointment_date) = ? `;
+      summaryParams.push(date);
+    }
+
+    summarySql += ` GROUP BY doctor_name `;
+    const doctorSummary = await exe(summarySql, summaryParams);
+
+    // ----------- RENDER -----------
+    res.render("admin/appointments-cancelled", {
+      appointments,
+      doctorSummary,
+      selectedDate: date,
+      selectedDoctor: doctor 
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Appointments List Page Error"
+    });
+  }
+};
+
+// exports.getAppointmentPage = async (req, res) => {
+//   try {
+//     res.render("admin/appointment-add");
+//   } catch (error) { 
+//     console.error(error);
+//     res.status(500).render("error", { message: "Appointment Page Error" });
+//   }
+// };
+
+exports.getAppointmentPage = async (req, res) => {
+  try {
+    // Our Doctors
+    const doctorsSql = "SELECT * FROM doctors";
+    const doctors = await exe(doctorsSql);
+
+    // Visiting Doctors
+    const visitingSql = "SELECT * FROM visitor_doctors";
+    const visitingDoctors = await exe(visitingSql);
+
+    res.render("admin/appointment-add", {
+      doctors,
+      visitingDoctors
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Appointment Page Error"
+    });
+  }
+};
+
+exports.postAppointmentSave = async (req, res) => {
+  try {
+    const {
+      patient_fullname,
+      patient_email,
+      patient_mobile,
+      patient_gender,
+      patient_age,
+      doctor_id,
+      appointment_date
+    } = req.body;
+
+    let doctorId = null;
+    let visitorDoctorId = null;
+
+    if (doctor_id) {
+      const [type, id] = doctor_id.split("-");
+
+      if (type === "d") {
+        doctorId = parseInt(id);
+      } else if (type === "v") {
+        visitorDoctorId = parseInt(id);
+      }
+    }
+
+    const sql = `
+      INSERT INTO appointments
+      (
+        patient_fullname,
+        patient_email,
+        patient_mobile,
+        patient_gender,
+        patient_age,
+        doctor_id,
+        visitor_doctor_id,
+        appointment_date
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    await exe(sql, [
+      patient_fullname,
+      patient_email,
+      patient_mobile,
+      patient_gender,
+      patient_age,
+      doctorId,
+      visitorDoctorId,
+      appointment_date
+    ]);
+
+    res.redirect("/admin/appointments-list");
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Appointment insert error");
+  }
+};
