@@ -1,7 +1,8 @@
 var exe = require("../model/conn.js");
+var nodemailer = require("nodemailer");
 
 exports.getAboutPage = async (req, res) => {
-  try{
+  try {
     var sql = "SELECT * FROM about WHERE about_id = ?";
     var aboutinfo = await exe(sql, [1]);
 
@@ -14,7 +15,14 @@ exports.getAboutPage = async (req, res) => {
     var sql4 = "SELECT * FROM whychooseus";
     var whychooseus = await exe(sql4);
 
-    var packet = { aboutinfo, vision_mission, director_msg, whychooseus };
+    var sql5 = "SELECT * FROM achievements";
+    var achievements = await exe(sql5);
+
+     var sql5 = "SELECT * FROM awards";
+    var awards = await exe(sql5);
+
+
+    var packet = { aboutinfo, vision_mission, director_msg, whychooseus,achievements,awards };
     console.log(packet);
     res.render("user/about", packet);
   } catch (error) {
@@ -29,13 +37,12 @@ exports.getTreatmentPage = async (req, res) => {
     const treatments = await exe(sql);
 
     res.render("user/treatments", {
-      treatments: treatments
+      treatments: treatments,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Treatment Page Error"
+      message: "Treatment Page Error",
     });
   }
 };
@@ -49,15 +56,16 @@ exports.getTreatmentDetailsPage = async (req, res) => {
       res.status(404).render("error", { message: "Treatment Not Found" });
     } else {
       res.render("user/treatment_details", {
-        treatment: results[0]
+        treatment: results[0],
       });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).render("error", { message: "Treatment Details Page Error" });
+    res
+      .status(500)
+      .render("error", { message: "Treatment Details Page Error" });
   }
 };
-
 
 // exports.getDoctorsPage = async (req, res) => {
 //   try {
@@ -84,23 +92,18 @@ exports.getDoctorsPage = async (req, res) => {
 
     res.render("user/doctors", {
       doctors,
-      visitingDoctors
+      visitingDoctors,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Doctors Page Error"
+      message: "Doctors Page Error",
     });
   }
 };
 
-
-
-
-
 exports.getContactPage = async (req, res) => {
-  try{
+  try {
     var sql = "SELECT * FROM contact Where contact_id = 2";
     var contact = await exe(sql);
     var packet = { contact };
@@ -119,7 +122,7 @@ exports.saveEnquiry = async (req, res) => {
       enquiry_email,
       enquiry_number,
       enquiry_subject,
-      enquiry_message
+      enquiry_message,
     } = req.body;
 
     // First + Last combine
@@ -136,24 +139,19 @@ exports.saveEnquiry = async (req, res) => {
       enquiry_email,
       enquiry_number,
       enquiry_subject,
-      enquiry_message
+      enquiry_message,
     ]);
 
     // success redirect
     res.redirect("/contact");
-
   } catch (error) {
     console.error(error);
     res.status(500).send("Enquiry insert error");
   }
 };
 
-
-
-
-
 exports.getPatientStoriesPage = (req, res) => {
-  try{
+  try {
     res.render("user/patient_stories");
   } catch (error) {
     console.error(error);
@@ -162,9 +160,20 @@ exports.getPatientStoriesPage = (req, res) => {
 };
 
 
-exports.getFaqPage = (req, res) => {
-  try{
-    res.render("user/faq");
+exports.getFaqPage = async (req, res) => {
+  try {
+    const faqs = await exe(`
+      SELECT 
+        f.faq_id,
+        f.faq_title,
+        f.faq_desc,
+        t.faq_service
+      FROM faq f
+      JOIN faq_type t ON f.faq_type_id = t.faq_type_id
+      ORDER BY t.faq_type_id, f.faq_id
+    `);
+
+    res.render("user/faq", { faqs });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "FAQ Page Error" });
@@ -172,6 +181,17 @@ exports.getFaqPage = (req, res) => {
 };
 
 
+
+
+
+exports.getPrivacyPage = (req, res) => {
+  try {
+    res.render("user/privacy");
+  } catch (error) {
+    console.error(error);
+    res.status(50).render("error", { message: "Privacy Page Error" });
+  }
+};
 
 
 // exports.getAppointmentPage = async (req, res) => {
@@ -184,6 +204,9 @@ exports.getFaqPage = (req, res) => {
 //     res.status(500).render("error", { message: "Appointment Page Error" });
 //   }
 // };
+
+
+
 exports.getAppointmentPage = async (req, res) => {
   try {
     // Our Doctors
@@ -196,16 +219,16 @@ exports.getAppointmentPage = async (req, res) => {
 
     res.render("user/appointment", {
       doctors,
-      visitingDoctors
+      visitingDoctors,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Appointment Page Error"
+      message: "Appointment Page Error",
     });
   }
 };
+
 
 // exports.saveAppointment = async (req, res) => {
 //   try {
@@ -253,6 +276,7 @@ exports.getAppointmentPage = async (req, res) => {
 
 exports.saveAppointment = async (req, res) => {
   try {
+    var patientemail = req.body.patient_email;
     const {
       patient_fullname,
       patient_email,
@@ -260,7 +284,7 @@ exports.saveAppointment = async (req, res) => {
       patient_gender,
       patient_age,
       doctor_id,
-      appointment_date
+      appointment_date,
     } = req.body;
 
     let doctorId = null;
@@ -276,6 +300,7 @@ exports.saveAppointment = async (req, res) => {
       }
     }
 
+    // Insert Appointment
     const sql = `
       INSERT INTO appointments
       (
@@ -299,11 +324,95 @@ exports.saveAppointment = async (req, res) => {
       patient_age,
       doctorId,
       visitorDoctorId,
-      appointment_date
+      appointment_date,
     ]);
 
-    res.redirect("/appointment");
+    // Get Doctor / Visitor Doctor Name
+    let doctor_name = "Not Assigned";
 
+    if (doctorId) {
+      var sql2 = "SELECT doctor_name FROM doctors WHERE doctor_id = ?";
+      var doctor = await exe(sql2, [doctorId]);
+      doctor_name = doctor[0].doctor_name;
+    } else if (visitorDoctorId) {
+      var sql2 =
+        "SELECT visitor_doctor_name FROM visitor_doctors WHERE visitor_doctor_id = ?";
+      var doctor = await exe(sql2, [visitorDoctorId]);
+      doctor_name = doctor[0].visitor_doctor_name;
+    }
+
+    // Format Appointment Date
+    const formattedDate = new Date(appointment_date).toDateString();
+
+    // Nodemailer Transport (FIXED PORT)
+    var transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587, // ✅ Correct Port
+      secure: false,
+      auth: {
+        user: "magarlalitnandkumar@gmail.com",
+        pass: "srkx knhn nzvb kidr", // App Password
+      },
+    });
+
+    // Designed Email
+    const mailOptions = {
+      from: "NextGen IVF Center <magarlalitnandkumar@gmail.com>",
+      to: patientemail,
+      subject: "Your Apointment Book Successfully - NextGen IVF Center",
+      html: `
+        <div style="font-family: Arial, sans-serif; background:#f9f9f9; padding:20px;">
+          <div style="max-width:600px; margin:auto; background:#ffffff; padding:25px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+            
+            <h2 style="color:#0d6efd; text-align:center;">
+              Appointment Confirmed ✅
+            </h2>
+
+            <p>Dear <strong>${patient_fullname}</strong>,</p>
+
+            <p>Your appointment is Booked successfully scheduled at 
+            <strong>NextGen IVF Center</strong>. Please find the details below:</p>
+
+            <table style="width:100%; border-collapse:collapse; margin-top:15px;">
+             <tr>
+                <td style="padding:8px; border:1px solid #ddd;"><strong>Patient Name</strong></td>
+                <td style="padding:8px; border:1px solid #ddd;">${patient_fullname}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid #ddd;"><strong>Doctor</strong></td>
+                <td style="padding:8px; border:1px solid #ddd;">${doctor_name}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px; border:1px solid #ddd;"><strong>Appointment Date</strong></td>
+                <td style="padding:8px; border:1px solid #ddd;">${formattedDate}</td>
+              </tr>
+             
+            </table>
+
+            <p style="margin-top:20px;">
+              Please arrive 10 minutes early and carry any previous medical reports if available.
+            </p>
+
+            <p>
+              If you have any questions, feel free to contact us.
+            </p>
+
+            <hr>
+
+            <p style="font-size:13px; color:#666; text-align:center;">
+              Thank you for choosing <strong>NextGen IVF Center</strong><br>
+              📞 +91-7020399653 | 📧 lalitmagar1729@gmail.com
+            </p>
+
+          </div>
+        </div>
+      `,
+    };
+
+    // Send Email (ONLY ONCE)
+    await transporter.sendMail(mailOptions);
+
+    res.redirect("/appointment");
   } catch (error) {
     console.error(error);
     res.status(500).send("Appointment insert error");
@@ -311,23 +420,35 @@ exports.saveAppointment = async (req, res) => {
 };
 
 
-
-
+exports.getTermsPage = (req, res) => {
+  try {
+    res.render("user/terms");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Terms Page Error" });
+  }
+};
 
 exports.getHomePage = async (req, res) => {
   try {
     var sql = "SELECT * FROM hero WHERE hero_id = 1";
+    var treatment = "SELECT * FROM treatments LIMIT 3";
+    var doctors = "SELECT * FROM doctors LIMIT 3";
     var hero_info = await exe(sql);
+    var treatments = await exe(treatment);
+    var doctors = await exe(doctors);
 
     if (hero_info.length == 0) {
-      hero_info = [{
-        hero_heading: "Helping you build of the family of your dreams!",
-        hero_background: "baby_crawl_video.mp4" 
-      }];
+      hero_info = [
+        {
+          hero_heading: "Helping you build of the family of your dreams!",
+          hero_background: "baby_crawl_video.mp4",
+        },
+      ];
     } else {
       hero_info = hero_info[0];
     }
-    res.render("user/home", { hero_info });
+    res.render("user/home", { hero_info, treatments, doctors });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Home Page Error" });
@@ -335,29 +456,18 @@ exports.getHomePage = async (req, res) => {
 };
 
 
-
-
-
-
-
-
-
 exports.getPatientStoriesPage = async (req, res) => {
   try {
     var sql = "SELECT * FROM patients_review ORDER BY patients_review_id DESC";
     var stories = await exe(sql);
-    var packet = {stories};
-
-    // console.log(stories)
-
+    var packet = { stories };
+    console.log(stories);
     res.render("user/patient_stories", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Patient Stories Page Error" });
   }
 };
-
-
 
 
 
@@ -382,3 +492,4 @@ exports.getTermsPage = async (req, res) => {
     res.status(500).render("error", { message: "Terms Page Error" });
   }
 };
+

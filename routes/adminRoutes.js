@@ -3,9 +3,22 @@ const router = express.Router();
 
 var adminController = require("../controllers/adminController");
 
-router.get("/", adminController.getAdminDashboard);
 
-router.get("/about-us", adminController.getAboutUsPage);
+function isLoggedIn(req, res, next) {
+  if (req.session.admin) {
+     next();
+  }else{
+    res.redirect("/admin/login");
+  }
+}
+
+router.get("/login", adminController.getLoginPage);
+
+router.post("/login", adminController.postLogin);
+
+router.get("/", isLoggedIn, adminController.getAdminDashboard);
+
+router.get("/about-us", isLoggedIn, adminController.getAboutUsPage);
 
 router.post("/update-about", adminController.postUpdateAbout);
 
@@ -51,10 +64,7 @@ router.get("/patient-review", adminController.getPatientReviewPage);
 // gallery secrion
 router.get("/gallery", adminController.getGalleryPage);
 
-
-
 router.get("/privacy", adminController.getPrivacyPage);
-
 
 router.get("/treatment", adminController.getTreatmentPage);
 
@@ -152,7 +162,13 @@ router.get('/appointments_cancel/:id', adminController.getCancelAppointment);
 
 router.get('/appointments_complete/:id', adminController.getCompleteAppointment);
 
-// router.get('/appointments-datefilter', adminController.getAppointmentsDateFilter);
+router.get('/appointments-completed', adminController.getCompletedAppointmentsPage);
+
+router.get('/appointments-cancelled', adminController.getCancelledAppointmentsPage);
+
+router.get('/appointment', adminController.getAppointmentPage);
+
+router.post('/appointment-save', adminController.postAppointmentSave);
 
 
 

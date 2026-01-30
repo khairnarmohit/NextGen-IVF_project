@@ -1,8 +1,59 @@
 var exe = require("../model/conn.js");
 
-exports.getAdminDashboard = (req, res) => {
+
+exports.getLoginPage = (req, res) => {
+  try{
+    res.render("admin/login", { message: null });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Login Page Error" });
+  }
+};
+
+exports.postLogin = async (req, res) => {
+  try{
+    var {email, password} = req.body;
+    var sql = "SELECT * FROM admin WHERE email = ?";
+    var admin = await exe(sql, [email]);
+    if(admin.length > 0){
+      if(admin[0].password == password){
+        req.session.admin = admin[0].email;
+        // console.log(req.session.admin);
+        res.redirect("/admin");
+      }else{
+        res.status(401).render("admin/login", { message: "Invalid Email or Password" });
+      }
+    }else{
+      res.status(401).render("admin/login", { message: "Invalid Email or Password" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Login Page Error" });
+  }
+};
+
+
+exports.getAdminDashboard = async (req, res) => {
   try {
-    res.render('admin/dashboard');
+    var sql = "SELECT Count(*) AS total_appointments FROM appointments";
+    var appointments = await exe(sql);
+
+    var sql2 =
+      "SELECT Count(*) As todays_appointments FROM appointments WHERE appointment_date = CURDATE()";
+    var todays_appointments = await exe(sql2);
+
+    var sql3 = `SELECT COUNT(*) AS pending_appointments FROM appointments WHERE appointment_date = CURDATE() AND status = 'pending'`;
+    var pending_appointments = await exe(sql3);
+
+    var sql4 = "SELECT Count(*) As patients_review FROM patients_review";
+    var patient_reviews = await exe(sql4);
+
+    var sql5 = "SELECT Count(*) as enquiry FROM enquiry";
+    var enquiry = await exe(sql5);
+
+    var packet = { appointments, todays_appointments, pending_appointments, patient_reviews, enquiry };
+
+    res.render("admin/dashboard", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Admin Dashboard Page Error" });
@@ -97,14 +148,7 @@ exports.postUpdatePhilosophy = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 exports.getDirectorsMessagePage = async (req, res) => {
-
   try {
     var sql = "SELECT * FROM director_msg WHERE director_msg_id = 1";
     var director_msg_info = await exe(sql);
@@ -360,15 +404,36 @@ exports.getDeleteMilestones = async (req, res) => {
 
 exports.postSaveAwards = async (req, res) => {
   try {
-    var data = req.body;
-    var sql =
-      "INSERT INTO awards (award_title, award_desc, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?)";
+   var data = req.body;
+
+    // image upload
+    let filename = "";
+
+    if (req.files && req.files.award_img) {
+      const image = req.files.award_img;
+      filename = Date.now() + "_" + image.name;
+      await image.mv("public/uploads/" + filename);
+    }
+   var sql =
+"INSERT INTO awards (award_title, award_desc, award_img, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?, ?)";
+
+await exe(sql, [
+  data.award_title,
+  data.award_desc,
+  filename,
+  data.award_issue,
+  data.award_year,
+  data.award_icon
+]);
+ var sql =
+      "INSERT INTO awards (award_title, award_desc,award_img, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?)";
     var result = await exe(sql, [
       data.award_title,
       data.award_desc,
       data.award_issue,
       data.award_year,
       data.award_icon,
+      filename
     ]);
     if (result.affectedRows == 0) {
       res.status(400).render("error", { message: "Failed to save Awards" });
@@ -397,26 +462,41 @@ exports.getEditAwardsPage = async (req, res) => {
 exports.postUpdateAwards = async (req, res) => {
   try {
     var data = req.body;
-    var sql =
-      "UPDATE awards SET award_title = ?, award_desc = ?, award_issue = ?, award_year = ?, award_icon = ? WHERE award_id = ?";
-    var result = await exe(sql, [
+    let filename = data.old_img;
+
+   if (req.files && req.files.award_img) {
+      filename = Date.now() + "-" + req.files.award_img.name;
+      await req.files.award_img.mv("public/uploads/" + filename);
+    }
+
+    var sql = `
+      UPDATE awards SET
+        award_title = ?,
+        award_img = ?,
+        award_desc = ?,
+        award_issue = ?,
+        award_year = ?,
+        award_icon = ?
+      WHERE award_id = ?
+    `;
+
+    await exe(sql, [
       data.award_title,
+      filename,
       data.award_desc,
       data.award_issue,
       data.award_year,
       data.award_icon,
-      data.award_id,
+      data.award_id
     ]);
-    if (result.affectedRows == 0) {
-      res.status(400).render("error", { message: "Failed to update Awards" });
-    } else {
-      res.redirect("/admin/achievements");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Update Awards Page Error" });
+
+    res.redirect("/admin/achievements");
+
+  } catch (err) {
+    console.log(err);
   }
 };
+
 
 exports.getDeleteAwards = async (req, res) => {
   try {
@@ -443,27 +523,17 @@ exports.getPatientReviewPage = (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
 exports.getGalleryPage = async (req, res) => {
   try {
-    var sql ="SELECT * FROM gallery";
-   var gallery = await exe(sql);
-   var packet = {gallery};
-    res.render("admin/gallery",packet);
+    var sql = "SELECT * FROM gallery";
+    var gallery = await exe(sql);
+    var packet = { gallery };
+    res.render("admin/gallery", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Gallery Page Error" });
   }
 };
-
 
 exports.getContactPage = async (req, res) => {
   try {
@@ -476,7 +546,6 @@ exports.getContactPage = async (req, res) => {
     res.status(500).render("error", { message: "Contact Page Error" });
   }
 };
-
 
 exports.postUpdateContact = async (req, res) => {
   try {
@@ -507,7 +576,7 @@ exports.postUpdateContact = async (req, res) => {
       data.instagram,
       data.youtube,
       data.twitter,
-      2
+      2,
     ]);
     if (result.affectedRows == 0) {
       res.status(400).render("error", { message: "Failed to update Contact" });
@@ -520,20 +589,23 @@ exports.postUpdateContact = async (req, res) => {
   }
 };
 
-
-exports.getPatientReviewPage = async (req, res) => { 
+exports.getPatientReviewPage = async (req, res) => {
   try {
-    var data = await exe(`SELECT * FROM patients_review ORDER BY patients_review_id DESC`);
+    var data = await exe(
+      `SELECT * FROM patients_review ORDER BY patients_review_id DESC`
+    );
 
     var editData = null;
-    if(req.query.edit) {
-        var editResult = await exe(`SELECT * FROM patients_review WHERE patients_review_id='${req.query.edit}'`);
-        if(editResult.length > 0) {
-            editData = editResult[0];
-        }
+    if (req.query.edit) {
+      var editResult = await exe(
+        `SELECT * FROM patients_review WHERE patients_review_id='${req.query.edit}'`
+      );
+      if (editResult.length > 0) {
+        editData = editResult[0];
+      }
     }
 
-    res.render('admin/patient-review', { "list": data, "editData": editData });
+    res.render("admin/patient-review", { list: data, editData: editData });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Patient Review Page Error" });
@@ -555,7 +627,7 @@ exports.saveReview = async (req, res) => {
               (patients_review_name, patients_review_photo, patients_review_desc, patients_review_address, patients_review_date) 
               VALUES ('${d.patients_review_name}', '${filename}', '${d.patients_review_desc}', '${d.patients_review_address}', '${d.patients_review_date}')`;
     await exe(sql);
-    res.redirect("/admin/patient-review"); 
+    res.redirect("/admin/patient-review");
   } catch (error) {
     console.log(error);
     res.send("Error saving review");
@@ -598,19 +670,20 @@ exports.deleteReview = async (req, res) => {
   }
 };
 
-
 exports.getPrivacyPage = async (req, res) => {
   try {
     var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id DESC`);
 
     var editData = null;
     if (req.query.edit) {
-      var editResult = await exe(`SELECT * FROM privacy WHERE privacy_id='${req.query.edit}'`);
+      var editResult = await exe(
+        `SELECT * FROM privacy WHERE privacy_id='${req.query.edit}'`
+      );
       if (editResult.length > 0) {
         editData = editResult[0];
       }
     }
- res.render('admin/privacy', { "list": data, "editData": editData });
+    res.render("admin/privacy", { list: data, editData: editData });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Privacy Page Error" });
@@ -656,31 +729,28 @@ exports.deletePrivacy = async (req, res) => {
   }
 };
 
-
-
-exports.getGalleryPage = async  (req, res) => {
+exports.getGalleryPage = async (req, res) => {
   try {
     var sql = `SELECT * FROM gallery`;
     var gallery = await exe(sql);
-    var packet = {gallery}
-    res.render("admin/gallery",packet);
-} catch (error) {
+    var packet = { gallery };
+    res.render("admin/gallery", packet);
+  } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Gallery Page Error" });
   }
 };
 
-
 exports.postGalleryImage = async (req, res) => {
   try {
     let filename = "";
-if (req.files && req.files.image_name) {
+    if (req.files && req.files.image_name) {
       filename = Date.now() + "_" + req.files.image_name.name;
       await req.files.image_name.mv("public/uploads/" + filename);
     }
     const sql = `INSERT INTO gallery (image_name) VALUES (?)`;
     await exe(sql, [filename]);
-res.redirect("/admin/gallery");
+    res.redirect("/admin/gallery");
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
@@ -690,27 +760,23 @@ res.redirect("/admin/gallery");
 };
 
 exports.deleteGalleryImage = async (req, res) => {
-    try {
-        const image_id = req.params.image_id;
-        const sqlDel = "DELETE FROM gallery WHERE image_id = ?";
-        await exe(sqlDel, [image_id]);
-         res.redirect("/admin/gallery");
-        } catch (err) {
-        console.error(err);
-        res.status(500).send("Delete failed");
-    }
+  try {
+    const image_id = req.params.image_id;
+    const sqlDel = "DELETE FROM gallery WHERE image_id = ?";
+    await exe(sqlDel, [image_id]);
+    res.redirect("/admin/gallery");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Delete failed");
+  }
 };
-
-
-
-
 
 exports.getEnquiryPage = async (req, res) => {
   try {
     var sql = `SELECT * FROM enquiry`;
-     var  enquiry= await exe(sql);
-     var packet = { enquiry};
-    res.render('admin/enquiry',packet);
+    var enquiry = await exe(sql);
+    var packet = { enquiry };
+    res.render("admin/enquiry", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Enquiry Page Error" });
@@ -720,7 +786,7 @@ exports.getEnquiryPage = async (req, res) => {
 exports.getDeleteEnquiry = async (req, res) => {
   try {
     const enquiry_id = req.params.enquiry_id; // 🔥 इथे घ्या
-     const sql = "DELETE FROM enquiry WHERE enquiry_id = ?";
+    const sql = "DELETE FROM enquiry WHERE enquiry_id = ?";
     await exe(sql, [enquiry_id]);
     res.redirect("/admin/enquiry");
   } catch (error) {
@@ -729,14 +795,13 @@ exports.getDeleteEnquiry = async (req, res) => {
   }
 };
 
-
-
 // faq
 
 exports.getFaqPage = async (req, res) => {
   try {
-    const sqlTypes = "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
-    const faqTypes = await exe(sqlTypes); 
+    const sqlTypes =
+      "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
+    const faqTypes = await exe(sqlTypes);
 
     const sqlFaqs = `
       SELECT 
@@ -751,20 +816,18 @@ exports.getFaqPage = async (req, res) => {
     const faqs = await exe(sqlFaqs);
 
     res.render("admin/faq", { faqTypes, faqs });
-} catch (error) {
+  } catch (error) {
     console.error(error);
     res.status(500).send("Error loading FAQ page");
   }
 };
 
-
-
 exports.saveFaqType = async (req, res) => {
   try {
-    const d = req.body; 
+    const d = req.body;
     const sql = `INSERT INTO  faq_type (faq_service) VALUES ('${d.faq_service}')`;
-    await exe(sql); 
-    res.redirect("/admin/faq"); 
+    await exe(sql);
+    res.redirect("/admin/faq");
   } catch (error) {
     console.error(error);
     res.send("Error saving FAQ Type");
@@ -774,29 +837,29 @@ exports.saveFaqType = async (req, res) => {
 exports.saveFaq = async (req, res) => {
   try {
     const d = req.body;
-   const sql = `INSERT INTO faq (faq_type_id, faq_title, faq_desc)VALUES ('${d.faq_type_id}', '${d.faq_title}', '${d.faq_desc}')`;
-  await exe(sql);
-  res.redirect("/admin/faq");
-} catch (error) {
+    const sql = `INSERT INTO faq (faq_type_id, faq_title, faq_desc)VALUES ('${d.faq_type_id}', '${d.faq_title}', '${d.faq_desc}')`;
+    await exe(sql);
+    res.redirect("/admin/faq");
+  } catch (error) {
     console.error(error);
     res.send("Error saving FAQ");
   }
 };
-
-
 
 // Show Edit FAQ Form
 exports.editFaqForm = async (req, res) => {
   try {
     const faq_id = req.params.faq_id;
     const faqResult = await exe("SELECT * FROM faq WHERE faq_id = ?", [faq_id]);
-if (faqResult.length === 0) {
-      return res.send("FAQ not found"); 
+    if (faqResult.length === 0) {
+      return res.send("FAQ not found");
     }
-const faq = faqResult[0];
-const faqTypes = await exe("SELECT * FROM faq_type ORDER BY faq_service ASC");
-res.render("admin/edit_faq", { faq, faqTypes });
-} catch (error) {
+    const faq = faqResult[0];
+    const faqTypes = await exe(
+      "SELECT * FROM faq_type ORDER BY faq_service ASC"
+    );
+    res.render("admin/edit_faq", { faq, faqTypes });
+  } catch (error) {
     console.error(error);
     res.status(500).send("Error loading FAQ for edit");
   }
@@ -811,12 +874,11 @@ exports.updateFaq = async (req, res) => {
       [faq_type_id, faq_title, faq_desc, faq_id]
     );
     res.redirect("/admin/faq");
-} catch (error) {
+  } catch (error) {
     console.error(error);
     res.status(500).send("Error updating FAQ");
   }
 };
-
 
 // Delete FAQ
 exports.deleteFaq = async (req, res) => {
@@ -831,24 +893,17 @@ exports.deleteFaq = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
 exports.getTreatmentPage = (req, res) => {
   try {
     var sql = "SELECT * FROM treatments ORDER BY treatment_id DESC";
     exe(sql, [], (err, result) => {
       if (err) {
         console.error(err);
-        res.status(500).render("error", { message: "Error fetching treatments" });
+        res
+          .status(500)
+          .render("error", { message: "Error fetching treatments" });
       } else {
-        res.render('admin/treatment', { treatments: result });
+        res.render("admin/treatment", { treatments: result });
       }
     });
   } catch (error) {
@@ -856,8 +911,6 @@ exports.getTreatmentPage = (req, res) => {
     res.status(500).render("error", { message: "Treatment Page Error" });
   }
 };
-
-
 
 exports.postTreatmentSave = async (req, res) => {
   try {
@@ -903,17 +956,15 @@ exports.postTreatmentEdit = async (req, res) => {
     const result = await exe(sql, [id]);
     // पहिला record edit page ला पाठवतो
     res.render("admin/treatment_edit", {
-      treatment: result[0]
+      treatment: result[0],
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error editing treatment"
+      message: "Error editing treatment",
     });
   }
 };
-
 
 exports.postTreatmentUpdate = async (req, res) => {
   try {
@@ -941,14 +992,14 @@ exports.postTreatmentUpdate = async (req, res) => {
       filename,
       d.treatment_icon,
       d.treatment_long,
-      id
+      id,
     ]);
 
     res.redirect("/admin/treatment");
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error updating treatment"
+      message: "Error updating treatment",
     });
   }
 };
@@ -962,7 +1013,7 @@ exports.getTreatmentDelete = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error deleting treatment"
+      message: "Error deleting treatment",
     });
   }
 };
@@ -976,12 +1027,10 @@ exports.getDoctorsPage = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Doctors Page Error"
+      message: "Doctors Page Error",
     });
   }
 };
-
-
 
 exports.postDoctorSave = async (req, res) => {
   try {
@@ -1003,13 +1052,13 @@ exports.postDoctorSave = async (req, res) => {
       d.doctor_qual,
       filename,
       d.doctor_specialist,
-      d.doctor_exp
+      d.doctor_exp,
     ]);
     res.redirect("/admin/doctors");
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error saving doctor"
+      message: "Error saving doctor",
     });
   }
 };
@@ -1020,12 +1069,12 @@ exports.getDoctorEdit = async (req, res) => {
     const sql = "SELECT * FROM doctors WHERE doctor_id = ?";
     const result = await exe(sql, [id]);
     res.render("admin/doctor_edit", {
-      doctor: result[0]
+      doctor: result[0],
     });
   } catch (error) {
     console.error(error);
-    res.status(500).render("error", { 
-      message: "Error editing doctor"
+    res.status(500).render("error", {
+      message: "Error editing doctor",
     });
   }
 };
@@ -1052,13 +1101,13 @@ exports.postDoctorUpdate = async (req, res) => {
       filename,
       d.doctor_specialist,
       d.doctor_exp,
-      id
+      id,
     ]);
     res.redirect("/admin/doctors");
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error updating doctor"
+      message: "Error updating doctor",
     });
   }
 };
@@ -1072,20 +1121,16 @@ exports.getDoctorDelete = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error deleting doctor"
+      message: "Error deleting doctor",
     });
   }
 };
 
-
-
 exports.getHeroPage = async (req, res) => {
   try {
-    
     var sql = "SELECT * FROM hero WHERE hero_id = 1";
     var hero_info = await exe(sql);
 
-    
     if (hero_info.length == 0) {
       hero_info = [{ hero_heading: "", hero_background: "" }];
     } else {
@@ -1100,31 +1145,27 @@ exports.getHeroPage = async (req, res) => {
   }
 };
 
-
 exports.postUpdateHero = async (req, res) => {
   try {
     var data = req.body;
     var old_video = data.old_hero_background;
     var filename = old_video;
 
-    
     if (req.files && req.files.hero_background) {
       filename = Date.now() + "_" + req.files.hero_background.name;
       await req.files.hero_background.mv("public/uploads/" + filename);
     }
 
-    
     var checkSql = "SELECT * FROM hero WHERE hero_id = 1";
     var checkResult = await exe(checkSql);
 
     if (checkResult.length > 0) {
-      
       var sql =
         "UPDATE hero SET hero_heading = ?, hero_background = ? WHERE hero_id = 1";
       await exe(sql, [data.hero_heading, filename]);
     } else {
-     
-      var sql = "INSERT INTO hero (hero_heading, hero_background) VALUES (?, ?)";
+      var sql =
+        "INSERT INTO hero (hero_heading, hero_background) VALUES (?, ?)";
       await exe(sql, [data.hero_heading, filename]);
     }
 
@@ -1133,17 +1174,18 @@ exports.postUpdateHero = async (req, res) => {
     console.error(error);
     res.status(500).render("error", { message: "Update Hero Section Error" });
   }
-}; 
+};
 
 exports.getVisitorDoctorsPage = async (req, res) => {
   try {
-    const sql = "SELECT * FROM visitor_doctors  ORDER BY visitor_doctor_id  DESC";
+    const sql =
+      "SELECT * FROM visitor_doctors  ORDER BY visitor_doctor_id  DESC";
     const visitorDoctors = await exe(sql);
     res.render("admin/visitor-doctors", { visitorDoctors });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Doctors Page Error"
+      message: "Doctors Page Error",
     });
   }
 };
@@ -1168,13 +1210,13 @@ exports.postVisitorDoctorSave = async (req, res) => {
       d.visitor_doctor_qual,
       filename,
       d.visitor_doctor_date,
-      d.visitor_doctor_time
+      d.visitor_doctor_time,
     ]);
     res.redirect("/admin/visitor-doctors");
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error saving visitor doctor"
+      message: "Error saving visitor doctor",
     });
   }
 };
@@ -1185,12 +1227,12 @@ exports.getVisitorDoctorEdit = async (req, res) => {
     const sql = "SELECT * FROM visitor_doctors WHERE visitor_doctor_id = ?";
     const result = await exe(sql, [id]);
     res.render("admin/visitor-doctors-edit", {
-      visitorDoctor: result[0]
+      visitorDoctor: result[0],
     });
   } catch (error) {
     console.error(error);
-    res.status(500).render("error", { 
-      message: "Error editing visitor doctor"
+    res.status(500).render("error", {
+      message: "Error editing visitor doctor",
     });
   }
 };
@@ -1218,7 +1260,7 @@ exports.postVisitorDoctorUpdate = async (req, res) => {
         filename,
         d.visitor_doctor_date,
         d.visitor_doctor_time,
-        id
+        id,
       ];
     } else {
       // No new photo, update other fields only
@@ -1232,7 +1274,7 @@ exports.postVisitorDoctorUpdate = async (req, res) => {
         d.visitor_doctor_qual,
         d.visitor_doctor_date,
         d.visitor_doctor_time,
-        id
+        id,
       ];
     }
 
@@ -1241,7 +1283,7 @@ exports.postVisitorDoctorUpdate = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error updating visitor doctor"
+      message: "Error updating visitor doctor",
     });
   }
 };
@@ -1255,7 +1297,7 @@ exports.getVisitorDoctorDelete = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error deleting visitor doctor"
+      message: "Error deleting visitor doctor",
     });
   }
 };
@@ -1320,36 +1362,31 @@ exports.getAppointmentsListPage = async (req, res) => {
       appointments,
       doctorSummary,
       selectedDate: date,
-      selectedDoctor: doctor 
+      selectedDoctor: doctor,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Appointments List Page Error"
+      message: "Appointments List Page Error",
     });
   }
 };
 
-
-
-
 exports.getTermsPage = async (req, res) => {
   try {
-    
     var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
 
-   
     var editData = null;
     if (req.query.edit) {
-      var editResult = await exe(`SELECT * FROM terms WHERE term_id='${req.query.edit}'`);
+      var editResult = await exe(
+        `SELECT * FROM terms WHERE term_id='${req.query.edit}'`
+      );
       if (editResult.length > 0) {
         editData = editResult[0];
       }
     }
 
-   
-    res.render('admin/terms', { "list": data, "editData": editData });
+    res.render("admin/terms", { list: data, editData: editData });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Terms Page Error" });
@@ -1359,10 +1396,9 @@ exports.getTermsPage = async (req, res) => {
 exports.saveTerm = async (req, res) => {
   try {
     var d = req.body;
-    
-   
+
     var sql = `INSERT INTO terms (term_title, term_desc, term_status) VALUES ('${d.term_title}', '${d.term_desc}', 1)`;
-    
+
     await exe(sql);
     res.redirect("/admin/terms");
   } catch (error) {
@@ -1401,13 +1437,14 @@ exports.deleteTerm = async (req, res) => {
 exports.getCancelAppointment = async (req, res) => {
   try {
     const id = req.params.id;
-    const sql = "UPDATE appointments SET status = 'cancelled' WHERE patient_id = ?";
+    const sql =
+      "UPDATE appointments SET status = 'cancelled' WHERE patient_id = ?";
     await exe(sql, [id]);
     res.redirect("/admin/appointments-list");
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error cancelling appointment"
+      message: "Error cancelling appointment",
     });
   }
 };
@@ -1415,16 +1452,254 @@ exports.getCancelAppointment = async (req, res) => {
 exports.getCompleteAppointment = async (req, res) => {
   try {
     const id = req.params.id;
-    const sql = "UPDATE appointments SET status = 'completed' WHERE patient_id = ?";
+    const sql =
+      "UPDATE appointments SET status = 'completed' WHERE patient_id = ?";
     await exe(sql, [id]);
     res.redirect("/admin/appointments-list");
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Error completing appointment"
+      message: "Error completing appointment",
     });
   }
 };
 
 
+
+exports.getCompletedAppointmentsPage = async (req, res) => {
+  try {
+    const date = req.query.date;
+    const doctor = req.query.doctor;
+
+    // ----------- APPOINTMENT LIST -----------
+    let sql = `
+      SELECT 
+        a.*,
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'completed'
+    `;
+
+    let params = [];
+
+    if (date) {
+      sql += ` AND DATE(a.appointment_date) = ? `;
+      params.push(date);
+    }
+
+    sql += ` ORDER BY a.patient_id ASC `;
+    const appointments = await exe(sql, params);
+
+    // ----------- DOCTOR SUMMARY -----------
+    let summarySql = `
+      SELECT 
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name,
+        COUNT(*) AS total
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'completed'
+    `;
+
+    let summaryParams = [];
+
+    if (date) {
+      summarySql += ` AND DATE(a.appointment_date) = ? `;
+      summaryParams.push(date);
+    }
+
+    summarySql += ` GROUP BY doctor_name `;
+    const doctorSummary = await exe(summarySql, summaryParams);
+
+    // ----------- RENDER -----------
+    res.render("admin/appointments-completed", {
+      appointments,
+      doctorSummary,
+      selectedDate: date,
+      selectedDoctor: doctor 
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Appointments List Page Error"
+    });
+  }
+};
+
+// exports.getCancelledAppointmentsPage = async (req, res) => {
+//   try {
+//     const sql = `
+
+exports.getCancelledAppointmentsPage = async (req, res) => {
+  try {
+    const date = req.query.date;
+    const doctor = req.query.doctor;
+
+    // ----------- APPOINTMENT LIST -----------
+    let sql = `
+      SELECT 
+        a.*,
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'cancelled'
+    `;
+
+    let params = [];
+
+    if (date) {
+      sql += ` AND DATE(a.appointment_date) = ? `;
+      params.push(date);
+    }
+
+    sql += ` ORDER BY a.patient_id ASC `;
+    const appointments = await exe(sql, params);
+
+    // ----------- DOCTOR SUMMARY -----------
+    let summarySql = `
+      SELECT 
+        CASE
+          WHEN a.doctor_id IS NOT NULL THEN d.doctor_name
+          WHEN a.visitor_doctor_id IS NOT NULL THEN vd.visitor_doctor_name
+          ELSE 'N/A'
+        END AS doctor_name,
+        COUNT(*) AS total
+      FROM appointments a
+      LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
+      LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
+      WHERE a.status = 'cancelled'
+    `;
+
+    let summaryParams = [];
+
+    if (date) {
+      summarySql += ` AND DATE(a.appointment_date) = ? `;
+      summaryParams.push(date);
+    }
+
+    summarySql += ` GROUP BY doctor_name `;
+    const doctorSummary = await exe(summarySql, summaryParams);
+
+    // ----------- RENDER -----------
+    res.render("admin/appointments-cancelled", {
+      appointments,
+      doctorSummary,
+      selectedDate: date,
+      selectedDoctor: doctor 
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Appointments List Page Error"
+    });
+  }
+};
+
+// exports.getAppointmentPage = async (req, res) => {
+//   try {
+//     res.render("admin/appointment-add");
+//   } catch (error) { 
+//     console.error(error);
+//     res.status(500).render("error", { message: "Appointment Page Error" });
+//   }
+// };
+
+exports.getAppointmentPage = async (req, res) => {
+  try {
+    // Our Doctors
+    const doctorsSql = "SELECT * FROM doctors";
+    const doctors = await exe(doctorsSql);
+
+    // Visiting Doctors
+    const visitingSql = "SELECT * FROM visitor_doctors";
+    const visitingDoctors = await exe(visitingSql);
+
+    res.render("admin/appointment-add", {
+      doctors,
+      visitingDoctors
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Appointment Page Error"
+    });
+  }
+};
+
+exports.postAppointmentSave = async (req, res) => {
+  try {
+    const {
+      patient_fullname,
+      patient_email,
+      patient_mobile,
+      patient_gender,
+      patient_age,
+      doctor_id,
+      appointment_date
+    } = req.body;
+
+    let doctorId = null;
+    let visitorDoctorId = null;
+
+    if (doctor_id) {
+      const [type, id] = doctor_id.split("-");
+
+      if (type === "d") {
+        doctorId = parseInt(id);
+      } else if (type === "v") {
+        visitorDoctorId = parseInt(id);
+      }
+    }
+
+    const sql = `
+      INSERT INTO appointments
+      (
+        patient_fullname,
+        patient_email,
+        patient_mobile,
+        patient_gender,
+        patient_age,
+        doctor_id,
+        visitor_doctor_id,
+        appointment_date
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    await exe(sql, [
+      patient_fullname,
+      patient_email,
+      patient_mobile,
+      patient_gender,
+      patient_age,
+      doctorId,
+      visitorDoctorId,
+      appointment_date
+    ]);
+
+    res.redirect("/admin/appointments-list");
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Appointment insert error");
+  }
+};
 
