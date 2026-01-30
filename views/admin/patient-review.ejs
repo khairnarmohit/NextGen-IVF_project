@@ -118,9 +118,9 @@
       <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
           <tr>
-            <th style="width: 50px;" class="text-center">#</th>
+            <th>#</th>
             <th style="width: 100px;" class="text-center">Photo</th>
-            <th class="text-center">Patient Name</th>
+            <th class="text-center">Name</th>
             <th class="text-center">Location</th>
             
             <th class="text-center" style="min-width: 300px;">Review Description</th>
@@ -139,6 +139,9 @@
                 <td class="text-center">
                   <img
                     src="/uploads/<%= list[i].patients_review_photo %>"
+                    class="img-fluid"
+                    width="70"
+                    height="70"
                     class="rounded border"
                     width="50"
                     height="50"
@@ -155,6 +158,9 @@
                    </span>
                 </td>
 
+
+                <td class="text-start" style="padding-left: 2 !important;">
+                   <!-- <p class=""> -->
                 <td class="text-start">
                    <p class="text-muted mb-0" >
                      <%= list[i].patients_review_desc %>

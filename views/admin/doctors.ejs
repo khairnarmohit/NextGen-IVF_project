@@ -1,224 +1,249 @@
 <%- include('navbar.ejs') %>
+<style>
+  @media print {
 
-<div class="container py-4">
+    /* Hide EVERYTHING */
+    body * {
+      visibility: hidden;
+    }
 
-<!-- Action Buttons Row -->
-<div class="row mb-3 align-items-center">
-  
-  <!-- Left: Add Doctor -->
-  <div class="col-md-4 col-6">
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="collapse"
-      data-bs-target="#addDoctorForm"
-    >
-      <i class="fas fa-plus me-1"></i> Add Doctor
-    </button>
-  </div>
+    /* Show ONLY printArea */
+    #printArea, #printArea * {
+      visibility: visible;
+    }
 
-  <!-- Right: CSV & Print -->
-  <div class="col-md-8 col-6 text-end">
-    <div class="btn-group">
-      <button onclick="exportDoctorsCSV()" class="btn btn-success me-2">
-        <i class="fas fa-file-csv me-1"></i> Export CSV
-      </button>
+    /* Position and full width */
+    #printArea {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
 
-      <button onclick="printDoctors()" class="btn btn-secondary">
-        <i class="fas fa-print me-1"></i> Print
-      </button>
+    /* Make table full width */
+    #printArea table {
+      width: 100% !important;
+    }
+
+    /* Hide photo & action columns */
+    .print-hide {
+      display: none !important;
+    }
+
+    /* Optional: cleaner print look */
+    .card, .card-body {
+      border: none !important;
+      box-shadow: none !important;
+    }
+  }
+</style>
+
+
+
+
+  <div class="container py-4">
+
+    <!-- Action Buttons Row -->
+    <div class="row mb-3 align-items-center">
+
+      <!-- Left: Add Doctor -->
+      <div class="col-md-4 col-6">
+        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addDoctorForm">
+          <i class="fas fa-plus me-1"></i> Add Doctor
+        </button>
+      </div>
+
+      <!-- Right: CSV & Print -->
+      <div class="col-md-8 col-6 text-end">
+        <div class="btn-group">
+          <button onclick="exportDoctorsCSV()" class="btn btn-success me-2">
+            <i class="fas fa-file-csv me-1"></i> Export CSV
+          </button>
+
+          <button onclick="printDoctors()" class="btn btn-secondary">
+            <i class="fas fa-print me-1"></i> Print
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Collapse Form -->
+    <div class="collapse" id="addDoctorForm">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Add New Doctor</h5>
+        </div>
+
+        <div class="card-body">
+          <form action="/admin/doctor_save" method="POST" enctype="multipart/form-data">
+
+            <!-- Row 1 -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Doctor Name</label>
+                <input type="text" name="doctor_name" class="form-control" placeholder="Enter Doctor Name" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Qualification</label>
+                <input type="text" name="doctor_qual" class="form-control" placeholder="Enter Qualification" required>
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Specialist</label>
+                <input type="text" name="doctor_specialist" class="form-control" placeholder="Enter Specialist"
+                  required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Experience</label>
+                <input type="number" name="doctor_exp" class="form-control" placeholder="e.g. 10 " min="0" max="40"
+                  required>
+              </div>
+            </div>
+
+            <!-- Doctor Photo -->
+            <div class="mb-3">
+              <label class="form-label">Doctor Photo</label>
+              <input type="file" name="doctor_photo" class="form-control" accept="image/*" required>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-end">
+              <button type="submit" class="btn btn-success px-4">
+                <i class="fas fa-save me-1"></i> Save Doctor
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
-</div>
+  <div id="printArea" class="container py-4">
 
-
-  <!-- Collapse Form -->
-  <div class="collapse" id="addDoctorForm">
     <div class="card shadow-sm border-0">
       <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Add New Doctor</h5>
+        <h5 class="mb-0">Doctors List</h5>
       </div>
 
-      <div class="card-body">
-        <form action="/admin/doctor_save" method="POST" enctype="multipart/form-data">
-
-          <!-- Row 1 -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Doctor Name</label>
-              <input type="text" name="doctor_name" class="form-control" placeholder="Enter Doctor Name" required>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Qualification</label>
-              <input type="text" name="doctor_qual" class="form-control" placeholder="Enter Qualification" required>
-            </div>
-          </div>
-
-          <!-- Row 2 -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Specialist</label>
-              <input type="text" name="doctor_specialist" class="form-control" placeholder="Enter Specialist" required>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Experience</label>
-              <input
-                type="number"
-                name="doctor_exp"
-                class="form-control"
-                placeholder="e.g. 10 "
-                min="0"
-                max="40"
-                required
-              >
-            </div>
-          </div>
-
-          <!-- Doctor Photo -->
-          <div class="mb-3">
-            <label class="form-label">Doctor Photo</label>
-            <input
-              type="file"
-              name="doctor_photo"
-              class="form-control"
-              accept="image/*"
-              required
-            >
-          </div>
-
-          <!-- Submit -->
-          <div class="text-end">
-            <button type="submit" class="btn btn-success px-4">
-              <i class="fas fa-save me-1"></i> Save Doctor
-            </button>
-          </div>
-
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="printArea" class="container py-4">
-
-  <div class="card shadow-sm border-0">
-    <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Doctors List</h5>
-    </div>
-
-    <div class="card-body table-responsive">
-      <table class="table table-bordered table-hover align-middle">
-        <thead class="table-light text-center">
-          <tr>
-            <th>#</th>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Qualification</th>
-            <th>Specialist</th>
-            <th>Exp</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% if (doctors.length > 0) { %>
-            <% for (let i = 0; i < doctors.length; i++) { %>
-              <tr class="text-center">
-                <td><%= i + 1 %></td>
-
-                <td>
-                  <img
-                    src="/uploads/<%= doctors[i].doctor_photo %>"
-                    width="100"
-                    height="75"
-                    class="border"
-                  >
-                </td>
-
-                <td><%= doctors[i].doctor_name %></td>
-                <td><%= doctors[i].doctor_qual %></td>
-                <td><%= doctors[i].doctor_specialist %></td>
-                <td><%= doctors[i].doctor_exp %></td>
-
-                <td>
-                  <a
-                    href="/admin/doctor_edit/<%= doctors[i].doctor_id %>"
-                    class="btn btn-sm btn-warning"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </a>
-
-                  <a
-                    href="/admin/doctor_delete/<%= doctors[i].doctor_id %>"
-                    class="btn btn-sm btn-danger mt-1"
-                    onclick="return confirm('Are you sure?')"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-            <% } %>
-          <% } else { %>
+      <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light text-center">
             <tr>
-              <td colspan="7" class="text-center text-muted">
-                No doctors found
-              </td>
+              <th>#</th>
+              <th class="print-hide">Photo</th>
+              <th>Name</th>
+              <th>Qualification</th>
+              <th>Specialist</th>
+              <th>Exp</th>
+              <th class="print-hide">Action</th>
             </tr>
-          <% } %>
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            <% if (doctors.length> 0) { %>
+              <% for (let i=0; i < doctors.length; i++) { %>
+                <tr class="text-center">
+                  <td>
+                    <%= i + 1 %>
+                  </td>
+
+                  <td class="print-hide">
+                    <img src="/uploads/<%= doctors[i].doctor_photo %>" width="100" height="75" class="border">
+                  </td>
+
+                  <td>
+                    <%= doctors[i].doctor_name %>
+                  </td>
+                  <td>
+                    <%= doctors[i].doctor_qual %>
+                  </td>
+                  <td>
+                    <%= doctors[i].doctor_specialist %>
+                  </td>
+                  <td>
+                    <%= doctors[i].doctor_exp %>
+                  </td>
+
+                  <td class="print-hide">
+                    <a href="/admin/doctor_edit/<%= doctors[i].doctor_id %>" class="btn btn-sm btn-warning">
+                      <i class="fas fa-edit"></i>
+                    </a>
+
+                    <a href="/admin/doctor_delete/<%= doctors[i].doctor_id %>" class="btn btn-sm btn-danger mt-1"
+                      onclick="return confirm('Are you sure?')">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% } %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="7" class="text-center text-muted">
+                        No doctors found
+                      </td>
+                    </tr>
+                    <% } %>
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </div>
 
-</div>
 
-<script>
-function exportDoctorsCSV() {
-  let csv = [];
-  let rows = document.querySelectorAll("#printArea table tr");
 
-  for (let i = 0; i < rows.length; i++) {
-    let row = [], cols = rows[i].querySelectorAll("th, td");
+  <script>
+    function exportDoctorsCSV() {
+      let csv = [];
+      let rows = document.querySelectorAll("#printArea table tr");
 
-    for (let j = 0; j < cols.length; j++) {
-      // Skip Action & Photo column
-      if (j === 1 || j === 6) continue;
+      for (let i = 0; i < rows.length; i++) {
+        let row = [], cols = rows[i].querySelectorAll("th, td");
 
-      let text = cols[j].innerText.replace(/"/g, '""');
-      row.push('"' + text + '"');
+        for (let j = 0; j < cols.length; j++) {
+          // Skip Action & Photo column
+          if (j === 1 || j === 6) continue;
+
+          let text = cols[j].innerText.replace(/"/g, '""');
+          row.push('"' + text + '"');
+        }
+        csv.push(row.join(","));
+      }
+
+      let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+      let downloadLink = document.createElement("a");
+
+      downloadLink.download = "doctors_list.csv";
+      downloadLink.href = window.URL.createObjectURL(csvFile);
+      downloadLink.style.display = "none";
+
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
     }
-    csv.push(row.join(","));
-  }
-
-  let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-  let downloadLink = document.createElement("a");
-
-  downloadLink.download = "doctors_list.csv";
-  downloadLink.href = window.URL.createObjectURL(csvFile);
-  downloadLink.style.display = "none";
-
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
-}
-</script>
+  </script>
 
 
 <script>
   function printDoctors() {
-    const printContent = document.getElementById("printArea").innerHTML;
-    const originalContent = document.body.innerHTML;
-
-    document.body.innerHTML = printContent;
     window.print();
-    document.body.innerHTML = originalContent;
-    location.reload(); // reload to restore JS & layout
   }
 </script>
 
 
 
 
-<%- include('footer.ejs') %>
+
+
+  <%- include('footer.ejs') %>

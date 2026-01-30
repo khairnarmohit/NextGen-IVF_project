@@ -1,6 +1,8 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var fileUpload = require("express-fileupload");
+var session = require("express-session");
+var nodemailer = require("nodemailer");
 var ejs = require("ejs");
 
 var userRouter = require('./routes/userRoutes.js');
@@ -13,7 +15,11 @@ app.set("views", "./views");
 app.use(fileUpload());
 app.use(express.static("public/"));
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(session({
+  secret: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  resave: false,
+  saveUninitialized: true
+}));
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
 
