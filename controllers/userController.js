@@ -66,19 +66,7 @@ exports.getTreatmentDetailsPage = async (req, res) => {
 };
 
 
-// exports.getDoctorsPage = async (req, res) => {
-//   try {
-//     const sql = "SELECT * FROM doctors";
-//     const doctors = await exe(sql);
 
-//     res.render("user/doctors", { doctors });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", {
-//       message: "Doctors Page Error"
-//     });
-//   }
-// };
 exports.getDoctorsPage = async (req, res) => {
   try {
     // Normal doctors
@@ -327,7 +315,10 @@ exports.getPatientStoriesPage = async (req, res) => {
   try {
     var sql = "SELECT * FROM patients_review ORDER BY patients_review_id DESC";
     var stories = await exe(sql);
-    var packet = {stories};
+
+    var sql1 = "SELECT * FROM gallery";
+    var gallery = await exe(sql);
+    var packet = {stories,gallery};
 
     // console.log(stories)
 

@@ -79,31 +79,18 @@
             <!-- <p class="text-muted">Advanced infrastructure designed for comfort & care</p> -->
         </div>
 
-        <div class="row g-3 facilities-gallery">
+<div class="row g-3 facilities-gallery">
+  <% for (var i = 0; i < gallery.length; i++) { %>
+    <div class="col-md-4">
+      <img src="/uploads/<%= gallery[i].image_name %>"
+           class="facility-img active"
+           alt="Facility">
+    </div>
+  <% } %>
+</div>
 
-            <div class="col-md-4">
-                <img src="https://demo.awaikenthemes.com/ferlix/wp-content/uploads/2025/04/gallery-1.jpg" class="facility-img active" alt="Facility">
-            </div>
 
-            <div class="col-md-4">
-                <img src="https://demo.awaikenthemes.com/ferlix/wp-content/uploads/2025/04/gallery-2.jpg" class="facility-img" alt="Facility">
-            </div>
-
-            <div class="col-md-4 ">
-                <img src="https://demo.awaikenthemes.com/ferlix/wp-content/uploads/2025/04/gallery-3.jpg" class="facility-img" alt="Facility">
-            </div>
-
-            <div class="col-md-4">
-                <img src="https://demo.awaikenthemes.com/ferlix/wp-content/uploads/2025/04/gallery-4.jpg" class="facility-img" alt="Facility">
-            </div>
-
-             <div class="col-md-4">
-                <img src="https://demo.awaikenthemes.com/ferlix/wp-content/uploads/2025/04/gallery-5.jpg" class="facility-img" alt="Facility">
-            </div>
-
-             <div class="col-md-4">
-                <img src="https://demo.awaikenthemes.com/ferlix/wp-content/uploads/2025/04/gallery-6.jpg" class="facility-img" alt="Facility">
-            </div>
+          
 
         </div>
     </div>
