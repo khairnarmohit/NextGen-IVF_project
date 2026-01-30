@@ -11,7 +11,6 @@
             <div class="col-12 text-start text-center">
                 <h1 class="p-5">Patient Stories</h1>
 
-                 <!-- Breadcrumb  -->
                 <h4 class="breadcrumb-title mb-4">
                     Home <span class="mx-2">›</span>
                     <a href="#" class="text-decoration-none">Patient Stories</a>
@@ -21,109 +20,52 @@
     </div>
 </section>  
 
+
+
 <section class="py-5 bg-light">
     <div class="container">
+        
         <h2 class="text-center mb-5 fw-bold text-primary"
             style="font-family: 'Poppins', sans-serif;">
             What Our Patients Say
         </h2>
 
         <div class="row g-4">
-
-            <!-- Card 1 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card h-100">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-
-                    <p class="testimonial-text">
-                        "The process was smooth, safe, and transparent. We are thankful for their dedication and continuous guidance throughout our journey."
-                    </p>
-
-                    <div class="d-flex align-items-center mt-4">
-                        <img src="https://i.pravatar.cc/100?img=47"
-                             class="profile-img" alt="Sarah">
-                        <div class="ms-3">
-                            <h6 class="mb-0 fw-bold text-primary">Sarah Williams</h6>
-                            <small class="text-muted">Ahilyanagar • Apr 14, 2025</small>
+            <% if(stories && stories.length > 0) { %>
+                <% for (let i = 0; i < stories.length; i++) { %>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="testimonial-card h-100">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "<%= stories[i].patients_review_desc %>"
+                            </p>
+                            <div class="d-flex align-items-center mt-4">
+                                <img src="/uploads/<%= stories[i].patients_review_photo %>"
+                                     class="profile-img" 
+                                     alt="<%= stories[i].patients_review_name %>"
+                                     onerror="this.src='https://via.placeholder.com/50'"
+                                >
+                                <div class="ms-3">
+                                    <h6 class="mb-0 fw-bold text-primary"><%= stories[i].patients_review_name %></h6>
+                                    <div class="text-muted review-date" data-date="<%= stories[i].patients_review_date %>">
+                                        <i class="fas fa-map-marker-alt me-1"></i> <%= stories[i].patients_review_address %>
+                                        <span class="d-block mt-1"></span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                <% } %>
+            <% } else { %>
+                <div class="col-12 text-center py-5">
+                    <h3 class="text-muted">No patient stories found yet.</h3>
                 </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card h-100">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-
-                    <p class="testimonial-text">
-                        "Exceptional care from start to finish. The team was always available to answer our questions with patience."
-                    </p>
-
-                    <div class="d-flex align-items-center mt-4">
-                        <img src="https://i.pravatar.cc/100?img=32"
-                             class="profile-img" alt="Emma">
-                        <div class="ms-3">
-                            <h6 class="mb-0 fw-bold text-primary">Emma Peterson</h6>
-                            <small class="text-muted">Pune • May 5, 2025</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="testimonial-card h-100">
-                    <div class="quote-icon">
-                        <i class="fas fa-quote-right"></i>
-                    </div>
-
-                    <p class="testimonial-text">
-                        "A life-changing experience. The support throughout our fertility journey truly made all the difference."
-                    </p>
-
-                    <div class="d-flex align-items-center mt-4">
-                        <img src="https://i.pravatar.cc/100?img=12"
-                             class="profile-img" alt="David">
-                        <div class="ms-3">
-                            <h6 class="mb-0 fw-bold text-primary">David Lopez</h6>
-                            <small class="text-muted">Mumbai • Jun 18, 2025</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <% } %>
         </div>
     </div>
 </section>
-
-
-
-
-
-
-<!-- Modal for Video
-<div class="modal fade" id="videoModal" tabindex="-1">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content bg-dark">
-
-      <button class="btn-close btn-close-white ms-auto m-2"
-              data-bs-dismiss="modal"
-              onclick="stopVideo()"></button>
-
-      <div class="ratio ratio-16x9">
-        <iframe id="player" allowfullscreen></iframe>
-      </div>
-
-    </div>
-  </div>
-</div> -->
-
-
-
 
 
 
@@ -245,6 +187,32 @@
 </script>
 
 
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dateElements = document.querySelectorAll('.review-date');
+        
+        const formatter = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        dateElements.forEach(el => {
+            const rawDate = el.dataset.date;
+            if (!rawDate) return;
+
+            const date = new Date(rawDate);
+            const formatted = formatter.format(date);
+            
+            const span = el.querySelector('span');
+            if(span) {
+                span.textContent = formatted;
+            }
+        });
+    });
+</script>
 
 
 

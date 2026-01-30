@@ -6,10 +6,10 @@
 
   <!-- Buttons side by side -->
   <div class="d-flex mb-3 gap-2">
-    <button class="btn btn-primary flex-fill" type="button" data-bs-toggle="collapse" data-bs-target="#faqTypeForm" aria-expanded="false" aria-controls="faqTypeForm">
+    <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#faqTypeForm" aria-expanded="false" aria-controls="faqTypeForm">
       Add FAQ Type
     </button>
-    <button class="btn btn-success flex-fill" type="button" data-bs-toggle="collapse" data-bs-target="#faqForm" aria-expanded="false" aria-controls="faqForm">
+    <button class="btn btn-success " type="button" data-bs-toggle="collapse" data-bs-target="#faqForm" aria-expanded="false" aria-controls="faqForm">
       Add FAQ
     </button>
   </div>
@@ -36,9 +36,12 @@
 <select class="form-select" id="faqTypeSelect" name="faq_type_id" required>
   <option value="">-- Choose Type --</option>
   <% faqTypes.forEach(type => { %>
-    <option value="<%= type.id %>"><%= type.faq_service %></option>
+    <option value="<%= type.faq_type_id %>">
+      <%= type.faq_service %>
+    </option>
   <% }) %>
 </select>
+
 
         </div>
         <div class="mb-3">
@@ -55,6 +58,73 @@
   </div>
 
 </div>
+<!-- FAQ List Table -->
+<div class="container-fluid">
+  <h2 class="text-primary">FAQ List</h2>
+  <div class="row">
+    <div class="col-12">
+
+<table class="table table-bordered  mt-3">
+  <thead >
+    <tr>
+      <th>ID</th>
+      <th>FAQ Type</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+<tbody>
+  <% if (faqs && faqs.length > 0) { %>
+    
+    <% for (let i = 0; i < faqs.length; i++) { 
+    %>
+      <tr>
+        <td><%= i + 1 %></td>
+
+        <td><%= faqs[i].faq_service %></td>
+        <td>
+  <%= faqs[i].faq_title.length > 20 
+        ? faqs[i].faq_title.substring(0, 20) + '...' 
+        : faqs[i].faq_title %>
+</td>
+
+        <td><%= faqs[i].faq_desc %></td>
+        <td>
+          <a href="/admin/edit_faq/<%= faqs[i].faq_id %>" 
+             class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i>
+             
+          </a>
+          <br><br>
+
+          <a href="/admin/delete_faq/<%= faqs[i].faq_id %>" 
+             class="btn btn-sm btn-danger"
+             onclick="return confirm('Are you sure you want to delete this FAQ?');">
+             <i class="bi bi-trash"></i>
+          </a>
+        </td>
+      </tr>
+    <% } %>
+
+  <% } else { %>
+    <tr>
+      <td colspan="5" class="text-center text-muted">
+        No FAQs found
+      </td>
+    </tr>
+  <% } %>
+</tbody>
+
+</table>
+</div>
+</div>
+</div>
+
+
+
+
+ 
+
 
 
 <%- include('footer.ejs') %>

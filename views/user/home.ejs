@@ -15,21 +15,18 @@
       playsinline 
       poster="/uploads/baby_crawl_image.jpeg"
     >
-        
-        <source src="/uploads/baby_crawl_video.mp4" type="video/mp4">
+        <source src="/uploads/<%= hero_info.hero_background || 'baby_crawl_video.mp4' %>" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
-    Dark Overlay
     <div class="overlay"></div>
 
-    Content Wrapper
     <div class="container h-100 content-wrapper">
         <div class="row h-100 align-items-center">
             
             <div class="col-12 col-lg-7 text-start">
                 <h1 class="display-3 fw-bold animate-up delay-0 slider_text">
-                    Helping you build of the family of your dreams!
+                    <%= hero_info.hero_heading || "Helping you build the family of your dreams!" %>
                 </h1>
                 <a href="#appointment-link" class="btn btn-primary btn-lg rounded-pill px-5 py-3 animate-up delay-1 shadow">
                     Book an Appointment
@@ -38,7 +35,6 @@
             
         </div>
     </div>
-
 </section>
 
 

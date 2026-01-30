@@ -91,17 +91,7 @@ router.get("/contact", adminController.getContactPage);
 
 router.post("/update-contact", adminController.postUpdateContact);
 
-
-
-
-
-
 router.get("/patient-review", adminController.getPatientReviewPage);
-
-
-
-
-
 
 router.post("/patient-review/save", adminController.saveReview);
 router.post("/patient-review/update", adminController.updateReview);
@@ -114,9 +104,20 @@ router.get("/privacy/delete/:id", adminController.deletePrivacy);
 
 // faq
 router.get("/faq", adminController.getFaqPage);
-// add faq service
+
 router.post('/save_faq_type', adminController.saveFaqType);
-// add faq
+router.post('/save_faq', adminController.saveFaq);
+
+// Edit FAQ routes
+router.get("/edit_faq/:faq_id", adminController.editFaqForm);
+router.post("/edit_faq/:faq_id", adminController.updateFaq);
+
+
+// Delete
+router.get("/delete_faq/:faq_id", adminController.deleteFaq);
+
+
+
 
 
 
@@ -140,6 +141,11 @@ router.get('/visitor_doctor_delete/:id', adminController.getVisitorDoctorDelete)
 // router.post('/appointment-save', adminController.postAppointmentSave); // Commented out - not implemented
 
 router.get('/appointments-list', adminController.getAppointmentsListPage);
+
+router.get("/terms", adminController.getTermsPage);
+router.post("/terms/save", adminController.saveTerm);
+router.post("/terms/update", adminController.updateTerm);
+router.get("/terms/delete/:id", adminController.deleteTerm);
 
 
 router.get('/appointments_cancel/:id', adminController.getCancelAppointment);

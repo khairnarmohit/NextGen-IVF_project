@@ -3,35 +3,49 @@
 <div class="container mt-4">
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0"><i class="fas fa-video me-2"></i>Manage Hero Section</h5>
+            <h5 class="mb-0">Manage Hero Section</h5>
         </div>
         <div class="card-body">
             <form action="/admin/update-hero" method="post" enctype="multipart/form-data">
                 
-                <% if(hero_info.hero_background){ %>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Current Video:</label><br>
-                        <video width="300" controls>
-                            <source src="/uploads/<%= hero_info.hero_background %>" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
+                <div class="row g-0">
+                    
+                    <div class="col-6 mb-3">
+                        <% if(hero_info.hero_background){ %>
+                            <div>
+                                <label class="form-label fw-bold">Current Video Preview:</label><br>
+                                <video width="100%" style="max-width: 95%; height: 350px;" controls>
+                                    <source src="/uploads/<%= hero_info.hero_background %>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        <% } else { %>
+                            <div class="alert alert-info">
+                                No video uploaded yet.
+                            </div>
+                        <% } %>
                     </div>
-                <% } %>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Hero Heading</label>
-                    <input type="text" class="form-control" name="hero_heading" value="<%= hero_info.hero_heading %>" required>
-                    <div class="form-text">e.g., Helping you build of the family of your dreams!</div>
+                    <div class="col-6">
+                        
+                        <div class="mb-5">
+                            <label class="form-label fw-bold">Hero Heading</label>
+                            <input type="text" class="form-control" name="hero_heading" value="<%= hero_info.hero_heading %>" required>
+                            <div class="form-text">e.g., Helping you build of the family of your dreams!</div>
+                        </div><br>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Upload New Video</label>
+                            <input type="file" class="form-control" name="hero_background" accept="video/mp4,video/webm">
+                            <input type="hidden" name="old_hero_background" value="<%= hero_info.hero_background %>">
+                            <div class="form-text">Upload .mp4 or .webm file. Leave empty to keep current video.</div>
+                        </div>
+                        
+                    </div>
+
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Background Video</label>
-                    <input type="file" class="form-control" name="hero_background" accept="video/mp4,video/webm">
-                    <input type="hidden" name="old_hero_background" value="<%= hero_info.hero_background %>">
-                    <div class="form-text">Upload .mp4 or .webm file. Leave empty to keep current video.</div>
-                </div>
-
-                <div class="text-end">
+                <div class="text-end mt-4">
                     <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Update Hero</button>
                 </div>
             </form>

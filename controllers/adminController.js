@@ -732,23 +732,37 @@ exports.getDeleteEnquiry = async (req, res) => {
 
 
 // faq
+
 exports.getFaqPage = async (req, res) => {
   try {
-   
-    const sql = "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
-    const faqTypes = await exe(sql); // result = array of objects
-    res.render("admin/faq", { faqTypes });
-  } catch (error) {
+    const sqlTypes = "SELECT faq_type_id, faq_service FROM faq_type ORDER BY faq_service ASC";
+    const faqTypes = await exe(sqlTypes); 
+
+    const sqlFaqs = `
+      SELECT 
+        f.faq_id,
+        f.faq_title,
+        f.faq_desc,
+        t.faq_service
+      FROM faq f
+      LEFT JOIN faq_type t ON f.faq_type_id = t.faq_type_id
+      ORDER BY f.faq_id DESC
+    `;
+    const faqs = await exe(sqlFaqs);
+
+    res.render("admin/faq", { faqTypes, faqs });
+} catch (error) {
     console.error(error);
     res.status(500).send("Error loading FAQ page");
   }
 };
 
 
+
 exports.saveFaqType = async (req, res) => {
   try {
-    const d = req.body; // form data
-    const sql = `INSERT INTO  faq_type  (faq_service) VALUES ('${d.faq_service}')`;
+    const d = req.body; 
+    const sql = `INSERT INTO  faq_type (faq_service) VALUES ('${d.faq_service}')`;
     await exe(sql); 
     res.redirect("/admin/faq"); 
   } catch (error) {
@@ -756,7 +770,73 @@ exports.saveFaqType = async (req, res) => {
     res.send("Error saving FAQ Type");
   }
 };
-;
+
+exports.saveFaq = async (req, res) => {
+  try {
+    const d = req.body;
+   const sql = `INSERT INTO faq (faq_type_id, faq_title, faq_desc)VALUES ('${d.faq_type_id}', '${d.faq_title}', '${d.faq_desc}')`;
+  await exe(sql);
+  res.redirect("/admin/faq");
+} catch (error) {
+    console.error(error);
+    res.send("Error saving FAQ");
+  }
+};
+
+
+
+// Show Edit FAQ Form
+exports.editFaqForm = async (req, res) => {
+  try {
+    const faq_id = req.params.faq_id;
+    const faqResult = await exe("SELECT * FROM faq WHERE faq_id = ?", [faq_id]);
+if (faqResult.length === 0) {
+      return res.send("FAQ not found"); 
+    }
+const faq = faqResult[0];
+const faqTypes = await exe("SELECT * FROM faq_type ORDER BY faq_service ASC");
+res.render("admin/edit_faq", { faq, faqTypes });
+} catch (error) {
+    console.error(error);
+    res.status(500).send("Error loading FAQ for edit");
+  }
+};
+// Update FAQ
+exports.updateFaq = async (req, res) => {
+  try {
+    const faq_id = req.params.faq_id;
+    const { faq_type_id, faq_title, faq_desc } = req.body;
+    await exe(
+      "UPDATE faq SET faq_type_id = ?, faq_title = ?, faq_desc = ? WHERE faq_id = ?",
+      [faq_type_id, faq_title, faq_desc, faq_id]
+    );
+    res.redirect("/admin/faq");
+} catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating FAQ");
+  }
+};
+
+
+// Delete FAQ
+exports.deleteFaq = async (req, res) => {
+  try {
+    const faq_id = req.params.faq_id;
+    const sql = `DELETE FROM faq WHERE faq_id = '${faq_id}'`;
+    await exe(sql);
+    res.redirect("/admin/faq");
+  } catch (error) {
+    console.error(error);
+    res.send("Error deleting FAQ");
+  }
+};
+
+
+
+
+
+
+
 
 
 
@@ -1253,6 +1333,71 @@ exports.getAppointmentsListPage = async (req, res) => {
 
 
 
+
+exports.getTermsPage = async (req, res) => {
+  try {
+    
+    var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
+
+   
+    var editData = null;
+    if (req.query.edit) {
+      var editResult = await exe(`SELECT * FROM terms WHERE term_id='${req.query.edit}'`);
+      if (editResult.length > 0) {
+        editData = editResult[0];
+      }
+    }
+
+   
+    res.render('admin/terms', { "list": data, "editData": editData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Terms Page Error" });
+  }
+};
+
+exports.saveTerm = async (req, res) => {
+  try {
+    var d = req.body;
+    
+   
+    var sql = `INSERT INTO terms (term_title, term_desc, term_status) VALUES ('${d.term_title}', '${d.term_desc}', 1)`;
+    
+    await exe(sql);
+    res.redirect("/admin/terms");
+  } catch (error) {
+    console.log(error);
+    res.send("Error saving term");
+  }
+};
+
+exports.updateTerm = async (req, res) => {
+  try {
+    var d = req.body;
+    var sql = `UPDATE terms SET 
+              term_title='${d.term_title}',
+              term_desc='${d.term_desc}'
+              WHERE term_id='${d.term_id}'`;
+    await exe(sql);
+    res.redirect("/admin/terms");
+  } catch (error) {
+    console.log(error);
+    res.send("Error updating term");
+  }
+};
+
+exports.deleteTerm = async (req, res) => {
+  try {
+    var id = req.params.id;
+    var sql = `DELETE FROM terms WHERE term_id='${id}'`;
+    await exe(sql);
+    res.redirect("/admin/terms");
+  } catch (error) {
+    console.log(error);
+    res.send("Error deleting term");
+  }
+};
+
 exports.getCancelAppointment = async (req, res) => {
   try {
     const id = req.params.id;
@@ -1280,6 +1425,7 @@ exports.getCompleteAppointment = async (req, res) => {
     });
   }
 };
+
 
 exports.getCompletedAppointmentsPage = async (req, res) => {
   try {

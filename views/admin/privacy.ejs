@@ -1,9 +1,9 @@
 <%- include("navbar.ejs") %>
 
-<div class="container mt-4">
+<div class="container py-4">
         
-    <div class="d-flex justify-content-start mb-3">
-        
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
         <% if(editData) { %>
             <a href="/admin/privacy" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i>Add More Section
@@ -15,103 +15,152 @@
         <% } %>
     </div>
 
-    <div class="collapse mb-4 <%= editData ? 'd-none' : '' %>" id="addPrivacyCollapse">
-        <div class="card shadow-sm border-primary">
-            <div class="card-header bg-primary text-white">
-                <h6 class="mb-0"><i class="fas fa-file-alt me-2"></i>Add New Privacy Section</h6>
-            </div>
-            <div class="card-body">
-                <form action="/admin/privacy/save" method="post">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Section Title</label>
-                        <input type="text" class="form-control" name="privacy_title" placeholder="e.g. Introduction" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Description / Content</label>
-                        <textarea class="form-control" name="privacy_desc" rows="8" placeholder="Enter the privacy policy content here..." required></textarea>
-                    </div>
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Save Section</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div>
+        <button onclick="exportprivacyCSV()" class="btn btn-success me-2">
+            <i class="fas fa-file-csv me-2"></i>Export CSV
+        </button>
+        <button onclick="printprivacy()" class="btn btn-secondary">
+            <i class="fas fa-print me-2"></i>Print
+        </button>
     </div>
+  </div>
 
-    <!-- edit -->
-    <% if(editData) { %>
-        <div class="collapse mb-4 show">
-            <div class="card shadow-sm border-warning">
-                <div class="card-header bg-primary text-dark">
-                    <h6 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Privacy Section</h6>
-                </div>
-                <div class="card-body">
-                    <form action="/admin/privacy/update" method="post">
-                        <input type="hidden" name="privacy_id" value="<%= editData.privacy_id %>">
-                        
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Section Title</label>
-                            <input type="text" class="form-control" name="privacy_title" value="<%= editData.privacy_title %>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Description / Content</label>
-                            <textarea class="form-control" name="privacy_desc" rows="8" required><%= editData.privacy_desc %></textarea>
-                        </div>
-                        <div class="text-end">
-                            <a href="/admin/privacy" class="btn btn-secondary me-2">Cancel</a>
-                            <button type="submit" class="btn btn-warning text-white"><i class="fas fa-save me-2"></i>Update Section</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    <% } %>
-
-
-    <!-- list -->
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="ps-4" style="width: 20%;">Title</th>
-                            <th style="width: 60%;">Description</th>
-                            <th class="text-end pe-4" style="width: 20%;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if(list.length > 0) { %>
-                            <% list.map(function(item){ %>
-                                <tr>
-                                    <td class="ps-4">
-                                        <h6 class="mb-0 fw-bold text-primary"><%= item.privacy_title %></h6>
-                                        <small class="text-muted">ID: <%= item.privacy_id %></small>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 text-truncate" style="max-width: 500px;"><%= item.privacy_desc %></p>
-                                    </td>
-                                    <td class="text-end pe-4">
-                                        <a href="/admin/privacy?edit=<%= item.privacy_id %>" class="btn btn-sm btn-outline-primary me-1">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a>
-                                        
-                                        <a href="/admin/privacy/delete/<%= item.privacy_id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this section?')">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <% }) %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="3" class="text-center p-5">No privacy sections found. Click "Add More Section" to create content.</td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="collapse mb-4 <%= editData ? 'd-none' : '' %>" id="addPrivacyCollapse">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h6 class="mb-0">Add New Privacy Section</h6>
+      </div>
+      <div class="card-body">
+        <form action="/admin/privacy/save" method="post">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Section Title</label>
+            <input type="text" class="form-control" name="privacy_title" placeholder="e.g. Introduction" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Description / Content</label>
+            <textarea class="form-control" name="privacy_desc" rows="6" placeholder="Enter privacy policy content here..." required></textarea>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Save Section</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+
+  <% if(editData) { %>
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-warning text-dark">
+        <h6 class="mb-0">Edit Privacy Section</h6>
+      </div>
+      <div class="card-body">
+        <form action="/admin/privacy/update" method="post">
+          <input type="hidden" name="privacy_id" value="<%= editData.privacy_id %>">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Section Title</label>
+            <input type="text" class="form-control" name="privacy_title" value="<%= editData.privacy_title %>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Description / Content</label>
+            <textarea class="form-control" name="privacy_desc" rows="6" required><%= editData.privacy_desc %></textarea>
+          </div>
+          <div class="text-end">
+            <a href="/admin/privacy" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Update Section</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  <% } %>
+
+  <div id="printArea">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Privacy Policy Sections</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 5%;" class="text-center">#</th>
+                <th style="width: 10%;">Title</th>
+                <th style="width: 75%;">Description</th>
+                <th style="width: 10%;" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (list.length > 0) { %>
+                <% for (let i = 0; i < list.length; i++) { %>
+                  <tr>
+                    <td class="text-center"><%= i + 1 %></td>
+                    <td class="fw-bold text-primary"><%= list[i].privacy_title %></td>
+                    <td>
+                      <p class="mb-0 text-muted" style="white-space: pre-wrap;"><%= list[i].privacy_desc %></p>
+                    </td>
+                    <td class="text-center">
+                      <a href="/admin/privacy?edit=<%= list[i].privacy_id %>" class="btn btn-sm btn-warning" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a href="/admin/privacy/delete/<%= list[i].privacy_id %>" class="btn btn-sm btn-danger ms-1" title="Delete" onclick="return confirm('Are you sure?')">
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                <% } %>
+              <% } else { %>
+                <tr>
+                  <td colspan="4" class="text-center p-5">No sections found.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+function exportprivacyCSV() {
+  let csv = [];
+  let rows = document.querySelectorAll("#printArea table tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    let row = [], cols = rows[i].querySelectorAll("th, td");
+
+    for (let j = 0; j < cols.length; j++) {
+      if (j === 3) continue;
+
+      let text = cols[j].innerText.replace(/"/g, '""');
+      row.push('"' + text + '"');
+    }
+    csv.push(row.join(","));
+  }
+
+  let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+  let downloadLink = document.createElement("a");
+
+  downloadLink.download = "privacy_list.csv";
+  downloadLink.href = window.URL.createObjectURL(csvFile);
+  downloadLink.style.display = "none";
+
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
+</script>
+
+<script>
+  function printprivacy() {
+    const printContent = document.getElementById("printArea").innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    location.reload();
+  }
+</script>
 
 <%- include("footer.ejs") %>
