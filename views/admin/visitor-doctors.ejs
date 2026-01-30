@@ -1,188 +1,258 @@
 <%- include('navbar.ejs') %>
 
-<div class="container py-4">
+<style>
+@media print {
 
-  <!-- Add Button -->
-  <div class="mb-3">
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="collapse"
-      data-bs-target="#addVisitorDoctorForm"
-    >
-      <i class="fas fa-plus me-1"></i> Add Visiting Doctor
-    </button>
+  /* Remove browser default margins */
+  @page {
+    size: A4 portrait;
+    margin: 5mm;   /* reduce margins */
+  }
+
+  html, body {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide everything */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only visitor print area */
+  #printAreaVisitor,
+  #printAreaVisitor * {
+    visibility: visible;
+  }
+
+  #printAreaVisitor {
+    position: fixed;   /* better than absolute for full width */
+    left: 0;
+    top: 0;
+    width: 100vw !important;   /* viewport width */
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #printAreaVisitor table {
+    width: 100% !important;
+    table-layout: fixed;  /* force full width */
+  }
+
+  /* Hide photo & action */
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Remove card styling */
+  .card, .card-body {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
+</style>
+
+
+  <div class="container py-4">
+
+    <div class="row mb-3 align-items-center">
+
+      <!-- Left: Add Visiting Doctor -->
+      <div class="col-md-6 col-6">
+        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addVisitorDoctorForm">
+          <i class="fas fa-plus me-1"></i> Add Visiting Doctor
+        </button>
+      </div>
+
+      <!-- Right: CSV & Print -->
+      <div class="col-md-6 col-6 text-end">
+        <div class="btn-group">
+          <button onclick="exportVisitorDoctorsCSV()" class="btn btn-success me-2">
+            <i class="fas fa-file-csv me-1"></i> Export CSV
+          </button>
+
+          <button onclick="printVisitorDoctors()" class="btn btn-secondary">
+            <i class="fas fa-print me-1"></i> Print
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Collapse Form -->
+    <div class="collapse" id="addVisitorDoctorForm">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Add Visiting Doctor</h5>
+        </div>
+
+        <div class="card-body">
+          <form action="/admin/visitor_doctor_save" method="POST" enctype="multipart/form-data">
+
+            <!-- Row 1 -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Doctor Name</label>
+                <input type="text" name="visitor_doctor_name" class="form-control" placeholder="Visitor Doctor Name"
+                  required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Qualification</label>
+                <input type="text" name="visitor_doctor_qual" class="form-control" placeholder="MBBS, MD (Obs & Gyn)"
+                  required>
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Visiting Date</label>
+                <input type="text" name="visitor_doctor_date" class="form-control"
+                  placeholder="11th, 18th of every month" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Visiting Time</label>
+                <input type="text" name="visitor_doctor_time" class="form-control" placeholder="10:00 AM – 2:00 PM"
+                  required>
+              </div>
+            </div>
+
+            <!-- Doctor Photo -->
+            <div class="mb-3">
+              <label class="form-label">Doctor Photo</label>
+              <input type="file" name="visitor_doctor_photo" class="form-control" accept="image/*" required>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-end">
+              <button type="submit" class="btn btn-success px-4">
+                <i class="fas fa-save me-1"></i> Save Visiting Doctor
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Collapse Form -->
-  <div class="collapse" id="addVisitorDoctorForm">
+
+  <div id="printAreaVisitor" class="container py-4">
+
     <div class="card shadow-sm border-0">
       <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Add Visiting Doctor</h5>
+        <h5 class="mb-0">Visiting Doctors List</h5>
       </div>
 
-      <div class="card-body">
-        <form
-          action="/admin/visitor_doctor_save"
-          method="POST"
-          enctype="multipart/form-data"
-        >
-
-          <!-- Row 1 -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Doctor Name</label>
-              <input
-                type="text"
-                name="visitor_doctor_name"
-                class="form-control"
-                placeholder="Visitor Doctor Name"
-                required
-              >
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Qualification</label>
-              <input
-                type="text"
-                name="visitor_doctor_qual"
-                class="form-control"
-                placeholder="MBBS, MD (Obs & Gyn)"
-                required
-              >
-            </div>
-          </div>
-
-          <!-- Row 2 -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Visiting Date</label>
-              <input
-                type="text"
-                name="visitor_doctor_date"
-                class="form-control"
-                placeholder="11th, 18th of every month"
-                required
-              >
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Visiting Time</label>
-              <input
-                type="text"
-                name="visitor_doctor_time"
-                class="form-control"
-                placeholder="10:00 AM – 2:00 PM"
-                required
-              >
-            </div>
-          </div>
-
-          <!-- Doctor Photo -->
-          <div class="mb-3">
-            <label class="form-label">Doctor Photo</label>
-            <input
-              type="file"
-              name="visitor_doctor_photo"
-              class="form-control"
-              accept="image/*"
-              required
-            >
-          </div>
-
-          <!-- Submit -->
-          <div class="text-end">
-            <button type="submit" class="btn btn-success px-4">
-              <i class="fas fa-save me-1"></i> Save Visiting Doctor
-            </button>
-          </div>
-
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="container py-4">
-
-  <div class="card shadow-sm border-0">
-    <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Visiting Doctors List</h5>
-    </div>
-
-    <div class="card-body table-responsive">
-      <table class="table table-bordered table-hover align-middle">
-        <thead class="table-light text-center">
-          <tr>
-            <th>#</th>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Qualification</th>
-            <th>Visiting Date</th>
-            <th>Visiting Time</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% if (visitorDoctors && visitorDoctors.length > 0) { %>
-            <% for (let i = 0; i < visitorDoctors.length; i++) { %>
-              <tr class="text-center">
-                <td><%= i + 1 %></td>
-
-                <td>
-                  <img
-                    src="/uploads/<%= visitorDoctors[i].visitor_doctor_photo %>"
-                    width="80"
-                    height="80"
-                    class="border"
-                  >
-                </td>
-
-                <td><%= visitorDoctors[i].visitor_doctor_name %></td>
-
-                <td><%= visitorDoctors[i].visitor_doctor_qual %></td>
-
-                <td>
-                  <%= visitorDoctors[i].visitor_doctor_date %>
-                </td>
-
-                <td>
-                  <%= visitorDoctors[i].visitor_doctor_time %>
-                </td>
-
-                <td>
-                  <a
-                    href="/admin/visitor-doctor-edit/<%= visitorDoctors[i].visitor_doctor_id %>"
-                    class="btn btn-sm btn-warning"
-                  >
-                    <i class="fas fa-edit"></i>
-                  </a>
-
-                  <a
-                    href="/admin/visitor_doctor_delete/<%= visitorDoctors[i].visitor_doctor_id %>"
-                    class="btn btn-sm btn-danger"
-                    onclick="return confirm('Are you sure?')"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-            <% } %>
-          <% } else { %>
+      <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light text-center">
             <tr>
-              <td colspan="7" class="text-center text-muted">
-                No visiting doctors found
-              </td>
+              <th>#</th>
+              <th class="print-hide">Photo</th>
+              <th>Name</th>
+              <th>Qualification</th>
+              <th>Visiting Date</th>
+              <th>Visiting Time</th>
+              <th class="print-hide">Action</th>
             </tr>
-          <% } %>
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            <% if (visitorDoctors && visitorDoctors.length> 0) { %>
+              <% for (let i=0; i < visitorDoctors.length; i++) { %>
+                <tr class="text-center">
+                  <td>
+                    <%= i + 1 %>
+                  </td>
+
+                  <td class="print-hide">
+                    <img src="/uploads/<%= visitorDoctors[i].visitor_doctor_photo %>" width="80" height="80"
+                      class="border">
+                  </td>
+
+                  <td>
+                    <%= visitorDoctors[i].visitor_doctor_name %>
+                  </td>
+
+                  <td>
+                    <%= visitorDoctors[i].visitor_doctor_qual %>
+                  </td>
+
+                  <td>
+                    <%= visitorDoctors[i].visitor_doctor_date %>
+                  </td>
+
+                  <td>
+                    <%= visitorDoctors[i].visitor_doctor_time %>
+                  </td>
+
+                  <td class="print-hide">
+                    <a href="/admin/visitor-doctor-edit/<%= visitorDoctors[i].visitor_doctor_id %>"
+                      class="btn btn-sm btn-warning">
+                      <i class="fas fa-edit"></i>
+                    </a>
+
+                    <a href="/admin/visitor_doctor_delete/<%= visitorDoctors[i].visitor_doctor_id %>"
+                      class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                <% } %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="7" class="text-center text-muted">
+                        No visiting doctors found
+                      </td>
+                    </tr>
+                    <% } %>
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </div>
 
-</div>
+  <script>
+function exportVisitorDoctorsCSV() {
+  let csv = [];
+  let rows = document.querySelectorAll("#printAreaVisitor table tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    let row = [], cols = rows[i].querySelectorAll("th, td");
+
+    for (let j = 0; j < cols.length; j++) {
+      // Skip Photo & Action
+      if (j === 1 || j === 6) continue;
+
+      let text = cols[j].innerText.replace(/"/g, '""');
+      row.push('"' + text + '"');
+    }
+    csv.push(row.join(","));
+  }
+
+  let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+  let downloadLink = document.createElement("a");
+
+  downloadLink.download = "visiting_doctors_list.csv";
+  downloadLink.href = window.URL.createObjectURL(csvFile);
+  downloadLink.click();
+}
+</script>
+<script>
+function printVisitorDoctors() {
+  window.print();
+}
+</script>
 
 
 
-<%- include('footer.ejs') %>
+
+  <%- include('footer.ejs') %>
