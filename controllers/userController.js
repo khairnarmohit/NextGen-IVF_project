@@ -171,14 +171,7 @@ exports.getFaqPage = (req, res) => {
   }
 };
 
-exports.getPrivacyPage = (req, res) => {
-  try{
-    res.render("user/privacy");
-  } catch (error) {
-    console.error(error);
-    res.status(50).render("error", { message: "Privacy Page Error"});
-  }
-};
+
 
 
 // exports.getAppointmentPage = async (req, res) => {
@@ -319,14 +312,7 @@ exports.saveAppointment = async (req, res) => {
 
 
 
-exports.getTermsPage = (req, res) => {
-  try{
-    res.render("user/terms");
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Terms Page Error" });
-  }
-};
+
 
 exports.getHomePage = async (req, res) => {
   try {
@@ -362,7 +348,7 @@ exports.getPatientStoriesPage = async (req, res) => {
     var stories = await exe(sql);
     var packet = {stories};
 
-    console.log(stories)
+    // console.log(stories)
 
     res.render("user/patient_stories", packet);
   } catch (error) {
@@ -371,3 +357,28 @@ exports.getPatientStoriesPage = async (req, res) => {
   }
 };
 
+
+
+
+
+exports.getPrivacyPage = async (req, res) => {
+  try {
+    var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id DESC`);
+    res.render("user/privacy", { list: data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Privacy Page Error" });
+  }
+};
+
+
+
+exports.getTermsPage = async (req, res) => {
+  try {
+    var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
+    res.render("user/terms", { list: data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Terms Page Error" });
+  }
+};

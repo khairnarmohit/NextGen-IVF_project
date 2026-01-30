@@ -57,7 +57,7 @@
 
   <% if(editData) { %>
     <div class="card shadow-sm border-0 mb-4">
-      <div class="card-header bg-primary text-dark">
+      <div class="card-header bg-primary text-white">
         <h5 class="mb-0">Edit Review</h5>
       </div>
       <div class="card-body">
@@ -88,7 +88,7 @@
              <div class="col-md-4 d-flex align-items-center">
                  <div class="text-center w-100">
                     <label class="small text-muted">Current Photo</label><br>
-                    <img src="/uploads/<%= editData.patients_review_photo %>" class="border rounded" width="60" height="60" style="object-fit:cover;">
+                    <img src="/uploads/<%= editData.patients_review_photo %>" class="rounded border" width="60" height="60" style="object-fit:cover;">
                  </div>
              </div>
           </div>
@@ -139,7 +139,7 @@
                 <td class="text-center">
                   <img
                     src="/uploads/<%= list[i].patients_review_photo %>"
-                    class="rounded-circle border"
+                    class="rounded border"
                     width="50"
                     height="50"
                     style="object-fit: cover;"
@@ -150,14 +150,13 @@
                 <td class="fw-bold text-primary"><%= list[i].patients_review_name %></td>
 
                 <td>
-                   <span class="badge bg-light text-dark border">
-                     <i class="fas fa-map-marker-alt text-danger me-1"></i>
+                   <span class="text-dark ">
                      <%= list[i].patients_review_address %>
                    </span>
                 </td>
 
-                <td class="text-start" style="padding-left: 0 !important;">
-                   <p class="text-muted mb-0" style="white-space: pre-wrap; margin: 0;">
+                <td class="text-start">
+                   <p class="text-muted mb-0" >
                      <%= list[i].patients_review_desc %>
                    </p>
                 </td>
