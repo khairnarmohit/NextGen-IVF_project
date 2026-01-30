@@ -14,7 +14,14 @@ exports.getAboutPage = async (req, res) => {
     var sql4 = "SELECT * FROM whychooseus";
     var whychooseus = await exe(sql4);
 
-    var packet = { aboutinfo, vision_mission, director_msg, whychooseus };
+    var sql5 = "SELECT * FROM achievements";
+    var achievements = await exe(sql5);
+
+     var sql5 = "SELECT * FROM awards";
+    var awards = await exe(sql5);
+
+
+    var packet = { aboutinfo, vision_mission, director_msg, whychooseus,achievements,awards };
     console.log(packet);
     res.render("user/about", packet);
   } catch (error) {
@@ -161,15 +168,29 @@ exports.getPatientStoriesPage = (req, res) => {
   }
 };
 
+exports.getFaqPage = async (req, res) => {
+  try {
+    const faqs = await exe(`
+      SELECT 
+        f.faq_id,
+        f.faq_title,
+        f.faq_desc,
+        t.faq_service
+      FROM faq f
+      JOIN faq_type t ON f.faq_type_id = t.faq_type_id
+      ORDER BY t.faq_type_id, f.faq_id
+    `);
 
-exports.getFaqPage = (req, res) => {
-  try{
-    res.render("user/faq");
+    res.render("user/faq", { faqs });
+
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "FAQ Page Error" });
   }
 };
+
+
+
 
 exports.getPrivacyPage = (req, res) => {
   try{

@@ -360,15 +360,36 @@ exports.getDeleteMilestones = async (req, res) => {
 
 exports.postSaveAwards = async (req, res) => {
   try {
-    var data = req.body;
-    var sql =
-      "INSERT INTO awards (award_title, award_desc, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?)";
+   var data = req.body;
+
+    // image upload
+    let filename = "";
+
+    if (req.files && req.files.award_img) {
+      const image = req.files.award_img;
+      filename = Date.now() + "_" + image.name;
+      await image.mv("public/uploads/" + filename);
+    }
+   var sql =
+"INSERT INTO awards (award_title, award_desc, award_img, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?, ?)";
+
+await exe(sql, [
+  data.award_title,
+  data.award_desc,
+  filename,
+  data.award_issue,
+  data.award_year,
+  data.award_icon
+]);
+ var sql =
+      "INSERT INTO awards (award_title, award_desc,award_img, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?)";
     var result = await exe(sql, [
       data.award_title,
       data.award_desc,
       data.award_issue,
       data.award_year,
       data.award_icon,
+      filename
     ]);
     if (result.affectedRows == 0) {
       res.status(400).render("error", { message: "Failed to save Awards" });
@@ -397,26 +418,41 @@ exports.getEditAwardsPage = async (req, res) => {
 exports.postUpdateAwards = async (req, res) => {
   try {
     var data = req.body;
-    var sql =
-      "UPDATE awards SET award_title = ?, award_desc = ?, award_issue = ?, award_year = ?, award_icon = ? WHERE award_id = ?";
-    var result = await exe(sql, [
+    let filename = data.old_img;
+
+   if (req.files && req.files.award_img) {
+      filename = Date.now() + "-" + req.files.award_img.name;
+      await req.files.award_img.mv("public/uploads/" + filename);
+    }
+
+    var sql = `
+      UPDATE awards SET
+        award_title = ?,
+        award_img = ?,
+        award_desc = ?,
+        award_issue = ?,
+        award_year = ?,
+        award_icon = ?
+      WHERE award_id = ?
+    `;
+
+    await exe(sql, [
       data.award_title,
+      filename,
       data.award_desc,
       data.award_issue,
       data.award_year,
       data.award_icon,
-      data.award_id,
+      data.award_id
     ]);
-    if (result.affectedRows == 0) {
-      res.status(400).render("error", { message: "Failed to update Awards" });
-    } else {
-      res.redirect("/admin/achievements");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Update Awards Page Error" });
+
+    res.redirect("/admin/achievements");
+
+  } catch (err) {
+    console.log(err);
   }
 };
+
 
 exports.getDeleteAwards = async (req, res) => {
   try {

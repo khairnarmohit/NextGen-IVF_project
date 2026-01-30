@@ -18,7 +18,7 @@
         </div>
 
         <div class="card-body">
-          <form action="/admin/save-milestones" method="POST">
+          <form action="/admin/save-milestones" method="POST" enctype="multipart/form-data">
 
             <div class="row g-3 mb-3">
 
@@ -140,22 +140,29 @@
                 <input type="text" name="award_title" class="form-control" placeholder="Enter Award Title"
                   autocomplete="off" required>
               </div>
+              <!-- 2. Image-->
+               <div class="col-md-4">
+                <label class="form-label">Award Image *</label>
+                <input type="file" name="award_img" class="form-control" placeholder="Enter Award Image"
+                   required>
 
-              <!-- 2. Year -->
+               </div>
+
+              <!-- 3. Year -->
               <div class="col-md-4">
                 <label class="form-label">Award Year *</label>
                 <input type="number" name="award_year" class="form-control" min="1900" max="2100"
                   placeholder="Enter Year" autocomplete="off" required>
               </div>
 
-              <!-- 3. Issue -->
+              <!-- 4. Issue -->
               <div class="col-md-4">
                 <label class="form-label">Issue by *</label>
                 <input type="text" name="award_issue" class="form-control" autocomplete="off"
                   placeholder="Enter Issue by" required>
               </div>
 
-              <!-- 4. Icon -->
+              <!-- 5. Icon -->
               <div class="col-md-4">
                 <label class="form-label">Icon *</label>
                 <select name="award_icon" class="form-select" required>
@@ -167,8 +174,8 @@
                 </select>
               </div>
 
-              <!-- 5. Description (Full Width) -->
-              <div class="col-md-8">
+              <!-- 6. Description (Full Width) -->
+              <div class="col-md-4">
                 <label class="form-label">Description *</label>
                 <textarea name="award_desc" class="form-control" rows="1" autocomplete="off"
                   placeholder="Enter Award Description" required></textarea>
@@ -198,6 +205,7 @@
             <tr>
               <th>#</th>
               <th>Award Title</th>
+              <th>Image</th>
               <th>Year</th>
               <th>Icon</th>
               <th>Issue by</th>
@@ -215,6 +223,16 @@
                   <td>
                     <%= awards_info[i].award_title %>
                   </td>
+                  <td>
+                 
+                  <img
+                    src="/uploads/<%= awards_info[i].award_img %>"
+                    width="100"
+                    height="75"
+                    class="border"
+                  >
+                </td>
+                 
                   <td>
                     <%= awards_info[i].award_year %>
                   </td>

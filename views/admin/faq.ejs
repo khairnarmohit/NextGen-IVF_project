@@ -89,13 +89,18 @@
         : faqs[i].faq_title %>
 </td>
 
-        <td><%= faqs[i].faq_desc %></td>
+       <td>
+  <%= faqs[i].faq_desc.length > 30
+        ? faqs[i].faq_desc.substring(0, 30) + '...'
+        : faqs[i].faq_desc %>
+</td>
+
         <td>
           <a href="/admin/edit_faq/<%= faqs[i].faq_id %>" 
              class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i>
              
           </a>
-          <br><br>
+         
 
           <a href="/admin/delete_faq/<%= faqs[i].faq_id %>" 
              class="btn btn-sm btn-danger"
