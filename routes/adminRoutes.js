@@ -162,7 +162,13 @@ router.get('/appointments_cancel/:id', adminController.getCancelAppointment);
 
 router.get('/appointments_complete/:id', adminController.getCompleteAppointment);
 
-// router.get('/appointments-datefilter', adminController.getAppointmentsDateFilter);
+router.get('/appointments-completed', adminController.getCompletedAppointmentsPage);
+
+router.get('/appointments-cancelled', adminController.getCancelledAppointmentsPage);
+
+router.get('/appointment', adminController.getAppointmentPage);
+
+router.post('/appointment-save', adminController.postAppointmentSave);
 
 
 

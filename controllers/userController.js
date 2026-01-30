@@ -15,7 +15,14 @@ exports.getAboutPage = async (req, res) => {
     var sql4 = "SELECT * FROM whychooseus";
     var whychooseus = await exe(sql4);
 
-    var packet = { aboutinfo, vision_mission, director_msg, whychooseus };
+    var sql5 = "SELECT * FROM achievements";
+    var achievements = await exe(sql5);
+
+     var sql5 = "SELECT * FROM awards";
+    var awards = await exe(sql5);
+
+
+    var packet = { aboutinfo, vision_mission, director_msg, whychooseus,achievements,awards };
     console.log(packet);
     res.render("user/about", packet);
   } catch (error) {
@@ -152,14 +159,30 @@ exports.getPatientStoriesPage = (req, res) => {
   }
 };
 
-exports.getFaqPage = (req, res) => {
+
+exports.getFaqPage = async (req, res) => {
   try {
-    res.render("user/faq");
+    const faqs = await exe(`
+      SELECT 
+        f.faq_id,
+        f.faq_title,
+        f.faq_desc,
+        t.faq_service
+      FROM faq f
+      JOIN faq_type t ON f.faq_type_id = t.faq_type_id
+      ORDER BY t.faq_type_id, f.faq_id
+    `);
+
+    res.render("user/faq", { faqs });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "FAQ Page Error" });
   }
 };
+
+
+
+
 
 exports.getPrivacyPage = (req, res) => {
   try {
@@ -169,6 +192,7 @@ exports.getPrivacyPage = (req, res) => {
     res.status(50).render("error", { message: "Privacy Page Error" });
   }
 };
+
 
 // exports.getAppointmentPage = async (req, res) => {
 //   try{
@@ -180,6 +204,9 @@ exports.getPrivacyPage = (req, res) => {
 //     res.status(500).render("error", { message: "Appointment Page Error" });
 //   }
 // };
+
+
+
 exports.getAppointmentPage = async (req, res) => {
   try {
     // Our Doctors
@@ -201,6 +228,7 @@ exports.getAppointmentPage = async (req, res) => {
     });
   }
 };
+
 
 // exports.saveAppointment = async (req, res) => {
 //   try {
@@ -244,6 +272,7 @@ exports.getAppointmentPage = async (req, res) => {
 //     res.status(500).send("Appointment insert error");
 //   }
 // };
+
 
 exports.saveAppointment = async (req, res) => {
   try {
@@ -390,6 +419,7 @@ exports.saveAppointment = async (req, res) => {
   }
 };
 
+
 exports.getTermsPage = (req, res) => {
   try {
     res.render("user/terms");
@@ -402,7 +432,11 @@ exports.getTermsPage = (req, res) => {
 exports.getHomePage = async (req, res) => {
   try {
     var sql = "SELECT * FROM hero WHERE hero_id = 1";
+    var treatment = "SELECT * FROM treatments LIMIT 3";
+    var doctors = "SELECT * FROM doctors LIMIT 3";
     var hero_info = await exe(sql);
+    var treatments = await exe(treatment);
+    var doctors = await exe(doctors);
 
     if (hero_info.length == 0) {
       hero_info = [
@@ -414,24 +448,48 @@ exports.getHomePage = async (req, res) => {
     } else {
       hero_info = hero_info[0];
     }
-    res.render("user/home", { hero_info });
+    res.render("user/home", { hero_info, treatments, doctors });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Home Page Error" });
   }
 };
 
+
 exports.getPatientStoriesPage = async (req, res) => {
   try {
     var sql = "SELECT * FROM patients_review ORDER BY patients_review_id DESC";
     var stories = await exe(sql);
     var packet = { stories };
-
     console.log(stories);
-
     res.render("user/patient_stories", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Patient Stories Page Error" });
   }
 };
+
+
+
+exports.getPrivacyPage = async (req, res) => {
+  try {
+    var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id DESC`);
+    res.render("user/privacy", { list: data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Privacy Page Error" });
+  }
+};
+
+
+
+exports.getTermsPage = async (req, res) => {
+  try {
+    var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
+    res.render("user/terms", { list: data });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Terms Page Error" });
+  }
+};
+

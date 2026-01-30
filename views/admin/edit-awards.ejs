@@ -13,7 +13,7 @@
       </div>
 
       <div class="card-body">
-        <form action="/admin/update-awards" method="POST">
+        <form action="/admin/update-awards" method="POST" enctype="multipart/form-data">
 
           <div class="row g-3 mb-3">
 
@@ -25,22 +25,31 @@
               <input type="text" name="award_title" class="form-control" placeholder="Enter Award Title" value="<%= awardone[0].award_title %>"
                 autocomplete="off" required>
             </div>
+            <!-- 2.image -->
+               <div class="col-md-4">
+              <input type="hidden" name="old_img" value="<%= awardone[0].award_img %>">
 
-            <!-- 2. Year -->
+<img src="/uploads/<%= awardone[0].award_img %>" width="100" class="mb-2">
+
+<input type="file" name="award_img" class="form-control">
+
+            </div>
+
+            <!-- 3. Year -->
             <div class="col-md-4">
               <label class="form-label">Award Year *</label>
               <input type="number" name="award_year" class="form-control" min="1900" max="2100" value="<%= awardone[0].award_year %>" placeholder="Enter Year"
                 autocomplete="off" required>
             </div>
 
-            <!-- 3. Issue By -->
+            <!-- 4. Issue By -->
             <div class="col-md-4">
               <label class="form-label">Issued By *</label>
               <input type="text" name="award_issue" class="form-control" value="<%= awardone[0].award_issue %>" placeholder="Enter Issued By"
                 autocomplete="off" required>
             </div>
 
-            <!-- 4. Icon -->
+            <!-- 5. Icon -->
             <div class="col-md-4">
               <label class="form-label">Icon *</label>
               <select name="award_icon" class="form-select" required>
@@ -52,8 +61,8 @@
               </select>
             </div>
 
-            <!-- 5. Description -->
-            <div class="col-md-8">
+            <!-- 6. Description -->
+            <div class="col-md-4">
               <label class="form-label">Description *</label>
               <textarea name="award_desc" class="form-control" rows="1" placeholder="Enter Award Description"
                 autocomplete="off" required><%= awardone[0].award_desc %></textarea>

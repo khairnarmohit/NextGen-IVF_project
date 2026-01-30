@@ -1,248 +1,173 @@
 <%- include("navbar.ejs") %>
 
-
 <style type="text/css">
-        /* Custom CSS for IVF Clinic Privacy Policy Page */
-/* =========================
-   PRIVACY POLICY PAGE ONLY
-   All classes prefixed with pp-
-========================= */
+    /* =========================
+       PRIVACY POLICY PAGE ONLY
+       All classes prefixed with pp-
+    ========================= */
 
-.pp-hero-section {
-    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-    padding: 100px 0 60px;
-    margin-bottom: 40px;
-}
-
-.pp-hero-section h1 {
-    color: #1d8c9a;
-    margin-bottom: 15px;
-}
-
-.pp-hero-section .lead {
-    font-size: 1.25rem;
-    color: #555;
-    max-width: 700px;
-    margin: 0 auto 20px;
-}
-
-/* Main Content */
-.pp-main-content {
-    background-color: #f8f9fa;
-}
-
-/* Policy Card */
-.pp-policy-card {
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.pp-policy-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
-}
-
-/* Section Titles */
-.pp-section-title {
-    color: #1d8c9a;
-    padding-bottom: 8px;
-    border-bottom: 2px solid rgba(43, 176, 192, 0.2);
-    margin-bottom: 20px;
-}
-
-/* Contact Info Box */
-.pp-contact-info {
-    background-color: rgba(43, 176, 192, 0.05);
-    border-radius: 8px;
-    padding: 20px;
-}
-
-/* CTA Section */
-.pp-cta-section {
-    background-color: #e8f4f8;
-}
-
-.pp-cta-section h3 {
-    color: #1d8c9a;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
     .pp-hero-section {
-        padding: 70px 0 40px;
+        background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+        padding: 100px 0 60px;
+        margin-bottom: 40px;
     }
 
     .pp-hero-section h1 {
-        font-size: 2.2rem;
+        color: #1d8c9a;
+        margin-bottom: 15px;
     }
 
-    .pp-policy-card .card-body {
-        padding: 25px !important;
-    }
-}
-
-/* Print Only for Privacy Page */
-@media print {
-    .pp-cta-section,
-    .btn {
-        display: none !important;
+    .pp-hero-section .lead {
+        font-size: 1.25rem;
+        color: #555;
+        max-width: 700px;
+        margin: 0 auto 20px;
     }
 
-    .pp-hero-section {
-        background: white !important;
-        padding: 30px 0;
+    /* Main Content */
+    .pp-main-content {
+        background-color: #f8f9fa;
     }
 
+    /* Policy Card */
     .pp-policy-card {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .pp-policy-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* Section Titles */
     .pp-section-title {
-        color: black !important;
-        border-bottom: 1px solid #ccc !important;
+        color: #1d8c9a;
+        padding-bottom: 8px;
+        border-bottom: 2px solid rgba(43, 176, 192, 0.2);
+        margin-bottom: 20px;
     }
-}
 
-    </style>
+    /* Contact Info Box */
+    .pp-contact-info {
+        background-color: rgba(43, 176, 192, 0.05);
+        border-radius: 8px;
+        padding: 20px;
+    }
 
-   
-    <!-- Hero / Page Title Section -->
-    <section class="pp-hero-section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 text-center">
-                    <h1 class="display-4 fw-bold mb-3">Privacy Policy</h1>
-                    <p class="lead mb-4">Your privacy is important to us. We are committed to protecting your personal and medical information.</p>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center">
-                            <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item active" aria-current="page"><a href="#">Privacy Policy</a></li>
-                        </ol>
-                    </nav>
-                </div>
+    /* CTA Section */
+    .pp-cta-section {
+        background-color: #e8f4f8;
+    }
+
+    .pp-cta-section h3 {
+        color: #1d8c9a;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .pp-hero-section {
+            padding: 70px 0 40px;
+        }
+
+        .pp-hero-section h1 {
+            font-size: 2.2rem;
+        }
+
+        .pp-policy-card .card-body {
+            padding: 25px !important;
+        }
+    }
+
+    /* Print Only for Privacy Page */
+    @media print {
+        .pp-cta-section,
+        .btn {
+            display: none !important;
+        }
+
+        .pp-hero-section {
+            background: white !important;
+            padding: 30px 0;
+        }
+
+        .pp-policy-card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+
+        .pp-section-title {
+            color: black !important;
+            border-bottom: 1px solid #ccc !important;
+        }
+    }
+</style>
+
+<!-- Hero / Page Title Section -->
+<section class="pp-hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1 class="display-4 fw-bold mb-3">Privacy Policy</h1>
+                <p class="lead mb-4">Your privacy is important to us. We are committed to protecting your personal and medical information.</p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="#">Privacy Policy</a></li>
+                    </ol>
+                </nav>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Main Content Section -->
-    <main class="pp-main-content py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="pp-policy-card card shadow-sm border-0">
-                        <div class="card-body p-4 p-md-5">
-                            
-                            <!-- Introduction -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">1. Introduction</h2>
-                                <p>At IVF Fertility Clinic, we understand the sensitivity of your personal and medical information. This Privacy Policy outlines how we collect, use, disclose, and protect your information when you use our services. We adhere to all applicable healthcare privacy laws, including HIPAA, to ensure your data remains confidential and secure.</p>
-                            </section>
+<main class="pp-main-content py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="pp-policy-card card shadow-sm border-0">
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <% if (list.length > 0) { %>
+                            <% for (let i = 0; i < list.length; i++) { %>
+                                <section class="mb-5">
+                                    <h2 class="h3 mb-3 pp-section-title"><%= i + 1 %>. <%= list[i].privacy_title %></h2>
+                                    
+                                    <p style="white-space: pre-wrap;"><%= list[i].privacy_desc %></p>
+                                </section>
+                            <% } %>
+                        <% } else { %>
+                            <div class="alert alert-warning text-center">
+                                No privacy policy content available at this time.
+                            </div>
+                        <% } %>
 
-                            <!-- Information We Collect -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">2. Information We Collect</h2>
-                                <p>We collect various types of information to provide you with quality fertility care:
-                                    <br>
-                               
-                                    Personal Details Name, date of birth, address, contact information, insurance details, and government-issued identification numbers.
-                                    Medical Information Medical history, fertility test results, treatment plans, medication records, and other health-related data necessary for your care.</p>
-                                
-                            </section>
+                        <section class="mb-0">
+                            <h2 class="h3 mb-3 pp-section-title">Contact Information</h2>
+                            <p>If you have questions about this Privacy Policy or our privacy practices, please contact our Privacy Officer.</p>
+                        </section>
 
-                            <!-- How We Use Your Information -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">3. How We Use Your Information</h2>
-                                <p>Your information is used exclusively for purposes related to your care and our clinic operations:<br>
-                               
-                                   Appointment Scheduling To manage your appointments, send reminders, and coordinate your care.
-                                   Medical Treatment To develop and implement personalized fertility treatment plans, monitor your progress, and adjust care as needed.
-                                   Communication Purposes To respond to your inquiries, provide test results, share educational materials, and send important clinic updates.</p>
-                                
-                            </section>
-
-                            <!-- Data Protection & Security -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">4. Data Protection & Security</h2>
-                                <p>We implement comprehensive security measures to protect your information:<br>
-                               
-                                   Encrypted electronic medical records system with access controls and audit trails
-                                   Secure physical storage for paper records in locked, access-controlled areas
-                                   Regular staff training on privacy practices and confidentiality obligations
-                                   Technical safeguards including firewalls, intrusion detection, and regular security assessments.</p>
-                            </section>
-
-                            <!-- Cookies & Tracking -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">5. Cookies & Tracking</h2>
-                                <p>Our website uses cookies and similar technologies to enhance your browsing experience:<br>
-                                
-                                    Essential Cookies Required for the website to function properly, such as maintaining your session security.
-                                    Analytics Cookies Help us understand how visitors use our site, allowing us to improve its functionality and content.
-                                    Preference Cookies Remember your settings and preferences for future visits.</p>
-                            </section>
-
-                            <!-- Third-Party Sharing -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">6. Third-Party Sharing</h2>
-                                <p>We may share your information with third parties only in specific circumstances:<br>
-                               
-                                   With other healthcare providers involved in your treatment (with your consent)
-                                   With insurance companies for billing and authorization purposes
-                                   With accredited laboratories for diagnostic testing
-                                   When required by law (e.g., public health reporting, legal proceedings)
-                                   For business operations (e.g., IT support, billing services) under strict confidentiality agreements.</p>
-                            </section>
-
-                            <!-- Patient Rights -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">7. Patient Rights</h2>
-                                <p>You have specific rights regarding your health information:<br>
-                               
-                                   Access to Data Request to view and obtain copies of your medical records.
-                                   Correction of Data Request amendments to your records if you believe information is inaccurate or incomplete.
-                                   Deletion Request Request deletion of your information, subject to legal and medical record-keeping requirements.
-                                   Restriction of Use Request limitations on how we use or disclose your information.
-                                   Confidential Communications Request alternative methods or locations for receiving communications from us.</p>
-                            </section>
-
-                            <!-- Policy Updates -->
-                            <section class="mb-5">
-                                <h2 class="h3 mb-3 pp-section-title">8. Policy Updates</h2>
-                                <p>We may update this Privacy Policy periodically to reflect changes in our practices, technology, legal requirements, or services. When we make changes, we will update the "Last Updated" date at the bottom of this page. For significant changes, we will provide more prominent notice, which may include email notification or a notice on our website.</p>
-                            </section>
-
-                            <!-- Contact Information -->
-                            <section class="mb-4">
-                                <h2 class="h3 mb-3 pp-section-title">9. Contact Information</h2>
-                                <p>If you have questions about this Privacy Policy or our privacy practices, please contact our Privacy Officer:</p>
-                                
-                            </section>
-
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-
-
-    <!-- Call to Action Section -->
-    <section class="pp-cta-section py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 text-center">
-                    <h3 class="h2 mb-4">Have questions about our privacy practices?</h3>
-                    <p class="mb-4">Our privacy team is here to address any concerns you may have about how we handle your personal and medical information.</p>
-                    <a href="/contact" class="btn btn-primary btn-lg px-4">
-                        <i class="fas fa-comments me-2"></i> Contact Us
-                    </a>
-                </div>
+<!-- Call to Action Section -->
+<section class="pp-cta-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 class="h2 mb-4">Have questions about our privacy practices?</h3>
+                <p class="mb-4">Our privacy team is here to address any concerns you may have about how we handle your personal and medical information.</p>
+                <a href="/contact" class="btn btn-primary btn-lg px-4">
+                    <i class="fas fa-comments me-2"></i> Contact Us
+                </a>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
 
 <%- include("footer.ejs") %>

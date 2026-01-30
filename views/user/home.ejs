@@ -15,21 +15,18 @@
       playsinline 
       poster="/uploads/baby_crawl_image.jpeg"
     >
-        
-        <source src="/uploads/baby_crawl_video.mp4" type="video/mp4">
+        <source src="/uploads/<%= hero_info.hero_background || 'baby_crawl_video.mp4' %>" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
-    Dark Overlay
     <div class="overlay"></div>
 
-    Content Wrapper
     <div class="container h-100 content-wrapper">
         <div class="row h-100 align-items-center">
             
             <div class="col-12 col-lg-7 text-start">
                 <h1 class="display-3 fw-bold animate-up delay-0 slider_text">
-                    Helping you build of the family of your dreams!
+                    <%= hero_info.hero_heading || "Helping you build the family of your dreams!" %>
                 </h1>
                 <a href="#appointment-link" class="btn btn-primary btn-lg rounded-pill px-5 py-3 animate-up delay-1 shadow">
                     Book an Appointment
@@ -38,7 +35,6 @@
             
         </div>
     </div>
-
 </section>
 
 
@@ -79,47 +75,35 @@
 <section>
     <div class="container">
         <div class="row mt-5 mb-5">
- <h2 class="text-center text-primary mb-4">Treatment</h2>
-             
-            <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                <i class="fa-solid fa-microscope fs-1 pb-4 treatment-icon"></i>
-                <h3>In Vitro Fertilization (IVF)</h3>
-                <p class="pt-3 pb-3">
-                    In Vitro Fertilization (IVF) Lab fertilization of eggs for a
-                     higher success rate.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-              <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                <i class="fa-solid fa-egg fa-snowflake fs-1 pb-4 treatment-icon"></i>
-                <h3>Egg Freezing</h3>
-                <p class="pt-3 pb-3">
-                    Preserve your eggs today to protect your fertility for the future.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-              <div class="col-md-4">
-                <div class="card card-body treatment-card p-5 border-1">
-                <i class="fa-solid fa-seedling fs-1 pb-4 treatment-icon "></i>
-                <h3>Embryo Freezing</h3>
-                <p class="pt-3 pb-3">
-                    High-quality embryos from IVF are frozen for future use.
-                </p>
-                <a href="#" class="fs-4 treatment-link">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-            
+
+      <% treatments.forEach(t => { %>
+
+        <div class="col-md-4 mb-4">
+          <div class="card card-body treatment-card p-5 border-1">
+          <!-- style="--bg-image: url('/uploads/<%= t.treatment_image %>');" -->
+
+
+            <!-- ICON (HTML from DB) -->
+             <span class="treatment-icon fs-1 mb-3">
+            <%- t.treatment_icon %>
+            </span>
+
+            <h3><%= t.treatment_title %></h3>
+
+            <p class="pt-3 pb-3">
+              <%= t.treatment_short %>
+            </p>
+
+            <a href="/treatment-details/<%= t.treatment_id %>" class="fs-4 treatment-link">
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+          </div>
         </div>
+
+      <% }) %>
+
+    </div>
     
     </div>
 </section>
@@ -137,60 +121,41 @@
       </p>
     </div>
 
-    <div class="row g-4">
+<div class="row g-4">
 
-      <!-- Doctor 1 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="doctor-card">
-          <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d" class="doctor-img" alt="">
-          <div class="doctor-info">
-            <h3 class="doctor-name">Dr. Priya Sharma</h3>
+    <% if (doctors.length > 0) { %>
+      <% doctors.forEach(doctor => { %>
 
-            <p class="doctor-degree">MBBS, MD, DNB (Obs & Gyn)</p>
-            <span class="doctor-specialization">IVF Specialist</span>
-            <div class="doctor-experience">
-              <i class="fa-solid fa-award"></i>
-              <span>18+ Years Experience</span>
+        <div class="col-lg-4 col-md-6">
+          <div class="doctor-card h-100">
+            <img 
+              src="/uploads/<%= doctor.doctor_photo %>" 
+              class="doctor-img" 
+              alt="<%= doctor.doctor_name %>">
+
+            <div class="doctor-info">
+              <h3 class="doctor-name"><%= doctor.doctor_name %></h3>
+
+              <p class="doctor-degree"><%= doctor.doctor_qual %></p>
+
+              <span class="doctor-specialization">
+                <%= doctor.doctor_specialist %>
+              </span>
+
+              <div class="doctor-experience">
+                <i class="fa-solid fa-award"></i>
+                <span><%= doctor.doctor_exp %>+ Years Experience</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Doctor 2 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="doctor-card">
-          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2" class="doctor-img" alt="">
-          <div class="doctor-info">
-            <h3 class="doctor-name">Dr. Rajesh Kumar</h3>
+      <% }) %>
+    <% } else { %>
+      <p class="text-center">No doctors available</p>
+    <% } %>
 
-            <p class="doctor-degree">PhD (Embryology)</p>
-            <span class="doctor-specialization">Clinical Embryologist</span>
-            <div class="doctor-experience">
-              <i class="fa-solid fa-award"></i>
-              <span>15+ Years Experience</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Doctor 3 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="doctor-card">
-          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d" class="doctor-img" alt="">
-          <div class="doctor-info">
-            <h3 class="doctor-name">Dr. Anjali Mehta</h3>
-
-            <p class="doctor-degree">MD, Fellowship RM</p>
-            <span class="doctor-specialization">Andrologist</span>
-            <div class="doctor-experience">
-              <i class="fa-solid fa-award"></i>
-              <span>12+ Years Experience</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+  </div>
   </section>
 
 

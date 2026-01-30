@@ -1173,10 +1173,39 @@
       </div>
 
 
-      <a class="nav-link" href="/admin/appointments-list">
+      <!-- <a class="nav-link" href="/admin/appointments-list">
         <i class="fa-solid fa-calendar-check"></i>
         <span>Appointments</span>
-      </a>
+      </a> -->
+
+      <div class="sidebar-dropdown">
+
+  <a href="javascript:void(0)" class="nav-link dropdown-toggle-custom appointmentToggle">
+    <i class="fa-solid fa-calendar-check"></i>
+    <span>Appointments</span>
+    <i class="fa-solid fa-chevron-down ms-auto"></i>
+  </a>
+
+  <div class="sidebar-submenu appointmentSubmenu">
+
+    <a class="nav-link sub-link" href="/admin/appointments-list">
+      <i class="fa-solid fa-list"></i>
+      <span>All Appointments</span>
+    </a>
+
+    <a class="nav-link sub-link" href="/admin/appointments-completed">
+      <i class="fa-solid fa-check-double"></i>
+      <span>Completed Appointments</span>
+    </a>
+
+    <a class="nav-link sub-link" href="/admin/appointments-cancelled">
+      <i class="fa-solid fa-ban"></i>
+      <span>Cancelled Appointments</span>
+    </a>
+
+  </div>
+</div>
+
 
 
 
