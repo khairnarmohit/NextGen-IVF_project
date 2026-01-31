@@ -23,7 +23,6 @@ exports.getAboutPage = async (req, res) => {
 
 
     var packet = { aboutinfo, vision_mission, director_msg, whychooseus,achievements,awards };
-    console.log(packet);
     res.render("user/about", packet);
   } catch (error) {
     console.error(error);
@@ -217,10 +216,13 @@ exports.getAppointmentPage = async (req, res) => {
     const visitingSql = "SELECT * FROM visitor_doctors";
     const visitingDoctors = await exe(visitingSql);
 
-    res.render("user/appointment", {
-      doctors,
-      visitingDoctors,
-    });
+    var sql1 = "SELECT mon_start, mon_end, sat_start, sat_end FROM contact";
+    const timing = await exe(sql1);
+
+    var packet = { doctors, visitingDoctors, timing };
+    console.log(packet)
+
+    res.render("user/appointment", { packet });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
