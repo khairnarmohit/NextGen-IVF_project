@@ -38,6 +38,9 @@ router.get("/terms", userController.getTermsPage);
 
 
 
+
+
+
 router.get("/patient_stories", userController.getPatientStoriesPage); // NEW ROUTE
 
 

@@ -182,16 +182,7 @@ exports.getPrivacyPage = (req, res) => {
 };
 
 
-// exports.getAppointmentPage = async (req, res) => {
-//   try{
-//     var sql = "SELECT * FROM doctors";
-//     const doctors = await exe(sql);
-//     res.render("user/appointment", { doctors });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "Appointment Page Error" });
-//   }
-// };
+
 
 
 
@@ -217,49 +208,6 @@ exports.getAppointmentPage = async (req, res) => {
   }
 };
 
-
-// exports.saveAppointment = async (req, res) => {
-//   try {
-//     const {
-//       patient_fullname,
-//       patient_email,
-//       patient_mobile,
-//       patient_gender,
-//       patient_age,
-//       doctor_id,
-//       appointment_date
-//     } = req.body;
-
-//     // Parse doctor_id: 'd-1' for doctors, 'v-2' for visiting doctors
-//     let parsedDoctorId = null;
-//     if (doctor_id) {
-//       const [type, id] = doctor_id.split('-');
-//       parsedDoctorId = parseInt(id);  // store positive ID for both types
-//     }
-
-//     const sql = `
-//       INSERT INTO appointments
-//       (patient_fullname, patient_email, patient_mobile, patient_gender, patient_age, doctor_id, appointment_date)
-//       VALUES (?, ?, ?, ?, ?, ?, ?)
-//     `;
-
-//     await exe(sql, [
-//       patient_fullname,
-//       patient_email,
-//       patient_mobile,
-//       patient_gender,
-//       patient_age,
-//       parsedDoctorId,
-//       appointment_date
-//     ]);
-
-//     res.redirect("/appointment");
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Appointment insert error");
-//   }
-// };
 
 
 exports.saveAppointment = async (req, res) => {
@@ -448,10 +396,11 @@ exports.getPatientStoriesPage = async (req, res) => {
   try {
     var sql = "SELECT * FROM patients_review ORDER BY patients_review_id DESC";
     var stories = await exe(sql);
-    var packet = {stories};
 
-    // console.log(stories)
-
+    var sql1 = `SELECT * FROM gallery`;
+    var gallery = await exe(sql1);
+    var packet = { stories,gallery };
+    console.log(stories,gallery);
     res.render("user/patient_stories", packet);
   } catch (error) {
     console.error(error);
@@ -482,4 +431,15 @@ exports.getTermsPage = async (req, res) => {
     res.status(500).render("error", { message: "Terms Page Error" });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
 

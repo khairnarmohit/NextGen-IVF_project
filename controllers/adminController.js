@@ -1537,9 +1537,7 @@ exports.getCompletedAppointmentsPage = async (req, res) => {
   }
 };
 
-// exports.getCancelledAppointmentsPage = async (req, res) => {
-//   try {
-//     const sql = `
+
 
 exports.getCancelledAppointmentsPage = async (req, res) => {
   try {
@@ -1612,14 +1610,7 @@ exports.getCancelledAppointmentsPage = async (req, res) => {
   }
 };
 
-// exports.getAppointmentPage = async (req, res) => {
-//   try {
-//     res.render("admin/appointment-add");
-//   } catch (error) { 
-//     console.error(error);
-//     res.status(500).render("error", { message: "Appointment Page Error" });
-//   }
-// };
+
 
 exports.getAppointmentPage = async (req, res) => {
   try {
@@ -1702,4 +1693,10 @@ exports.postAppointmentSave = async (req, res) => {
     res.status(500).send("Appointment insert error");
   }
 };
+
+
+
+
+
+
 
