@@ -23,7 +23,6 @@ exports.getAboutPage = async (req, res) => {
 
 
     var packet = { aboutinfo, vision_mission, director_msg, whychooseus,achievements,awards };
-    console.log(packet);
     res.render("user/about", packet);
   } catch (error) {
     console.error(error);
@@ -66,6 +65,10 @@ exports.getTreatmentDetailsPage = async (req, res) => {
       .render("error", { message: "Treatment Details Page Error" });
   }
 };
+
+
+
+
 
 exports.getDoctorsPage = async (req, res) => {
   try {
@@ -190,10 +193,13 @@ exports.getAppointmentPage = async (req, res) => {
     const visitingSql = "SELECT * FROM visitor_doctors WHERE visitor_doctor_status=1 ";
     const visitingDoctors = await exe(visitingSql);
 
-    res.render("user/appointment", {
-      doctors,
-      visitingDoctors,
-    });
+    var sql1 = "SELECT mon_start, mon_end, sat_start, sat_end FROM contact";
+    const timing = await exe(sql1);
+
+    var packet = { doctors, visitingDoctors, timing };
+    console.log(packet)
+
+    res.render("user/appointment", { packet });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
@@ -433,8 +439,10 @@ exports.getPatientStoriesPage = async (req, res) => {
   try {
     var sql = "SELECT * FROM patients_review ORDER BY patients_review_id DESC";
     var stories = await exe(sql);
-    var packet = { stories };
-    console.log(stories);
+    var packet = {stories};
+
+    // console.log(stories)
+
     res.render("user/patient_stories", packet);
   } catch (error) {
     console.error(error);
