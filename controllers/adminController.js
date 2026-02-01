@@ -54,13 +54,40 @@ exports.getAdminDashboard = async (req, res) => {
     var sql5 = "SELECT Count(*) as enquiry FROM enquiry";
     var enquiry = await exe(sql5);
 
+const dailyAppointments = await exe(`
+  SELECT 
+    DAY(appointment_date) AS day,
+    COUNT(*) AS total
+  FROM appointments
+  WHERE MONTH(appointment_date) = MONTH(CURRENT_DATE())
+    AND YEAR(appointment_date) = YEAR(CURRENT_DATE())
+  GROUP BY DAY(appointment_date)
+  ORDER BY day
+`);
+
+const doctorAppointments = await exe(`
+  SELECT 
+    d.doctor_name,
+    COUNT(*) AS total
+  FROM appointments a
+  JOIN doctors d ON d.doctor_id = a.doctor_id
+  GROUP BY d.doctor_name
+`);
+
+
+
     var packet = {
       appointments,
       todays_appointments,
       pending_appointments,
       patient_reviews,
       enquiry,
+      dailyAppointments,
+      doctorAppointments,
     };
+
+    console.log(dailyAppointments);
+    console.log(doctorAppointments);
 
     res.render("admin/dashboard", packet);
   } catch (error) {
@@ -659,7 +686,7 @@ exports.deleteReview = async (req, res) => {
 
 exports.getPrivacyPage = async (req, res) => {
   try {
-    var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id DESC`);
+    var data = await exe(`SELECT * FROM privacy`);
 
     var editData = null;
     if (req.query.edit) {
@@ -707,8 +734,8 @@ exports.updatePrivacy = async (req, res) => {
 exports.deletePrivacy = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = `DELETE FROM privacy WHERE privacy_id='${id}'`;
-    await exe(sql);
+    var sql = "UPDATE privacy SET privacy_status=0 WHERE privacy_id=?";
+    await exe(sql, [id]);
     res.redirect("/admin/privacy");
   } catch (error) {
     console.log(error);
@@ -1830,3 +1857,24 @@ exports.postResetPassword = async (req, res) => {
   }
 };
 
+
+
+
+exports.getLogout = async (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).render("error", {
+          message: "Logout Error",
+        });
+      }
+      res.redirect("/admin/login");
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Logout Error",
+    });
+  }
+};
