@@ -1479,7 +1479,7 @@ exports.getCompletedAppointmentsPage = async (req, res) => {
       params.push(date);
     }
 
-    sql += ` ORDER BY a.patient_id ASC `;
+    sql += ` ORDER BY a.appointment_date DESC `;
     const appointments = await exe(sql, params);
 
     // ----------- DOCTOR SUMMARY -----------
@@ -1542,6 +1542,7 @@ exports.getCancelledAppointmentsPage = async (req, res) => {
       LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
       LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
       WHERE a.status = 'cancelled'
+      
     `;
 
     let params = [];
@@ -1551,7 +1552,7 @@ exports.getCancelledAppointmentsPage = async (req, res) => {
       params.push(date);
     }
 
-    sql += ` ORDER BY a.patient_id ASC `;
+    sql += ` ORDER BY a.appointment_date DESC `;
     const appointments = await exe(sql, params);
 
     // ----------- DOCTOR SUMMARY -----------
