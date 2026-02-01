@@ -2,6 +2,49 @@
 
   <div class="container py-4">
 
+
+  <!-- Top Toolbar Row: Add Review (Left) & Actions (Right) -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <% if(!editData) { %>
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="collapse"
+          data-bs-target="#addReviewForm"
+        >
+          <i class="fas fa-plus me-1"></i> Add Review
+        </button>
+      <% } %>
+    </div>
+
+    <!-- Top Right Side Buttons -->
+    <div>
+        <!-- <button onclick="exportReviewCSV()" class="btn btn-success btn-sm"> -->
+ <button onclick="exportReviewCSV()" class="btn btn-success me-2">
+            <i class="fas fa-file-csv me-2"></i> Export CSV
+        </button>
+        <!-- <button onclick="printReviews()" class="btn btn-info text-white btn-sm ms-1"> -->
+     <button onclick="printReviews()" class="btn btn-secondary">
+            <i class="fas fa-print me-2"></i> Print
+        </button>
+    </div>
+  </div>
+
+
+   
+  <!-- Add Form Section -->
+  <div class="collapse <%= editData ? 'd-none' : '' %> mb-4" id="addReviewForm">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Add New Patient Review</h5>
+      </div>
+      <div class="card-body">
+        <form action="/admin/patient-review/save" method="POST" enctype="multipart/form-data">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Patient Photo</label>
+              <input type="file" name="patients_review_photo" class="form-control" accept="image/*" required>
+
     <div class="mb-3">
       <% if(!editData) { %>
         <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addReviewForm">
@@ -26,6 +69,7 @@
                 <label class="form-label">Review Date</label>
                 <input type="date" name="patients_review_date" class="form-control" required>
               </div>
+
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
@@ -54,6 +98,10 @@
       </div>
     </div>
 
+
+  <!-- Edit Form Section -->
+
+
     <% if(editData) { %>
       <div class="card shadow-sm border-0 mb-4">
         <div class="card-header bg-primary text-white">
@@ -63,6 +111,7 @@
           <form action="/admin/patient-review/update" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="patients_review_id" value="<%= editData.patients_review_id %>">
             <input type="hidden" name="old_photo" value="<%= editData.patients_review_photo %>">
+
 
             <div class="row mb-3">
               <div class="col-md-6">
@@ -113,6 +162,27 @@
       </div>
       <% } %>
 
+
+  <!-- List Section (ID for Print/Export) -->
+  <div id="printArea" class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Patient Reviews List</h5>
+    </div>
+
+    <div class="card-body table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th style="width: 100px;" class="text-center">Photo</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Location</th>
+            <th class="text-center" style="min-width: 300px;">Review Description</th>
+            <th class="text-center">Date</th>
+            <th style="width: 120px;" class="text-center">Action</th>
+          </tr>
+        </thead>
+
         <div class="card shadow-sm border-0">
           <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Patient Reviews List</h5>
@@ -132,6 +202,7 @@
                 </tr>
               </thead>
 
+
               <tbody>
                 <% if (list.length> 0) { %>
                   <% for (let i=0; i < list.length; i++) { %>
@@ -140,28 +211,40 @@
                         <%= i + 1 %>
                       </td>
 
-                      <td class="text-center">
-                        <img src="/uploads/<%= list[i].patients_review_photo %>" class="img-fluid" width="70"
-                          height="70" class="rounded border" width="50" height="50" style="object-fit: cover;"
-                          onerror="this.src='https://via.placeholder.com/50'">
-                      </td>
+
+                <td class="text-center">
+                  <img
+                    src="/uploads/<%= list[i].patients_review_photo %>"
+                    class="img-fluid rounded border"
+                    width="50"
+                    height="50"
+                    style="object-fit: cover;"
+                    onerror="this.src='https://via.placeholder.com/50'"
+                  >
+                </td>
+
+                    
+
 
                       <td class="fw-bold text-primary">
                         <%= list[i].patients_review_name %>
                       </td>
 
-                      <td>
-                        <span class="text-dark ">
-                          <%= list[i].patients_review_address %>
-                        </span>
-                      </td>
 
+                <td>
+                   <span class="text-dark">
+                     <%= list[i].patients_review_address %>
+                   </span>
+                </td>
 
-                      <td class="text-start">
-                        <p class="text-muted mb-0">
-                          <%= list[i].patients_review_desc %>
-                        </p>
-                      </td>
+                <!-- Fixed duplicate TD issue -->
+                <td class="text-start">
+                   <p class="text-muted mb-0" style="padding-left: 15px;">
+                     <%= list[i].patients_review_desc %>
+                   </p>
+                </td>
+
+                     
 
                       <td class="text-center">
                         <span class="review-date text-secondary small"
@@ -196,19 +279,63 @@
 
   </div>
 
-  <script>
-    document.querySelectorAll(".review-date").forEach(el => {
-      const rawDate = el.dataset.date;
-      if (!rawDate) return;
+  
 
-      const date = new Date(rawDate);
-      const formatted = date.toLocaleDateString("en-US", {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-      el.textContent = formatted;
+<script>
+  // Date Formatting Script
+  document.querySelectorAll(".review-date").forEach(el => {
+    const rawDate = el.dataset.date;
+    if (!rawDate) return;
+
+    const date = new Date(rawDate);
+    const formatted = date.toLocaleDateString("en-US", {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
-  </script>
+    el.textContent = formatted;
+  });
+
+  // Export CSV Script
+  function exportReviewCSV() {
+    let csv = [];
+    let rows = document.querySelectorAll("#printArea table tr");
+
+    for (let i = 0; i < rows.length; i++) {
+      let row = [], cols = rows[i].querySelectorAll("th, td");
+
+      for (let j = 0; j < cols.length; j++) {
+        // Note: This skips column index 3 (Location) based on your original logic
+        if (j === 3) continue; 
+
+        let text = cols[j].innerText.replace(/"/g, '""');
+        row.push('"' + text + '"');
+      }
+      csv.push(row.join(","));
+    }
+
+    let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+    let downloadLink = document.createElement("a");
+
+    downloadLink.download = "patient_reviews.csv";
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+
+  // Print Script
+  function printReviews() {
+    const printContent = document.getElementById("printArea").innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    location.reload();
+  }
+</script>
 
   <%- include('footer.ejs') %>
