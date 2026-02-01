@@ -199,7 +199,7 @@ exports.getAppointmentPage = async (req, res) => {
     var packet = { doctors, visitingDoctors, timing };
     console.log(packet)
 
-    res.render("user/appointment", { packet });
+    res.render("user/appointment", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
