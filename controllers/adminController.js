@@ -606,7 +606,7 @@ exports.postUpdateContact = async (req, res) => {
 exports.getPatientReviewPage = async (req, res) => {
   try {
     var data = await exe(
-      `SELECT * FROM patients_review ORDER BY patients_review_id DESC`
+      `SELECT * FROM patients_review ORDER BY patients_review_id ASC`
     );
 
     var editData = null;
@@ -1389,7 +1389,7 @@ exports.getAppointmentsListPage = async (req, res) => {
 
 exports.getTermsPage = async (req, res) => {
   try {
-    var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
+    var data = await exe(`SELECT * FROM terms ORDER BY term_id ASC`);
 
     var editData = null;
     if (req.query.edit) {
@@ -1506,7 +1506,7 @@ exports.getCompletedAppointmentsPage = async (req, res) => {
       params.push(date);
     }
 
-    sql += ` ORDER BY a.patient_id ASC `;
+    sql += ` ORDER BY a.appointment_date DESC `;
     const appointments = await exe(sql, params);
 
     // ----------- DOCTOR SUMMARY -----------
@@ -1569,6 +1569,7 @@ exports.getCancelledAppointmentsPage = async (req, res) => {
       LEFT JOIN doctors d ON a.doctor_id = d.doctor_id
       LEFT JOIN visitor_doctors vd ON a.visitor_doctor_id = vd.visitor_doctor_id
       WHERE a.status = 'cancelled'
+      
     `;
 
     let params = [];
@@ -1578,7 +1579,7 @@ exports.getCancelledAppointmentsPage = async (req, res) => {
       params.push(date);
     }
 
-    sql += ` ORDER BY a.patient_id ASC `;
+    sql += ` ORDER BY a.appointment_date DESC `;
     const appointments = await exe(sql, params);
 
     // ----------- DOCTOR SUMMARY -----------
@@ -1705,6 +1706,22 @@ exports.postAppointmentSave = async (req, res) => {
   }
 };
 
+
+
+
+
+exports.getNewsletterPage = async (req, res) => {
+  try {
+    var sql = "SELECT * FROM newsletter ORDER BY created_at ASC";
+    var newsletters = await exe(sql);
+    
+    var packet = { newsletters };
+    res.render("admin/newsletter", packet); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Newsletter Page Error" });
+  }
+}
 exports.getForgotPasswordPage = async (req, res) => {
   try {
     res.render("admin/forgot-password", { message: "" });
@@ -1854,6 +1871,7 @@ exports.postResetPassword = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Reset Password Error" });
+
   }
 };
 

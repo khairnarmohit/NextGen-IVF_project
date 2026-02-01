@@ -9,10 +9,14 @@
         <video class="video-background" preload="auto" autoplay muted loop playsinline
             poster="/uploads/baby_crawl_image.jpeg">
             <source src="/uploads/<%= hero_info.hero_background || 'baby_crawl_video.mp4' %>" type="video/mp4">
-
         </video>
 
         <div class="overlay"></div>
+
+
+     
+     </video>
+       <div class="overlay"></div>
 
         <div class="container h-100 content-wrapper">
             <div class="row h-100 align-items-center">
@@ -29,9 +33,9 @@
 
             </div>
         </div>
-    </section>
+</section>
 
-
+   
     <section class="section-padding" id="history">
         <div class="container">
             <!-- <h1 class="About_text text-primary">About Us</h1> -->
@@ -70,6 +74,11 @@
     <!-- tretments -->
     <section>
         <div class="container">
+            <div class="text-center mb-5">
+            <h2 class="text-center mb-5 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">
+                    Treatments
+            </h2>
+        </div>
             <div class="row mt-5 mb-5">
 
                 <% treatments.forEach(t=> { %>
@@ -111,12 +120,10 @@
 
     <!-- doctor -->
     <section class="container py-5" id="core-doctors">
-        <div class="section-header">
-            <h2>Meet Our Team</h2>
-            <p>
-                A dedicated team of fertility experts delivering advanced reproductive care
-                with compassion, precision, and technology.
-            </p>
+        <div class="text-center mb-5">
+                <h2 class="text-center mb-5 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">
+                    Meet Our Team
+                </h2>
         </div>
 
         <div class="row g-4">
@@ -171,8 +178,6 @@
                 <h2 class="text-center mb-5 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">
                     Why Choose Us
                 </h2>
-                <h2 class="section-title">Excellence in Every Step</h2>
-
             </div>
 
             <div class="row g-4">

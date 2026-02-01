@@ -222,20 +222,20 @@
                     <form class="appointment-form" id="appointmentForm" style="margin-top:-50px;" action="/save-appointment" method="POST">
                         <div class="row g-3 g-md-4">
                             <div class="col-md-12">
-                                <label for="patient_fullname" class="form-label">Full Name</label>
+                                <label for="patient_fullname" class="form-label">Full Name <b class="text-danger">*</b></label>
                                 <input type="text" class="form-control" name="patient_fullname" id="patient_fullname" placeholder="Enter Full Name" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="patient_email" class="form-label">Email Address</label>
+                                <label for="patient_email" class="form-label">Email Address <b class="text-danger">*</b></label>
                                 <input type="email" class="form-control" name="patient_email" id="patient_email" placeholder="example@gmail.com" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="patient_mobile" class="form-label">Phone Number</label>
+                                <label for="patient_mobile" class="form-label">Phone Number <b class="text-danger">*</b></label>
                                 <input type="tel" class="form-control" name="patient_mobile" pattern="[0-9]{10}" id="patient_mobile"
                                     placeholder="1234567890" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="patient_gender" class="form-label">Gender</label>
+                                <label for="patient_gender" class="form-label">Gender <b class="text-danger">*</b></label>
                                 <select class="form-select" name="patient_gender" id="patient_gender" required>
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
@@ -244,12 +244,12 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <label for="patient_age" class="form-label">Age</label>
+                                <label for="patient_age" class="form-label">Age <b class="text-danger">*</b></label>
                                 <input type="number" class="form-control" name="patient_age" id="patient_age" min="18" max="45"
                                     placeholder="Enter Age" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="doctor_id" class="form-label">Select Doctor</label>
+                                <label for="doctor_id" class="form-label">Select Doctor <small class="">(Optional)</small></label>
                             <select class="form-select" name="doctor_id">
                             <!-- <option value="">Select Doctor</option> -->
 
@@ -278,7 +278,7 @@
                                 maxDateStr=maxDate.toISOString().split('T')[0]; %>
 
                                 <div class="col-md-6">
-                                    <label for="appointment_date" class="form-label">Preferred Date</label>
+                                    <label for="appointment_date" class="form-label">Preferred Date <b class="text-danger">*</b></label>
                                     <input type="date" class="form-control" name="appointment_date" id="appointment_date" min="<%= minDate %>"
                                     max="<%= maxDateStr %>" required>
                                 </div>

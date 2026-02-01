@@ -278,6 +278,9 @@ router.post("/reset-password", adminController.postResetPassword);
 
 
 
+router.get("/newsletter", adminController.getNewsletterPage);
+// router.get("/newsletter/delete/:id", adminController.getDeleteNewsletter);
+
 
 
 
