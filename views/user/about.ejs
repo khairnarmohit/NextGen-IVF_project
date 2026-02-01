@@ -471,8 +471,7 @@
                 <div class="col-lg-6">
                     <div class="img-frame">
                         <!-- Placeholder for History Photo -->
-                        <img src="/uploads/<%= aboutinfo[0].about_image %>"
-                            alt="NextGen IVF History" class="img-fluid">
+                        <img src="/uploads/<%= aboutinfo[0].about_image %>" alt="NextGen IVF History" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -490,8 +489,8 @@
                 <!-- Image Column -->
                 <div class="col-lg-6 mb-4 mb-lg-0">
                     <div class="vm-img-frame">
-                        <img src="/uploads/<%= vision_mission[0].philosophy_image %>"
-                            alt="Happy family with baby" class="img-fluid">
+                        <img src="/uploads/<%= vision_mission[0].philosophy_image %>" alt="Happy family with baby"
+                            class="img-fluid">
                     </div>
                 </div>
 
@@ -571,7 +570,9 @@
                     <div class="chief-msg-box">
                         <!-- <i class="fas fa-quote-left quote-icon"></i> -->
                         <div class="ps-4 pt-3">
-                            <h3 class="mb-4"><%= director_msg[0].director_title %></h3>
+                            <h3 class="mb-4">
+                                <%= director_msg[0].director_title %>
+                            </h3>
                             <i class="fas fa-quote-right quote-icon" style="margin-left:570px;"></i>
 
                             <!-- <p class="lead fst-italic text-dark mb-4">
@@ -583,8 +584,12 @@
                                 <%- director_msg[0].director_desc %>
                             </p>
                             <div class="mt-4">
-                                <h5 class="mb-0 fw-bold"><%= director_msg[0].director_name %></h5>
-                                <p class="text-primary mb-0"><%= director_msg[0].director_designation %></p>
+                                <h5 class="mb-0 fw-bold">
+                                    <%= director_msg[0].director_name %>
+                                </h5>
+                                <p class="text-primary mb-0">
+                                    <%= director_msg[0].director_designation %>
+                                </p>
 
                             </div>
                         </div>
@@ -603,101 +608,112 @@
 
             </div>
 
-          <div class="row g-4">
+            <div class="row g-4">
 
-  <% for (let i = 0; i < whychooseus.length; i++) { %>
+                <% for (let i=0; i < whychooseus.length; i++) { %>
 
-    <div class="col-md-6 col-lg-3">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="<%= whychooseus[i].whychooseus_icon %>"></i>
-        </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="<%= whychooseus[i].whychooseus_icon %>"></i>
+                            </div>
 
-        <h4><%= whychooseus[i].whychooseus_name %></h4>
-        <p class="text-secondary small mb-0">
-          <%= whychooseus[i].whychooseus_desc %>
-        </p>
-      </div>
-    </div>
+                            <h4>
+                                <%= whychooseus[i].whychooseus_name %>
+                            </h4>
+                            <p class="text-secondary small mb-0">
+                                <%= whychooseus[i].whychooseus_desc %>
+                            </p>
+                        </div>
+                    </div>
 
-  <% } %>
+                    <% } %>
 
-</div>
-
-
-    <!-- 5. Achievements Section -->
-    <section class="section-padding" id="achievements">
-        <div class="container">
-            <div class="text-center mb-5">
-                <span class="section-subtitle">Our Achievements</span>
-                <h2 class="section-title">Milestones</h2>
             </div>
 
-            <!-- Stats Counters -->
-         <div class="row g-4 justify-content-center mb-5 pb-5">
-  <% for (let i = 0; i < achievements.length; i++) { %>
-    <div class="col-6 col-md-3">
-      <div class="counter-box">
-        <div class="counter-icon">
-          <i class="<%= achievements[i].achievement_icon %>"></i>
-        </div>
 
-        <div class="counter-number" data-target="<%= achievements[i].achievement_counter %>">
-          0+
-        </div>
+            <!-- 5. Achievements Section -->
+            <section class="section-padding" id="achievements">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <span class="section-subtitle">Our Achievements</span>
+                        <h2 class="section-title">Milestones</h2>
+                    </div>
 
-        <div class="counter-label">
-          <%= achievements[i].achievement_title %>
-        </div>
-      </div>
-    </div>
-  <% } %>
-</div>
+                    <!-- Stats Counters -->
+                    <div class="row g-4 justify-content-center mb-5 pb-5">
+                        <% for (let i=0; i < achievements.length; i++) { %>
+                            <div class="col-6 col-md-3">
+                                <div class="counter-box">
+                                    <div class="counter-icon">
+                                        <i class="<%= achievements[i].achievement_icon %>"></i>
+                                    </div>
 
-               
-            </div>
+                                    <div class="counter-number"
+                                        data-target="<%= achievements[i].achievement_counter %>">
+                                        0+
+                                    </div>
+
+                                    <div class="counter-label">
+                                        <%= achievements[i].achievement_title %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+
+
+                </div>
         </div>
     </section>
 
     <!-- Awards Section -->
- <section class="section-padding bg-light-alt">
-  <div class="container">
+    <section class="section-padding bg-light-alt" style="margin-top:-250px;">
+        <div class="container">
 
-    <div class="row justify-content-center mb-5">
-      <div class="col-lg-8 text-center">
-        <h2 class="section-title">Our Awards & Accreditations</h2>
-      </div>
-    </div>
-
-    <div class="row g-4 justify-content-center">
-      <% for (let i = 0; i < awards.length; i++) { %>
-
-        <div class="col-md-6 col-lg-3">
-          <div class="award-card">
-            <div class="award-img-box">
-              <div class="award-badge trophy">
-                <i class="<%= awards[i].award_icon %>"></i>
-              </div>
-
-              <img src="/uploads/<%= awards[i].award_img %>" alt="Award Image">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">Our Awards & Accreditations</h2>
+                </div>
             </div>
 
-            <div class="award-content">
-              <h5 class="award-title"><%= awards[i].award_title %></h5>
+            <div class="row g-4 justify-content-center">
+                <% for (let i=0; i < awards.length; i++) { %>
 
-              <p class="award-description"><%= awards[i].award_desc %></p>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="award-card">
+                            <div class="award-img-box">
+                                <div class="award-badge trophy">
+                                    <i class="<%= awards[i].award_icon %>"></i>
+                                </div>
 
-              <div class="award-issuer"><%= awards[i].award_issue %></div>
-              <span class="award-year"><%= awards[i].award_year %></span>
+                                <img src="/uploads/<%= awards[i].award_img %>" alt="Award Image">
+                            </div>
+
+                            <div class="award-content">
+                                <h5 class="award-title">
+                                    <%= awards[i].award_title %>
+                                </h5>
+
+                                <p class="award-description">
+                                    <%= awards[i].award_desc %>
+                                </p>
+
+                                <div class="award-issuer">
+                                    <%= awards[i].award_issue %>
+                                </div>
+                                <span class="award-year">
+                                    <%= awards[i].award_year %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <% } %>
             </div>
-          </div>
+
         </div>
-
-      <% } %>
-    </div>
-
-  </div>
-</section>
+    </section>
 
 
     <script>

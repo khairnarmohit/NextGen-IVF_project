@@ -1,9 +1,10 @@
 var exe = require("../model/conn.js");
 
+var nodemailer = require("nodemailer");
 
 exports.getLoginPage = (req, res) => {
-  try{
-    res.render("admin/login", { message: null });
+  try {
+    res.render("admin/login", { message: "" });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Login Page Error" });
@@ -11,27 +12,29 @@ exports.getLoginPage = (req, res) => {
 };
 
 exports.postLogin = async (req, res) => {
-  try{
-    var {email, password} = req.body;
+  try {
+    var { email, password } = req.body;
     var sql = "SELECT * FROM admin WHERE email = ?";
     var admin = await exe(sql, [email]);
-    if(admin.length > 0){
-      if(admin[0].password == password){
+    if (admin.length > 0) {
+      if (admin[0].password == password) {
         req.session.admin = admin[0].email;
-        // console.log(req.session.admin);
         res.redirect("/admin");
-      }else{
-        res.status(401).render("admin/login", { message: "Invalid Email or Password" });
+      } else {
+        return res
+          .status(401)
+          .render("admin/login", { message: "Invalid Email or Password" });
       }
-    }else{
-      res.status(401).render("admin/login", { message: "Invalid Email or Password" });
+    } else {
+      return res
+        .status(401)
+        .render("admin/login", { message: "Invalid Email or Password" });
     }
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Login Page Error" });
   }
 };
-
 
 exports.getAdminDashboard = async (req, res) => {
   try {
@@ -51,7 +54,13 @@ exports.getAdminDashboard = async (req, res) => {
     var sql5 = "SELECT Count(*) as enquiry FROM enquiry";
     var enquiry = await exe(sql5);
 
-    var packet = { appointments, todays_appointments, pending_appointments, patient_reviews, enquiry };
+    var packet = {
+      appointments,
+      todays_appointments,
+      pending_appointments,
+      patient_reviews,
+      enquiry,
+    };
 
     res.render("admin/dashboard", packet);
   } catch (error) {
@@ -92,9 +101,7 @@ exports.postUpdateAbout = async (req, res) => {
       1,
     ]);
     if (result.affectedRows == 0) {
-      res
-        .status(400)
-        .render("error", { message: "Update About Us Page Error" });
+      res.status(400).render("error", { message: "Update About Us Page Error" });
     } else {
       res.redirect("/admin/about-us");
     }
@@ -134,17 +141,13 @@ exports.postUpdatePhilosophy = async (req, res) => {
     ]);
 
     if (result.affectedRows == 0) {
-      res
-        .status(400)
-        .render("error", { message: "Update Philosophy Page Error" });
+      res.status(400).render("error", { message: "Update Philosophy Page Error" });
     } else {
       res.redirect("/admin/philosophy");
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Update Philosophy Page Error" });
+    res.status(500).render("error", { message: "Update Philosophy Page Error" });
   }
 };
 
@@ -156,9 +159,7 @@ exports.getDirectorsMessagePage = async (req, res) => {
     res.render("admin/directors-message", packet);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Director's Message Page Error" });
+    res.status(500).render("error", { message: "Director's Message Page Error" });
   }
 };
 
@@ -192,23 +193,19 @@ exports.postUpdateDirectorsMessage = async (req, res) => {
     ]);
 
     if (result.affectedRows == 0) {
-      res
-        .status(400)
-        .render("error", { message: "Failed to update Director's Message" });
+      res.status(400).render("error", { message: "Failed to update Director's Message" });
     } else {
       res.redirect("/admin/directors-message");
     }
   } catch (error) {
     console.error("Update Director Message Error:", error);
-    res
-      .status(500)
-      .render("error", { message: "Failed to update Director's Message" });
+    res.status(500).render("error", { message: "Failed to update Director's Message" });
   }
 };
 
 exports.getWhyChooseUsPage = async (req, res) => {
   try {
-    var sql = "SELECT * FROM whychooseus";
+    var sql = "SELECT * FROM whychooseus WHERE whychooseus_status = 1";
     var whychooseus_info = await exe(sql);
     var packet = { whychooseus_info };
     res.render("admin/why-choose-us", packet);
@@ -229,32 +226,30 @@ exports.postSaveWhyChooseUs = async (req, res) => {
       data.whychooseus_desc,
     ]);
     if (result.affectedRows == 0) {
-      res
-        .status(400)
-        .render("error", { message: "Failed to save Why Choose Us" });
+      res.status(400).render("error", { message: "Failed to save Why Choose Us" });
     } else {
       res.redirect("/admin/why-choose-us");
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Save Why Choose Us Page Error" });
+    res.status(500).render("error", { message: "Save Why Choose Us Page Error" });
   }
 };
 
 exports.getEditWhyChooseUsPage = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "SELECT * FROM whychooseus WHERE whychooseus_id = ?";
+    var sql = "SELECT * FROM whychooseus WHERE whychooseus_id = ? AND whychooseus_status = 1";
     var whychooseusone = await exe(sql, [id]);
+    if (whychooseusone.length == 0) {
+      res.status(404).render("error", { message: "Why Choose Us not found" });
+      return;
+    }
     var packet = { whychooseusone };
     res.render("admin/edit-why-choose-us", packet);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Edit Why Choose Us Page Error" });
+    res.status(500).render("error", { message: "Edit Why Choose Us Page Error" });
   }
 };
 
@@ -270,46 +265,38 @@ exports.postUpdateWhyChooseUs = async (req, res) => {
       data.whychooseus_id,
     ]);
     if (result.affectedRows == 0) {
-      res
-        .status(400)
-        .render("error", { message: "Failed to update Why Choose Us" });
+      res.status(400).render("error", { message: "Failed to update Why Choose Us" });
     } else {
       res.redirect("/admin/why-choose-us");
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Update Why Choose Us Page Error" });
+    res.status(500).render("error", { message: "Update Why Choose Us Page Error" });
   }
 };
 
 exports.getDeleteWhyChooseUs = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "DELETE FROM whychooseus WHERE whychooseus_id = ?";
+    var sql = "UPDATE whychooseus SET whychooseus_status = 0 WHERE whychooseus_id = ?";
     var result = await exe(sql, [id]);
     if (result.affectedRows == 0) {
-      res
-        .status(400)
-        .render("error", { message: "Failed to delete Why Choose Us" });
+      res.status(400).render("error", { message: "Failed to delete Why Choose Us" });
     } else {
       res.redirect("/admin/why-choose-us");
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Delete Why Choose Us Page Error" });
+    res.status(500).render("error", { message: "Delete Why Choose Us Page Error" });
   }
 };
 
 exports.getAchievementsPage = async (req, res) => {
   try {
-    var sql = "SELECT * FROM achievements";
+    var sql = "SELECT * FROM achievements WHERE achievement_status = 1";
     var achievements_info = await exe(sql);
 
-    var sql2 = "SELECT * FROM awards";
+    var sql2 = "SELECT * FROM awards WHERE award_status = 1";
     var awards_info = await exe(sql2);
 
     var packet = { achievements_info, awards_info };
@@ -346,11 +333,15 @@ exports.postSaveMilestones = async (req, res) => {
 exports.getEditMilestonesPage = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "SELECT * FROM achievements WHERE achievement_id = ?";
+    var sql = "SELECT * FROM achievements WHERE achievement_id = ? AND achievement_status = 1";
     var achievementone = await exe(sql, [id]);
     var packet = { achievementone };
     res.render("admin/edit-milestones", packet);
   } catch (error) {
+    if (achievementone.length == 0) {
+      res.status(404).render("error", { message: "Milestone not found" });
+      return;
+    }
     console.error(error);
     res.status(500).render("error", { message: "Edit Milestones Page Error" });
   }
@@ -368,24 +359,20 @@ exports.postUpdateMilestones = async (req, res) => {
       data.achievement_id,
     ]);
     if (result.affectedRows == 0) {
-      res
-        .status(400)
-        .render("error", { message: "Failed to update Milestones" });
+      res.status(400).render("error", { message: "Failed to update Milestones" });
     } else {
       res.redirect("/admin/achievements");
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Update Milestones Page Error" });
+    res.status(500).render("error", { message: "Update Milestones Page Error" });
   }
 };
 
 exports.getDeleteMilestones = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "DELETE FROM achievements WHERE achievement_id = ?";
+    var sql = "UPDATE achievements SET achievement_status = 0 WHERE achievement_id = ?";
     var result = await exe(sql, [id]);
     if (result.affectedRows == 0) {
       res
@@ -396,15 +383,13 @@ exports.getDeleteMilestones = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", { message: "Delete Milestones Page Error" });
+    res.status(500).render("error", { message: "Delete Milestones Page Error" }); 
   }
 };
 
 exports.postSaveAwards = async (req, res) => {
   try {
-   var data = req.body;
+    var data = req.body;
 
     // image upload
     let filename = "";
@@ -414,18 +399,18 @@ exports.postSaveAwards = async (req, res) => {
       filename = Date.now() + "_" + image.name;
       await image.mv("public/uploads/" + filename);
     }
-   var sql =
-"INSERT INTO awards (award_title, award_desc, award_img, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?, ?)";
+    var sql =
+      "INSERT INTO awards (award_title, award_desc, award_img, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?, ?)";
 
-await exe(sql, [
-  data.award_title,
-  data.award_desc,
-  filename,
-  data.award_issue,
-  data.award_year,
-  data.award_icon
-]);
- var sql =
+    await exe(sql, [
+      data.award_title,
+      data.award_desc,
+      filename,
+      data.award_issue,
+      data.award_year,
+      data.award_icon,
+    ]);
+    var sql =
       "INSERT INTO awards (award_title, award_desc,award_img, award_issue, award_year, award_icon) VALUES (?, ?, ?, ?, ?)";
     var result = await exe(sql, [
       data.award_title,
@@ -433,7 +418,7 @@ await exe(sql, [
       data.award_issue,
       data.award_year,
       data.award_icon,
-      filename
+      filename,
     ]);
     if (result.affectedRows == 0) {
       res.status(400).render("error", { message: "Failed to save Awards" });
@@ -449,11 +434,15 @@ await exe(sql, [
 exports.getEditAwardsPage = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "SELECT * FROM awards WHERE award_id = ?";
+    var sql = "SELECT * FROM awards WHERE award_id = ? AND award_status = 1";
     var awardone = await exe(sql, [id]);
     var packet = { awardone };
     res.render("admin/edit-awards", packet);
   } catch (error) {
+    if (awardone.length == 0) {
+      res.status(404).render("error", { message: "Award not found" });
+      return;
+    }
     console.error(error);
     res.status(500).render("error", { message: "Edit Awards Page Error" });
   }
@@ -464,7 +453,7 @@ exports.postUpdateAwards = async (req, res) => {
     var data = req.body;
     let filename = data.old_img;
 
-   if (req.files && req.files.award_img) {
+    if (req.files && req.files.award_img) {
       filename = Date.now() + "-" + req.files.award_img.name;
       await req.files.award_img.mv("public/uploads/" + filename);
     }
@@ -487,21 +476,19 @@ exports.postUpdateAwards = async (req, res) => {
       data.award_issue,
       data.award_year,
       data.award_icon,
-      data.award_id
+      data.award_id,
     ]);
 
     res.redirect("/admin/achievements");
-
   } catch (err) {
     console.log(err);
   }
 };
 
-
 exports.getDeleteAwards = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "DELETE FROM awards WHERE award_id = ?";
+    var sql = "UPDATE awards SET award_status = 0 WHERE award_id = ?";
     var result = await exe(sql, [id]);
     if (result.affectedRows == 0) {
       res.status(400).render("error", { message: "Failed to delete Awards" });
@@ -1020,9 +1007,8 @@ exports.getTreatmentDelete = async (req, res) => {
 
 exports.getDoctorsPage = async (req, res) => {
   try {
-    const sql = "SELECT * FROM doctors ORDER BY doctor_id DESC";
+    const sql = "SELECT * FROM doctors WHERE doctor_status=1 ORDER BY doctor_id DESC";
     const doctors = await exe(sql);
-
     res.render("admin/doctors", { doctors });
   } catch (error) {
     console.error(error);
@@ -1115,7 +1101,8 @@ exports.postDoctorUpdate = async (req, res) => {
 exports.getDoctorDelete = async (req, res) => {
   try {
     const id = req.params.id;
-    const sql = "DELETE FROM doctors WHERE doctor_id = ?";
+    const sql = "UPDATE doctors SET doctor_status = 0 WHERE doctor_id = ?";
+    // const sql = "DELETE FROM doctors WHERE doctor_id = ?";
     await exe(sql, [id]);
     res.redirect("/admin/doctors");
   } catch (error) {
@@ -1179,7 +1166,7 @@ exports.postUpdateHero = async (req, res) => {
 exports.getVisitorDoctorsPage = async (req, res) => {
   try {
     const sql =
-      "SELECT * FROM visitor_doctors  ORDER BY visitor_doctor_id  DESC";
+      "SELECT * FROM visitor_doctors WHERE visitor_doctor_status = 1  ORDER BY visitor_doctor_id  DESC";
     const visitorDoctors = await exe(sql);
     res.render("admin/visitor-doctors", { visitorDoctors });
   } catch (error) {
@@ -1291,7 +1278,8 @@ exports.postVisitorDoctorUpdate = async (req, res) => {
 exports.getVisitorDoctorDelete = async (req, res) => {
   try {
     const id = req.params.id;
-    const sql = "DELETE FROM visitor_doctors WHERE visitor_doctor_id = ?";
+    const sql = "UPDATE visitor_doctors SET visitor_doctor_status = 0 WHERE visitor_doctor_id = ?";
+    // const sql = "DELETE FROM visitor_doctors WHERE visitor_doctor_id = ?";
     await exe(sql, [id]);
     res.redirect("/admin/visitor-doctors");
   } catch (error) {
@@ -1425,8 +1413,8 @@ exports.updateTerm = async (req, res) => {
 exports.deleteTerm = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = `DELETE FROM terms WHERE term_id='${id}'`;
-    await exe(sql);
+    var sql = "UPDATE terms SET term_status=0 WHERE term_id=?";
+    await exe(sql, [id]);
     res.redirect("/admin/terms");
   } catch (error) {
     console.log(error);
@@ -1463,8 +1451,6 @@ exports.getCompleteAppointment = async (req, res) => {
     });
   }
 };
-
-
 
 exports.getCompletedAppointmentsPage = async (req, res) => {
   try {
@@ -1526,20 +1512,17 @@ exports.getCompletedAppointmentsPage = async (req, res) => {
       appointments,
       doctorSummary,
       selectedDate: date,
-      selectedDoctor: doctor 
+      selectedDoctor: doctor,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Appointments List Page Error"
+      message: "Appointments List Page Error",
     });
   }
 };
 
-// exports.getCancelledAppointmentsPage = async (req, res) => {
-//   try {
-//     const sql = `
+
 
 exports.getCancelledAppointmentsPage = async (req, res) => {
   try {
@@ -1601,25 +1584,19 @@ exports.getCancelledAppointmentsPage = async (req, res) => {
       appointments,
       doctorSummary,
       selectedDate: date,
-      selectedDoctor: doctor 
+      selectedDoctor: doctor,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Appointments List Page Error"
+      message: "Appointments List Page Error",
     });
   }
 };
 
-// exports.getAppointmentPage = async (req, res) => {
-//   try {
-//     res.render("admin/appointment-add");
-//   } catch (error) { 
-//     console.error(error);
-//     res.status(500).render("error", { message: "Appointment Page Error" });
-//   }
-// };
+
+
+
 
 exports.getAppointmentPage = async (req, res) => {
   try {
@@ -1633,13 +1610,12 @@ exports.getAppointmentPage = async (req, res) => {
 
     res.render("admin/appointment-add", {
       doctors,
-      visitingDoctors
+      visitingDoctors,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
-      message: "Appointment Page Error"
+      message: "Appointment Page Error",
     });
   }
 };
@@ -1653,7 +1629,7 @@ exports.postAppointmentSave = async (req, res) => {
       patient_gender,
       patient_age,
       doctor_id,
-      appointment_date
+      appointment_date,
     } = req.body;
 
     let doctorId = null;
@@ -1692,16 +1668,16 @@ exports.postAppointmentSave = async (req, res) => {
       patient_age,
       doctorId,
       visitorDoctorId,
-      appointment_date
+      appointment_date,
     ]);
 
     res.redirect("/admin/appointments-list");
-
   } catch (error) {
     console.error(error);
     res.status(500).send("Appointment insert error");
   }
 };
+
 
 
 
@@ -1716,6 +1692,158 @@ exports.getNewsletterPage = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Newsletter Page Error" });
+  }
+}
+exports.getForgotPasswordPage = async (req, res) => {
+  try {
+    res.render("admin/forgot-password", { message: "" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Forgot Password Page Error",
+    });
+  }
+};
+
+exports.postSendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const sql = "SELECT * FROM admin WHERE email = ?";
+    const admin = await exe(sql, [email]);
+
+    if (admin.length === 0) {
+      return res.status(404).render("admin/forgot-password", {
+        message: "Email not found",
+      });
+    }
+
+    // Generate OTP 6 digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    req.session.otpData = {
+      email,
+      otp,
+      expiry: Date.now() + 5 * 60 * 1000, // 5 minutes
+    };
+
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "magarlalitnandkumar@gmail.com",
+        pass: "srkx knhn nzvb kidr",
+      },
+    });
+
+    let info = await transporter.sendMail({
+      from: "NextGen IVF <magarlalitnandkumar@gmail.com>",
+      to: email,
+      subject: "Your OTP for NextGen IVF Center",
+      html: `
+    <div style="font-family: Arial, sans-serif;">
+      <h3>NextGen IVF Center</h3>
+
+      <p>Your One-Time Password (OTP):</p>
+
+      <p style="font-size:18px; font-weight:bold; letter-spacing:2px;">
+        ${otp}
+      </p>
+
+      <p>This OTP is valid for 5 minutes.</p>
+
+      <p style="font-size:12px; color:#777;">
+        If you did not request this, please ignore this email.
+      </p>
+    </div>
+  `,
+    });
+
+    res.redirect("/admin/verify-otp");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "OTP Send Error" });
+  }
+};
+
+exports.getVerifyOtpPage = async (req, res) => {
+  try {
+    res.render("admin/verify-otp", { message: "" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Verify OTP Page Error",
+    });
+  }
+};
+
+exports.postVerifyOtp = async (req, res) => {
+  try {
+    const { otp } = req.body;
+
+    if (!req.session.otpData) {
+      return res.render("admin/verify-otp", {
+        message: " Please request OTP again.",
+      });
+    }
+
+    const { email, expiry, otp: sessionOtp } = req.session.otpData;
+
+    if (expiry < Date.now()) {
+      delete req.session.otpData;
+      return res.status(400).render("admin/verify-otp", {
+        message: "OTP is expired.",
+      });
+    }
+
+    if (String(sessionOtp).trim() !== String(otp).trim()) {
+      return res.render("admin/verify-otp", {
+        message: "Invalid OTP",
+      });
+    }
+
+    req.session.resetEmail = email;
+
+    delete req.session.otpData;
+    res.redirect("/admin/change-password");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Verify OTP Error" });
+  }
+};
+
+exports.getChangePasswordPage = async (req, res) => {
+  try {
+    if (!req.session.resetEmail) {
+      return res.redirect("/admin/forgot-password");
+    }
+    res.render("admin/change-password");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", {
+      message: "Change Password Page Error",
+    });
+  }
+};
+
+exports.postResetPassword = async (req, res) => {
+  try {
+    if (!req.session.resetEmail) {
+      return res.redirect("/admin/forgot-password");
+    }
+    const { new_password } = req.body;
+    const email = req.session.resetEmail;
+
+    const sql = "UPDATE admin SET password = ? WHERE email = ?";
+    await exe(sql, [new_password, email]);
+
+    delete req.session.resetEmail;
+    res.redirect("/admin/login");
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Reset Password Error" });
+
   }
 };
 

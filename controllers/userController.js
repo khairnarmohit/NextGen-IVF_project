@@ -12,18 +12,17 @@ exports.getAboutPage = async (req, res) => {
     var sql3 = "SELECT * FROM director_msg WHERE director_msg_id = ?";
     var director_msg = await exe(sql3, [1]);
 
-    var sql4 = "SELECT * FROM whychooseus";
+    var sql4 = "SELECT * FROM whychooseus WHERE whychooseus_status = 1";
     var whychooseus = await exe(sql4);
 
-    var sql5 = "SELECT * FROM achievements";
+    var sql5 = "SELECT * FROM achievements WHERE achievement_status = 1";
     var achievements = await exe(sql5);
 
-     var sql5 = "SELECT * FROM awards";
+     var sql5 = "SELECT * FROM awards WHERE award_status = 1";
     var awards = await exe(sql5);
 
 
     var packet = { aboutinfo, vision_mission, director_msg, whychooseus,achievements,awards };
-    console.log(packet);
     res.render("user/about", packet);
   } catch (error) {
     console.error(error);
@@ -33,7 +32,7 @@ exports.getAboutPage = async (req, res) => {
 
 exports.getTreatmentPage = async (req, res) => {
   try {
-    const sql = "SELECT * FROM treatments";
+    const sql = "SELECT * FROM treatments WHERE treatment_status=1";
     const treatments = await exe(sql);
 
     res.render("user/treatments", {
@@ -67,27 +66,18 @@ exports.getTreatmentDetailsPage = async (req, res) => {
   }
 };
 
-// exports.getDoctorsPage = async (req, res) => {
-//   try {
-//     const sql = "SELECT * FROM doctors";
-//     const doctors = await exe(sql);
 
-//     res.render("user/doctors", { doctors });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", {
-//       message: "Doctors Page Error"
-//     });
-//   }
-// };
+
+
+
 exports.getDoctorsPage = async (req, res) => {
   try {
     // Normal doctors
-    const Sql = "SELECT * FROM doctors";
+    const Sql = "SELECT * FROM doctors WHERE doctor_status=1 ";
     const doctors = await exe(Sql);
 
     // Visiting doctors
-    const visitingSql = "SELECT * FROM visitor_doctors ";
+    const visitingSql = "SELECT * FROM visitor_doctors WHERE visitor_doctor_status=1 ";
     const visitingDoctors = await exe(visitingSql);
 
     res.render("user/doctors", {
@@ -194,33 +184,29 @@ exports.getPrivacyPage = (req, res) => {
 };
 
 
-// exports.getAppointmentPage = async (req, res) => {
-//   try{
-//     var sql = "SELECT * FROM doctors";
-//     const doctors = await exe(sql);
-//     res.render("user/appointment", { doctors });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "Appointment Page Error" });
-//   }
-// };
+
+
+
 
 
 
 exports.getAppointmentPage = async (req, res) => {
   try {
     // Our Doctors
-    const doctorsSql = "SELECT * FROM doctors";
+    const doctorsSql = "SELECT * FROM doctors WHERE doctor_status=1 ";
     const doctors = await exe(doctorsSql);
 
     // Visiting Doctors
-    const visitingSql = "SELECT * FROM visitor_doctors";
+    const visitingSql = "SELECT * FROM visitor_doctors WHERE visitor_doctor_status=1 ";
     const visitingDoctors = await exe(visitingSql);
 
-    res.render("user/appointment", {
-      doctors,
-      visitingDoctors,
-    });
+    var sql1 = "SELECT mon_start, mon_end, sat_start, sat_end FROM contact";
+    const timing = await exe(sql1);
+
+    var packet = { doctors, visitingDoctors, timing };
+    console.log(packet)
+
+    res.render("user/appointment", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
@@ -229,49 +215,6 @@ exports.getAppointmentPage = async (req, res) => {
   }
 };
 
-
-// exports.saveAppointment = async (req, res) => {
-//   try {
-//     const {
-//       patient_fullname,
-//       patient_email,
-//       patient_mobile,
-//       patient_gender,
-//       patient_age,
-//       doctor_id,
-//       appointment_date
-//     } = req.body;
-
-//     // Parse doctor_id: 'd-1' for doctors, 'v-2' for visiting doctors
-//     let parsedDoctorId = null;
-//     if (doctor_id) {
-//       const [type, id] = doctor_id.split('-');
-//       parsedDoctorId = parseInt(id);  // store positive ID for both types
-//     }
-
-//     const sql = `
-//       INSERT INTO appointments
-//       (patient_fullname, patient_email, patient_mobile, patient_gender, patient_age, doctor_id, appointment_date)
-//       VALUES (?, ?, ?, ?, ?, ?, ?)
-//     `;
-
-//     await exe(sql, [
-//       patient_fullname,
-//       patient_email,
-//       patient_mobile,
-//       patient_gender,
-//       patient_age,
-//       parsedDoctorId,
-//       appointment_date
-//     ]);
-
-//     res.redirect("/appointment");
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Appointment insert error");
-//   }
-// };
 
 
 exports.saveAppointment = async (req, res) => {
@@ -434,10 +377,20 @@ exports.getHomePage = async (req, res) => {
     var sql = "SELECT * FROM hero WHERE hero_id = 1";
     var treatment = "SELECT * FROM treatments LIMIT 3";
     var doctors = "SELECT * FROM doctors LIMIT 3";
+    var sql2 = "SELECT * FROM about WHERE about_id = 1";
+    var sql3 = "SELECT * FROM whychooseus WHERE whychooseus_status = 1 LIMIT 4";
+    var sql4 = "SELECT * FROM patients_review LIMIT 3";
+
+    var treatment = "SELECT * FROM treatments WHERE treatment_status=1 LIMIT 3";
+    var doctors = "SELECT * FROM doctors WHERE doctor_status=1 LIMIT 3";
+
     var hero_info = await exe(sql);
     var treatments = await exe(treatment);
     var doctors = await exe(doctors);
-
+    var about = await exe(sql2);
+    var whychooseus = await exe(sql3);
+    var patients_review = await exe(sql4);
+    
     if (hero_info.length == 0) {
       hero_info = [
         {
@@ -448,7 +401,9 @@ exports.getHomePage = async (req, res) => {
     } else {
       hero_info = hero_info[0];
     }
-    res.render("user/home", { hero_info, treatments, doctors });
+
+    console.log(patients_review)
+    res.render("user/home", { hero_info, treatments, doctors, about, whychooseus, patients_review });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Home Page Error" });
@@ -460,8 +415,11 @@ exports.getPatientStoriesPage = async (req, res) => {
   try {
     var sql = "SELECT * FROM patients_review ORDER BY patients_review_id ASC";
     var stories = await exe(sql);
-    var packet = { stories };
-    console.log(stories);
+
+    var sql1 = `SELECT * FROM gallery`;
+    var gallery = await exe(sql1);
+    var packet = { stories,gallery };
+    console.log(stories,gallery);
     res.render("user/patient_stories", packet);
   } catch (error) {
     console.error(error);
@@ -496,6 +454,7 @@ exports.getTermsPage = async (req, res) => {
 
 
 
+
 exports.subscribeNewsletter = async (req, res) => {
   try {
     const { email } = req.body; 
@@ -510,3 +469,5 @@ exports.subscribeNewsletter = async (req, res) => {
     res.status(500).send("Error subscribing to newsletter");
   }
 };
+
+

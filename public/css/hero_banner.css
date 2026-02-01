@@ -63,3 +63,29 @@
 
 .delay-0 { animation-delay: 0.5s; } 
 .delay-1 { animation-delay: 0.8s; } 
+
+@media (max-width: 480px) {
+    .video-hero-container {
+        height: 55vh;
+        min-height: 380px;
+    }
+}
+@media (max-width: 768px) {
+    video{
+        position: absolute;
+        left: -150px;
+        object-position: center right;
+    }
+    .video-hero-container {
+        height: 65vh;
+        min-height: 500px;
+    }
+    .slider_text{
+        position: relative;
+        top: 50px;
+
+    }
+    .animate-up{
+        margin-top: 60px;
+    }
+}

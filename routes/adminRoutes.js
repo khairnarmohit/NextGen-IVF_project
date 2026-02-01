@@ -1,13 +1,12 @@
-var express = require('express');
+var express = require("express");
 const router = express.Router();
 
 var adminController = require("../controllers/adminController");
 
-
 function isLoggedIn(req, res, next) {
   if (req.session.admin) {
-     next();
-  }else{
+    next();
+  } else {
     res.redirect("/admin/login");
   }
 }
@@ -20,111 +19,262 @@ router.get("/", isLoggedIn, adminController.getAdminDashboard);
 
 router.get("/about-us", isLoggedIn, adminController.getAboutUsPage);
 
-router.post("/update-about", adminController.postUpdateAbout);
+router.post("/update-about", isLoggedIn, adminController.postUpdateAbout);
 
-router.get("/philosophy", adminController.getPhilosophyPage);
+router.get("/philosophy", isLoggedIn, adminController.getPhilosophyPage);
 
-router.post("/update-philosophy", adminController.postUpdatePhilosophy);
+router.post(
+  "/update-philosophy",
+  isLoggedIn,
+  adminController.postUpdatePhilosophy
+);
 
-router.get("/directors-message", adminController.getDirectorsMessagePage);
+router.get(
+  "/directors-message",
+  isLoggedIn,
+  adminController.getDirectorsMessagePage
+);
 
-router.post("/update-directors-message", adminController.postUpdateDirectorsMessage);
+router.post(
+  "/update-directors-message",
+  isLoggedIn,
+  adminController.postUpdateDirectorsMessage
+);
 
-router.get("/why-choose-us", adminController.getWhyChooseUsPage);
+router.get("/why-choose-us", isLoggedIn, adminController.getWhyChooseUsPage);
 
-router.post("/save-why-choose-us", adminController.postSaveWhyChooseUs);
+router.post(
+  "/save-why-choose-us",
+  isLoggedIn,
+  adminController.postSaveWhyChooseUs
+);
 
-router.get("/edit-why-choose-us/:id", adminController.getEditWhyChooseUsPage);
+router.get(
+  "/edit-why-choose-us/:id",
+  isLoggedIn,
+  adminController.getEditWhyChooseUsPage
+);
 
-router.post("/update-why-choose-us", adminController.postUpdateWhyChooseUs);
+router.post(
+  "/update-why-choose-us",
+  isLoggedIn,
+  adminController.postUpdateWhyChooseUs
+);
 
-router.get("/delete-why-choose-us/:id", adminController.getDeleteWhyChooseUs);
+router.get(
+  "/delete-why-choose-us/:id",
+  isLoggedIn,
+  adminController.getDeleteWhyChooseUs
+);
 
-router.get("/achievements", adminController.getAchievementsPage);
+router.get("/achievements", isLoggedIn, adminController.getAchievementsPage);
 
-router.post("/save-milestones", adminController.postSaveMilestones);
+router.post("/save-milestones", isLoggedIn, adminController.postSaveMilestones);
 
-router.get("/edit-milestones/:id", adminController.getEditMilestonesPage);
+router.get(
+  "/edit-milestones/:id",
+  isLoggedIn,
+  adminController.getEditMilestonesPage
+);
 
-router.post("/update-milestones", adminController.postUpdateMilestones);
+router.post(
+  "/update-milestones",
+  isLoggedIn,
+  adminController.postUpdateMilestones
+);
 
-router.get("/delete-milestones/:id", adminController.getDeleteMilestones);
+router.get(
+  "/delete-milestones/:id",
+  isLoggedIn,
+  adminController.getDeleteMilestones
+);
 
-router.post("/save-awards", adminController.postSaveAwards);
+router.post("/save-awards", isLoggedIn, adminController.postSaveAwards);
 
-router.get("/edit-awards/:id", adminController.getEditAwardsPage);
+router.get("/edit-awards/:id", isLoggedIn, adminController.getEditAwardsPage);
 
-router.post("/update-awards", adminController.postUpdateAwards);
+router.post("/update-awards", isLoggedIn, adminController.postUpdateAwards);
 
-router.get("/delete-awards/:id", adminController.getDeleteAwards);
+router.get("/delete-awards/:id", isLoggedIn, adminController.getDeleteAwards);
 
-router.get("/patient-review", adminController.getPatientReviewPage);
-
+router.get("/patient-review", isLoggedIn, adminController.getPatientReviewPage);
 
 // gallery secrion
-router.get("/gallery", adminController.getGalleryPage);
+router.get("/gallery", isLoggedIn, adminController.getGalleryPage);
 
-router.get("/privacy", adminController.getPrivacyPage);
+router.get("/privacy", isLoggedIn, adminController.getPrivacyPage);
 
-router.get("/treatment", adminController.getTreatmentPage);
+router.get("/treatment", isLoggedIn, adminController.getTreatmentPage);
 
-router.post("/treatment_save", adminController.postTreatmentSave);
+router.post("/treatment_save", isLoggedIn, adminController.postTreatmentSave);
 
-router.get("/treatment_edit/:id", adminController.postTreatmentEdit);
+router.get(
+  "/treatment_edit/:id",
+  isLoggedIn,
+  adminController.postTreatmentEdit
+);
 
-router.post("/treatment_update/:id", adminController.postTreatmentUpdate);
+router.post(
+  "/treatment_update/:id",
+  isLoggedIn,
+  adminController.postTreatmentUpdate
+);
 
-router.get("/treatment_delete/:id", adminController.getTreatmentDelete);
+router.get(
+  "/treatment_delete/:id",
+  isLoggedIn,
+  adminController.getTreatmentDelete
+);
 
-router.get("/doctors", adminController.getDoctorsPage);
+router.get("/doctors", isLoggedIn, adminController.getDoctorsPage);
 
-router.post("/doctor_save", adminController.postDoctorSave);    
+router.post("/doctor_save", isLoggedIn, adminController.postDoctorSave);
 
-router.get("/doctor_edit/:id", adminController.getDoctorEdit);
+router.get("/doctor_edit/:id", isLoggedIn, adminController.getDoctorEdit);
 
-router.post("/doctor_update/:id", adminController.postDoctorUpdate);
+router.post("/doctor_update/:id", isLoggedIn, adminController.postDoctorUpdate);
 
-router.get("/doctor_delete/:id", adminController.getDoctorDelete);
+router.get("/doctor_delete/:id", isLoggedIn, adminController.getDoctorDelete);
 
-
-router.post("/save-gallery", adminController.postGalleryImage);
-router.post("/gallery/delete/:image_id", adminController.deleteGalleryImage);
-
+router.post("/save-gallery", isLoggedIn, adminController.postGalleryImage);
+router.post(
+  "/gallery/delete/:image_id",
+  isLoggedIn,
+  adminController.deleteGalleryImage
+);
 
 // enquiry
-router.get("/enquiry", adminController.getEnquiryPage);
-router.get("/enquiry/delete/:enquiry_id", adminController.getDeleteEnquiry);
+router.get("/enquiry", isLoggedIn, adminController.getEnquiryPage);
+router.get(
+  "/enquiry/delete/:enquiry_id",
+  isLoggedIn,
+  adminController.getDeleteEnquiry
+);
 
+router.get("/contact", isLoggedIn, adminController.getContactPage);
 
+router.post("/update-contact", isLoggedIn, adminController.postUpdateContact);
 
-router.get("/contact", adminController.getContactPage);
+router.get("/patient-review", isLoggedIn, adminController.getPatientReviewPage);
 
-router.post("/update-contact", adminController.postUpdateContact);
+router.post("/patient-review/save", isLoggedIn, adminController.saveReview);
 
-router.get("/patient-review", adminController.getPatientReviewPage);
+router.post("/patient-review/update", isLoggedIn, adminController.updateReview);
+router.get(
+  "/patient-review/delete/:id",
+  isLoggedIn,
+  adminController.deleteReview
+);
 
-router.post("/patient-review/save", adminController.saveReview);
-router.post("/patient-review/update", adminController.updateReview);
-router.get("/patient-review/delete/:id", adminController.deleteReview);
-
-router.get("/privacy", adminController.getPrivacyPage);
-router.post("/privacy/save", adminController.savePrivacy);
-router.post("/privacy/update", adminController.updatePrivacy);
-router.get("/privacy/delete/:id", adminController.deletePrivacy);
+router.get("/privacy", isLoggedIn, adminController.getPrivacyPage);
+router.post("/privacy/save", isLoggedIn, adminController.savePrivacy);
+router.post("/privacy/update", isLoggedIn, adminController.updatePrivacy);
+router.get("/privacy/delete/:id", isLoggedIn, adminController.deletePrivacy);
 
 // faq
-router.get("/faq", adminController.getFaqPage);
+router.get("/faq", isLoggedIn, adminController.getFaqPage);
 
-router.post('/save_faq_type', adminController.saveFaqType);
-router.post('/save_faq', adminController.saveFaq);
+router.post("/save_faq_type", isLoggedIn, adminController.saveFaqType);
+router.post("/save_faq", isLoggedIn, adminController.saveFaq);
 
 // Edit FAQ routes
-router.get("/edit_faq/:faq_id", adminController.editFaqForm);
-router.post("/edit_faq/:faq_id", adminController.updateFaq);
-
+router.get("/edit_faq/:faq_id", isLoggedIn, adminController.editFaqForm);
+router.post("/edit_faq/:faq_id", isLoggedIn, adminController.updateFaq);
 
 // Delete
-router.get("/delete_faq/:faq_id", adminController.deleteFaq);
+router.get("/delete_faq/:faq_id", isLoggedIn, adminController.deleteFaq);
+
+router.get("/hero", isLoggedIn, adminController.getHeroPage);
+router.post("/update-hero", isLoggedIn, adminController.postUpdateHero);
+
+router.get(
+  "/visitor-doctors",
+  isLoggedIn,
+  adminController.getVisitorDoctorsPage
+);
+
+router.post(
+  "/visitor_doctor_save",
+  isLoggedIn,
+  adminController.postVisitorDoctorSave
+);
+
+router.get(
+  "/visitor-doctor-edit/:id",
+  isLoggedIn,
+  adminController.getVisitorDoctorEdit
+);
+
+router.post(
+  "/visitor_doctor_update/:id",
+  isLoggedIn,
+  adminController.postVisitorDoctorUpdate
+);
+
+router.get(
+  "/visitor_doctor_delete/:id",
+  isLoggedIn,
+  adminController.getVisitorDoctorDelete
+);
+
+// router.post('/appointment-save', isLoggedIn, adminController.postAppointmentSave); // Commented out - not implemented
+
+router.get(
+  "/appointments-list",
+  isLoggedIn,
+  adminController.getAppointmentsListPage
+);
+
+router.get("/terms", isLoggedIn, adminController.getTermsPage);
+router.post("/terms/save", isLoggedIn, adminController.saveTerm);
+router.post("/terms/update", isLoggedIn, adminController.updateTerm);
+router.get("/terms/delete/:id", isLoggedIn, adminController.deleteTerm);
+
+router.get(
+  "/appointments_cancel/:id",
+  isLoggedIn,
+  adminController.getCancelAppointment
+);
+
+router.get(
+  "/appointments_complete/:id",
+  isLoggedIn,
+  adminController.getCompleteAppointment
+);
+
+router.get(
+  "/appointments-completed",
+  isLoggedIn,
+  adminController.getCompletedAppointmentsPage
+);
+
+router.get(
+  "/appointments-cancelled",
+  isLoggedIn,
+  adminController.getCancelledAppointmentsPage
+);
+
+router.get("/appointment", isLoggedIn, adminController.getAppointmentPage);
+
+router.post(
+  "/appointment-save",
+  isLoggedIn,
+  adminController.postAppointmentSave
+);
+
+
+router.get("/forgot-password", adminController.getForgotPasswordPage);
+
+router.post("/send-otp", adminController.postSendOtp);
+
+router.get("/verify-otp", adminController.getVerifyOtpPage);
+
+router.post("/verify-otp", adminController.postVerifyOtp);
+
+router.get("/change-password", adminController.getChangePasswordPage);
+
+router.post("/reset-password", adminController.postResetPassword);
+
 
 
 
@@ -175,22 +325,9 @@ router.post('/appointment-save', adminController.postAppointmentSave);
 
 
 
+
+
+
+
+
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
