@@ -128,6 +128,9 @@ router.get("/delete_faq/:faq_id", adminController.deleteFaq);
 
 
 
+router.get("/newsletter", adminController.getNewsletterPage);
+// router.get("/newsletter/delete/:id", adminController.getDeleteNewsletter);
+
 
 
 

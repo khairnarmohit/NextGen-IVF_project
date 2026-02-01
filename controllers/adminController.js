@@ -592,7 +592,7 @@ exports.postUpdateContact = async (req, res) => {
 exports.getPatientReviewPage = async (req, res) => {
   try {
     var data = await exe(
-      `SELECT * FROM patients_review ORDER BY patients_review_id DESC`
+      `SELECT * FROM patients_review ORDER BY patients_review_id ASC`
     );
 
     var editData = null;
@@ -672,7 +672,7 @@ exports.deleteReview = async (req, res) => {
 
 exports.getPrivacyPage = async (req, res) => {
   try {
-    var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id DESC`);
+    var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id ASC`);
 
     var editData = null;
     if (req.query.edit) {
@@ -1374,7 +1374,7 @@ exports.getAppointmentsListPage = async (req, res) => {
 
 exports.getTermsPage = async (req, res) => {
   try {
-    var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
+    var data = await exe(`SELECT * FROM terms ORDER BY term_id ASC`);
 
     var editData = null;
     if (req.query.edit) {
@@ -1700,6 +1700,22 @@ exports.postAppointmentSave = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Appointment insert error");
+  }
+};
+
+
+
+
+exports.getNewsletterPage = async (req, res) => {
+  try {
+    var sql = "SELECT * FROM newsletter ORDER BY created_at ASC";
+    var newsletters = await exe(sql);
+    
+    var packet = { newsletters };
+    res.render("admin/newsletter", packet); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Newsletter Page Error" });
   }
 };
 

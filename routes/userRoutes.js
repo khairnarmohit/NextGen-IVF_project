@@ -38,9 +38,10 @@ router.get("/terms", userController.getTermsPage);
 
 
 
-router.get("/patient_stories", userController.getPatientStoriesPage); // NEW ROUTE
+router.get("/patient_stories", userController.getPatientStoriesPage); 
 
 
+router.post("/subscribe", userController.subscribeNewsletter);
 
 module.exports = router;
 
