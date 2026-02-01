@@ -32,7 +32,7 @@ exports.getAboutPage = async (req, res) => {
 
 exports.getTreatmentPage = async (req, res) => {
   try {
-    const sql = "SELECT * FROM treatments";
+    const sql = "SELECT * FROM treatments WHERE treatment_status=1";
     const treatments = await exe(sql);
 
     res.render("user/treatments", {
@@ -67,14 +67,17 @@ exports.getTreatmentDetailsPage = async (req, res) => {
 };
 
 
+
+
+
 exports.getDoctorsPage = async (req, res) => {
   try {
     // Normal doctors
-    const Sql = "SELECT * FROM doctors";
+    const Sql = "SELECT * FROM doctors WHERE doctor_status=1 ";
     const doctors = await exe(Sql);
 
     // Visiting doctors
-    const visitingSql = "SELECT * FROM visitor_doctors ";
+    const visitingSql = "SELECT * FROM visitor_doctors WHERE visitor_doctor_status=1 ";
     const visitingDoctors = await exe(visitingSql);
 
     res.render("user/doctors", {
@@ -180,28 +183,14 @@ exports.getPrivacyPage = (req, res) => {
   }
 };
 
-
-// exports.getAppointmentPage = async (req, res) => {
-//   try{
-//     var sql = "SELECT * FROM doctors";
-//     const doctors = await exe(sql);
-//     res.render("user/appointment", { doctors });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).render("error", { message: "Appointment Page Error" });
-//   }
-// };
-
-
-
 exports.getAppointmentPage = async (req, res) => {
   try {
     // Our Doctors
-    const doctorsSql = "SELECT * FROM doctors";
+    const doctorsSql = "SELECT * FROM doctors WHERE doctor_status=1 ";
     const doctors = await exe(doctorsSql);
 
     // Visiting Doctors
-    const visitingSql = "SELECT * FROM visitor_doctors";
+    const visitingSql = "SELECT * FROM visitor_doctors WHERE visitor_doctor_status=1 ";
     const visitingDoctors = await exe(visitingSql);
 
     var sql1 = "SELECT mon_start, mon_end, sat_start, sat_end FROM contact";
@@ -210,7 +199,7 @@ exports.getAppointmentPage = async (req, res) => {
     var packet = { doctors, visitingDoctors, timing };
     console.log(packet)
 
-    res.render("user/appointment", { packet });
+    res.render("user/appointment", packet);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", {
@@ -427,6 +416,10 @@ exports.getHomePage = async (req, res) => {
     var sql2 = "SELECT * FROM about WHERE about_id = 1";
     var sql3 = "SELECT * FROM whychooseus WHERE whychooseus_status = 1 LIMIT 4";
     var sql4 = "SELECT * FROM patients_review LIMIT 3";
+
+    var treatment = "SELECT * FROM treatments WHERE treatment_status=1 LIMIT 3";
+    var doctors = "SELECT * FROM doctors WHERE doctor_status=1 LIMIT 3";
+
     var hero_info = await exe(sql);
     var treatments = await exe(treatment);
     var doctors = await exe(doctors);

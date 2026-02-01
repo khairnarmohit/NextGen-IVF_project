@@ -1007,9 +1007,8 @@ exports.getTreatmentDelete = async (req, res) => {
 
 exports.getDoctorsPage = async (req, res) => {
   try {
-    const sql = "SELECT * FROM doctors ORDER BY doctor_id DESC";
+    const sql = "SELECT * FROM doctors WHERE doctor_status=1 ORDER BY doctor_id DESC";
     const doctors = await exe(sql);
-
     res.render("admin/doctors", { doctors });
   } catch (error) {
     console.error(error);
@@ -1102,7 +1101,8 @@ exports.postDoctorUpdate = async (req, res) => {
 exports.getDoctorDelete = async (req, res) => {
   try {
     const id = req.params.id;
-    const sql = "DELETE FROM doctors WHERE doctor_id = ?";
+    const sql = "UPDATE doctors SET doctor_status = 0 WHERE doctor_id = ?";
+    // const sql = "DELETE FROM doctors WHERE doctor_id = ?";
     await exe(sql, [id]);
     res.redirect("/admin/doctors");
   } catch (error) {
@@ -1166,7 +1166,7 @@ exports.postUpdateHero = async (req, res) => {
 exports.getVisitorDoctorsPage = async (req, res) => {
   try {
     const sql =
-      "SELECT * FROM visitor_doctors  ORDER BY visitor_doctor_id  DESC";
+      "SELECT * FROM visitor_doctors WHERE visitor_doctor_status = 1  ORDER BY visitor_doctor_id  DESC";
     const visitorDoctors = await exe(sql);
     res.render("admin/visitor-doctors", { visitorDoctors });
   } catch (error) {
@@ -1278,7 +1278,8 @@ exports.postVisitorDoctorUpdate = async (req, res) => {
 exports.getVisitorDoctorDelete = async (req, res) => {
   try {
     const id = req.params.id;
-    const sql = "DELETE FROM visitor_doctors WHERE visitor_doctor_id = ?";
+    const sql = "UPDATE visitor_doctors SET visitor_doctor_status = 0 WHERE visitor_doctor_id = ?";
+    // const sql = "DELETE FROM visitor_doctors WHERE visitor_doctor_id = ?";
     await exe(sql, [id]);
     res.redirect("/admin/visitor-doctors");
   } catch (error) {
