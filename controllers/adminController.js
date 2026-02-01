@@ -205,7 +205,7 @@ exports.postUpdateDirectorsMessage = async (req, res) => {
 
 exports.getWhyChooseUsPage = async (req, res) => {
   try {
-    var sql = "SELECT * FROM whychooseus";
+    var sql = "SELECT * FROM whychooseus WHERE whychooseus_status = 1";
     var whychooseus_info = await exe(sql);
     var packet = { whychooseus_info };
     res.render("admin/why-choose-us", packet);
@@ -239,8 +239,12 @@ exports.postSaveWhyChooseUs = async (req, res) => {
 exports.getEditWhyChooseUsPage = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "SELECT * FROM whychooseus WHERE whychooseus_id = ?";
+    var sql = "SELECT * FROM whychooseus WHERE whychooseus_id = ? AND whychooseus_status = 1";
     var whychooseusone = await exe(sql, [id]);
+    if (whychooseusone.length == 0) {
+      res.status(404).render("error", { message: "Why Choose Us not found" });
+      return;
+    }
     var packet = { whychooseusone };
     res.render("admin/edit-why-choose-us", packet);
   } catch (error) {
@@ -274,7 +278,7 @@ exports.postUpdateWhyChooseUs = async (req, res) => {
 exports.getDeleteWhyChooseUs = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "DELETE FROM whychooseus WHERE whychooseus_id = ?";
+    var sql = "UPDATE whychooseus SET whychooseus_status = 0 WHERE whychooseus_id = ?";
     var result = await exe(sql, [id]);
     if (result.affectedRows == 0) {
       res.status(400).render("error", { message: "Failed to delete Why Choose Us" });
@@ -289,10 +293,10 @@ exports.getDeleteWhyChooseUs = async (req, res) => {
 
 exports.getAchievementsPage = async (req, res) => {
   try {
-    var sql = "SELECT * FROM achievements";
+    var sql = "SELECT * FROM achievements WHERE achievement_status = 1";
     var achievements_info = await exe(sql);
 
-    var sql2 = "SELECT * FROM awards";
+    var sql2 = "SELECT * FROM awards WHERE award_status = 1";
     var awards_info = await exe(sql2);
 
     var packet = { achievements_info, awards_info };
@@ -329,11 +333,15 @@ exports.postSaveMilestones = async (req, res) => {
 exports.getEditMilestonesPage = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "SELECT * FROM achievements WHERE achievement_id = ?";
+    var sql = "SELECT * FROM achievements WHERE achievement_id = ? AND achievement_status = 1";
     var achievementone = await exe(sql, [id]);
     var packet = { achievementone };
     res.render("admin/edit-milestones", packet);
   } catch (error) {
+    if (achievementone.length == 0) {
+      res.status(404).render("error", { message: "Milestone not found" });
+      return;
+    }
     console.error(error);
     res.status(500).render("error", { message: "Edit Milestones Page Error" });
   }
@@ -364,7 +372,7 @@ exports.postUpdateMilestones = async (req, res) => {
 exports.getDeleteMilestones = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "DELETE FROM achievements WHERE achievement_id = ?";
+    var sql = "UPDATE achievements SET achievement_status = 0 WHERE achievement_id = ?";
     var result = await exe(sql, [id]);
     if (result.affectedRows == 0) {
       res
@@ -426,11 +434,15 @@ exports.postSaveAwards = async (req, res) => {
 exports.getEditAwardsPage = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "SELECT * FROM awards WHERE award_id = ?";
+    var sql = "SELECT * FROM awards WHERE award_id = ? AND award_status = 1";
     var awardone = await exe(sql, [id]);
     var packet = { awardone };
     res.render("admin/edit-awards", packet);
   } catch (error) {
+    if (awardone.length == 0) {
+      res.status(404).render("error", { message: "Award not found" });
+      return;
+    }
     console.error(error);
     res.status(500).render("error", { message: "Edit Awards Page Error" });
   }
@@ -476,7 +488,7 @@ exports.postUpdateAwards = async (req, res) => {
 exports.getDeleteAwards = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = "DELETE FROM awards WHERE award_id = ?";
+    var sql = "UPDATE awards SET award_status = 0 WHERE award_id = ?";
     var result = await exe(sql, [id]);
     if (result.affectedRows == 0) {
       res.status(400).render("error", { message: "Failed to delete Awards" });
@@ -1400,8 +1412,8 @@ exports.updateTerm = async (req, res) => {
 exports.deleteTerm = async (req, res) => {
   try {
     var id = req.params.id;
-    var sql = `DELETE FROM terms WHERE term_id='${id}'`;
-    await exe(sql);
+    var sql = "UPDATE terms SET term_status=0 WHERE term_id=?";
+    await exe(sql, [id]);
     res.redirect("/admin/terms");
   } catch (error) {
     console.log(error);

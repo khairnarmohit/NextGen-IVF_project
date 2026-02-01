@@ -1,27 +1,27 @@
 <%- include("navbar.ejs") %>
 
-<div class="container py-4">
+  <div class="container py-4">
 
-  <!-- Buttons Row -->
-  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <!-- Buttons Row -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
 
-    <!-- Left: Add Button -->
-    <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addTreatmentForm">
-      <i class="fas fa-plus me-1"></i> Add Why Choose Us
-    </button>
+      <!-- Left: Add Button -->
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addTreatmentForm">
+        <i class="fas fa-plus me-1"></i> Add Why Choose Us
+      </button>
 
-    <!-- Right: CSV + Print -->
-  <div class="d-flex gap-2">
-  <button onclick="exportWhychooseusCSV()" class="btn btn-success">
-    <i class="fas fa-file-csv me-2"></i> Export CSV
-  </button>
+      <!-- Right: CSV + Print -->
+      <div class="d-flex gap-2">
+        <button onclick="exportWhychooseusCSV()" class="btn btn-success">
+          <i class="fas fa-file-csv me-2"></i> Export CSV
+        </button>
 
-  <button onclick="printWhychooseus()" class="btn btn-secondary">
-    <i class="fas fa-print me-1"></i> Print
-  </button>
-</div>
+        <button onclick="printWhychooseus()" class="btn btn-secondary">
+          <i class="fas fa-print me-1"></i> Print
+        </button>
+      </div>
 
-  </div>
+    </div>
 
 
     <!-- Collapse Form -->
@@ -102,7 +102,7 @@
                 <td>
                   <%= whychooseus_info[i].whychooseus_desc %>
                 </td>
-                <td >
+                <td>
                   <a href="/admin/edit-why-choose-us/<%= whychooseus_info[i].whychooseus_id %>" type="button"
                     class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
                   <a href="/admin/delete-why-choose-us/<%= whychooseus_info[i].whychooseus_id %>" type="button"
@@ -117,55 +117,55 @@
     </div>
   </div>
 
-<script>
-function exportWhychooseusCSV() {
-let csv = [];
-let table = document.querySelector("#printArea table");
-  if (!table) {
-    alert("Table not found!");
-    return;
-  }
-let rows = table.querySelectorAll("tr");
-rows.forEach(rowEl => {
-    let row = [];
-    let cols = rowEl.querySelectorAll("th, td");
-cols.forEach((col, index) => {
-     if (index === 1 || index === 6) return;
-let text = col.innerText.trim().replace(/"/g, '""');
-      row.push(`"${text}"`);
-    });
-if (row.length > 0) {
-      csv.push(row.join(","));
+  <script>
+    function exportWhychooseusCSV() {
+      let csv = [];
+      let table = document.querySelector("#printArea table");
+      if (!table) {
+        alert("Table not found!");
+        return;
+      }
+      let rows = table.querySelectorAll("tr");
+      rows.forEach(rowEl => {
+        let row = [];
+        let cols = rowEl.querySelectorAll("th, td");
+        cols.forEach((col, index) => {
+          if (index === 1 || index === 6) return;
+          let text = col.innerText.trim().replace(/"/g, '""');
+          row.push(`"${text}"`);
+        });
+        if (row.length > 0) {
+          csv.push(row.join(","));
+        }
+      });
+      let csvContent = "\uFEFF" + csv.join("\n");
+      let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      let link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "whychooseus_list.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
-  });
-let csvContent = "\uFEFF" + csv.join("\n");
-let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  let link = document.createElement("a");
-link.href = URL.createObjectURL(blob);
-  link.download = "whychooseus_list.csv";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-</script>
+  </script>
 
 
 
 
-<script>
-  function printWhychooseus() {
-  const printContent = document.getElementById("printArea").innerHTML;
-  const originalContent = document.body.innerHTML;
+  <script>
+    function printWhychooseus() {
+      const printContent = document.getElementById("printArea").innerHTML;
+      const originalContent = document.body.innerHTML;
 
-  document.body.innerHTML = printContent;
-  window.print();
+      document.body.innerHTML = printContent;
+      window.print();
 
-  setTimeout(() => {
-    document.body.innerHTML = originalContent;
-  }, 1000);
-}
+      setTimeout(() => {
+        document.body.innerHTML = originalContent;
+      }, 1000);
+    }
 
-</script>
+  </script>
 
 
   <%- include("footer.ejs") %>

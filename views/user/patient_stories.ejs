@@ -1,206 +1,199 @@
 <%- include('navbar.ejs') %>
 
-<link rel="stylesheet" href="/css/patient_stories.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  
+    <link rel="stylesheet" href="/css/patient_stories.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 
-<section class="hero-section bg-body-secondary py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-start text-center">
-                <h1 class="p-5">Patient Stories</h1>
 
-                <h4 class="breadcrumb-title mb-4">
-                    Home <span class="mx-2">›</span>
-                    <a href="#" class="text-decoration-none">Patient Stories</a>
-                </h4>
+    <section class="hero-section bg-body-secondary py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-start text-center">
+                    <h1 class="p-5">Patient Stories</h1>
+
+                    <h4 class="breadcrumb-title mb-4">
+                        Home <span class="mx-2">›</span>
+                        <a href="#" class="text-decoration-none">Patient Stories</a>
+                    </h4>
+                </div>
             </div>
         </div>
-    </div>
-</section>  
+    </section>
 
 
 
-<section class="py-5 bg-light">
-    <div class="container">
-        
-        <h2 class="text-center mb-5 fw-bold text-primary"
-            style="font-family: 'Poppins', sans-serif;">
-            What Our Patients Say
-        </h2>
+    <section class="py-5 bg-light">
+        <div class="container">
 
-        <div class="row g-4">
-            <% if(stories && stories.length > 0) { %>
-                <% for (let i = 0; i < stories.length; i++) { %>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="testimonial-card h-100">
-                            <div class="quote-icon">
-                                <i class="fas fa-quote-right"></i>
-                            </div>
-                            <p class="testimonial-text">
-                                "<%= stories[i].patients_review_desc %>"
-                            </p>
-                            <div class="d-flex align-items-center mt-4">
-                                <img src="/uploads/<%= stories[i].patients_review_photo %>"
-                                     class="profile-img" 
-                                     alt="<%= stories[i].patients_review_name %>"
-                                     onerror="this.src='https://via.placeholder.com/50'"
-                                >
-                                <div class="ms-3">
-                                    <h6 class="mb-0 fw-bold text-primary"><%= stories[i].patients_review_name %></h6>
-                                    <div class="text-muted review-date" data-date="<%= stories[i].patients_review_date %>">
-                                        <i class="fas fa-map-marker-alt me-1"></i> <%= stories[i].patients_review_address %>
-                                        <span class="d-block mt-1"></span>
+            <h2 class="text-center mb-5 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">
+                What Our Patients Say
+            </h2>
+
+            <div class="row g-4">
+                <% if(stories && stories.length> 0) { %>
+                    <% for (let i=0; i < stories.length; i++) { %>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="testimonial-card h-100">
+                                <div class="quote-icon">
+                                    <i class="fas fa-quote-right"></i>
+                                </div>
+                                <p class="testimonial-text">
+                                    "<%= stories[i].patients_review_desc %>"
+                                </p>
+                                <div class="d-flex align-items-center mt-4">
+                                    <img src="/uploads/<%= stories[i].patients_review_photo %>" class="profile-img"
+                                        alt="<%= stories[i].patients_review_name %>"
+                                        onerror="this.src='https://via.placeholder.com/50'">
+                                    <div class="ms-3">
+                                        <h6 class="mb-0 fw-bold text-primary">
+                                            <%= stories[i].patients_review_name %>
+                                        </h6>
+                                        <div class="text-muted review-date"
+                                            data-date="<%= stories[i].patients_review_date %>">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            <%= stories[i].patients_review_address %>
+                                                <span class="d-block mt-1"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <% } %>
+                            <% } else { %>
+                                <div class="col-12 text-center py-5">
+                                    <h3 class="text-muted">No patient stories found yet.</h3>
+                                </div>
+                                <% } %>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section class="py-5">
+        <div class="container">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-primary">Our Photos</h2>
+                <!-- <p class="text-muted">Advanced infrastructure designed for comfort & care</p> -->
+            </div>
+
+            <div class="row g-3 facilities-gallery">
+                <% for (var i=0; i < gallery.length; i++) { %>
+                    <div class="col-md-4">
+                        <img src="/uploads/<%= gallery[i].image_name %>" class="facility-img active" alt="Facility">
                     </div>
-                <% } %>
-            <% } else { %>
-                <div class="col-12 text-center py-5">
-                    <h3 class="text-muted">No patient stories found yet.</h3>
-                </div>
-            <% } %>
-        </div>
-    </div>
-</section>
+                    <% } %>
+            </div>
 
-
-
-
-
-<section class="py-5">
-    <div class="container">
-
-        <div class="text-center mb-4">
-            <h2 class="fw-bold text-primary">Our Photos</h2>
-            <!-- <p class="text-muted">Advanced infrastructure designed for comfort & care</p> -->
-        </div>
-
-<div class="row g-3 facilities-gallery">
-  <% for (var i = 0; i < gallery.length; i++) { %>
-    <div class="col-md-4">
-      <img src="/uploads/<%= gallery[i].image_name %>"
-           class="facility-img active"
-           alt="Facility">
-    </div>
-  <% } %>
-</div>
-
-
-          
 
         </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <!-- Slider Controls -->
+            <span class="nav-btn prev">&#10094;</span>
+            <img id="modalImage" class="modal-image" src="" alt="Facility Image">
+            <span class="nav-btn next">&#10095;</span>
+        </div>
     </div>
-</section>
-
-<!-- Modal -->
-<!-- Modal -->
-<div id="imageModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-
-        <!-- Slider Controls -->
-        <span class="nav-btn prev">&#10094;</span>
-        <img id="modalImage" class="modal-image" src="" alt="Facility Image">
-        <span class="nav-btn next">&#10095;</span>
-    </div>
-</div>
 
 
 
 
 
 
-<%- include('footer.ejs') %>
+    <%- include('footer.ejs') %>
 
-<script>
-    const images = document.querySelectorAll('.facility-img');
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const closeBtn = document.querySelector('.close');
-    const nextBtn = document.querySelector('.next');
-    const prevBtn = document.querySelector('.prev');
+        <script>
+            const images = document.querySelectorAll('.facility-img');
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeBtn = document.querySelector('.close');
+            const nextBtn = document.querySelector('.next');
+            const prevBtn = document.querySelector('.prev');
 
-    let currentIndex = 0;
-    const imageArray = Array.from(images);
+            let currentIndex = 0;
+            const imageArray = Array.from(images);
 
-    function openModal(index) {
-        currentIndex = index;
-        modal.style.display = 'block';
-        modalImage.src = imageArray[currentIndex].src;
-    }
-
-    function showNext() {
-        currentIndex = (currentIndex + 1) % imageArray.length;
-        modalImage.src = imageArray[currentIndex].src;
-    }
-
-    function showPrev() {
-        currentIndex = (currentIndex - 1 + imageArray.length) % imageArray.length;
-        modalImage.src = imageArray[currentIndex].src;
-    }
-
-    images.forEach((img, index) => {
-        img.addEventListener('click', () => {
-            images.forEach(i => i.classList.remove('active'));
-            img.classList.add('active');
-            openModal(index);
-        });
-    });
-
-    nextBtn.addEventListener('click', showNext);
-    prevBtn.addEventListener('click', showPrev);
-
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (modal.style.display === 'block') {
-            if (e.key === 'ArrowRight') showNext();
-            if (e.key === 'ArrowLeft') showPrev();
-            if (e.key === 'Escape') modal.style.display = 'none';
-        }
-    });
-</script>
-
-
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const dateElements = document.querySelectorAll('.review-date');
-        
-        const formatter = new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-
-        dateElements.forEach(el => {
-            const rawDate = el.dataset.date;
-            if (!rawDate) return;
-
-            const date = new Date(rawDate);
-            const formatted = formatter.format(date);
-            
-            const span = el.querySelector('span');
-            if(span) {
-                span.textContent = formatted;
+            function openModal(index) {
+                currentIndex = index;
+                modal.style.display = 'block';
+                modalImage.src = imageArray[currentIndex].src;
             }
-        });
-    });
-</script>
+
+            function showNext() {
+                currentIndex = (currentIndex + 1) % imageArray.length;
+                modalImage.src = imageArray[currentIndex].src;
+            }
+
+            function showPrev() {
+                currentIndex = (currentIndex - 1 + imageArray.length) % imageArray.length;
+                modalImage.src = imageArray[currentIndex].src;
+            }
+
+            images.forEach((img, index) => {
+                img.addEventListener('click', () => {
+                    images.forEach(i => i.classList.remove('active'));
+                    img.classList.add('active');
+                    openModal(index);
+                });
+            });
+
+            nextBtn.addEventListener('click', showNext);
+            prevBtn.addEventListener('click', showPrev);
+
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (modal.style.display === 'block') {
+                    if (e.key === 'ArrowRight') showNext();
+                    if (e.key === 'ArrowLeft') showPrev();
+                    if (e.key === 'Escape') modal.style.display = 'none';
+                }
+            });
+        </script>
 
 
 
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const dateElements = document.querySelectorAll('.review-date');
+
+                const formatter = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                dateElements.forEach(el => {
+                    const rawDate = el.dataset.date;
+                    if (!rawDate) return;
+
+                    const date = new Date(rawDate);
+                    const formatted = formatter.format(date);
+
+                    const span = el.querySelector('span');
+                    if (span) {
+                        span.textContent = formatted;
+                    }
+                });
+            });
+        </script>

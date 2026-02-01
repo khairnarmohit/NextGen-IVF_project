@@ -12,13 +12,13 @@ exports.getAboutPage = async (req, res) => {
     var sql3 = "SELECT * FROM director_msg WHERE director_msg_id = ?";
     var director_msg = await exe(sql3, [1]);
 
-    var sql4 = "SELECT * FROM whychooseus";
+    var sql4 = "SELECT * FROM whychooseus WHERE whychooseus_status = 1";
     var whychooseus = await exe(sql4);
 
-    var sql5 = "SELECT * FROM achievements";
+    var sql5 = "SELECT * FROM achievements WHERE achievement_status = 1";
     var achievements = await exe(sql5);
 
-     var sql5 = "SELECT * FROM awards";
+     var sql5 = "SELECT * FROM awards WHERE award_status = 1";
     var awards = await exe(sql5);
 
 
@@ -424,10 +424,16 @@ exports.getHomePage = async (req, res) => {
     var sql = "SELECT * FROM hero WHERE hero_id = 1";
     var treatment = "SELECT * FROM treatments LIMIT 3";
     var doctors = "SELECT * FROM doctors LIMIT 3";
+    var sql2 = "SELECT * FROM about WHERE about_id = 1";
+    var sql3 = "SELECT * FROM whychooseus WHERE whychooseus_status = 1 LIMIT 4";
+    var sql4 = "SELECT * FROM patients_review LIMIT 3";
     var hero_info = await exe(sql);
     var treatments = await exe(treatment);
     var doctors = await exe(doctors);
-
+    var about = await exe(sql2);
+    var whychooseus = await exe(sql3);
+    var patients_review = await exe(sql4);
+    
     if (hero_info.length == 0) {
       hero_info = [
         {
@@ -438,7 +444,9 @@ exports.getHomePage = async (req, res) => {
     } else {
       hero_info = hero_info[0];
     }
-    res.render("user/home", { hero_info, treatments, doctors });
+
+    console.log(patients_review)
+    res.render("user/home", { hero_info, treatments, doctors, about, whychooseus, patients_review });
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Home Page Error" });
