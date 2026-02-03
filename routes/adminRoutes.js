@@ -326,6 +326,8 @@ router.get('/appointment', adminController.getAppointmentPage);
 router.post('/appointment-save', adminController.postAppointmentSave);
 
 
+router.get("/logout", adminController.getLogout);
+
 
 
 
