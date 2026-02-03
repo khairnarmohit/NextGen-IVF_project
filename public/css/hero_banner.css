@@ -1,9 +1,5 @@
 
-/* 
-   HERO BANNER CSS
-*/
 
-/* Container for the section */
 .video-hero-container {
     position: relative;
     width: 100%;
@@ -12,19 +8,14 @@
     overflow: hidden; 
     background-color: #000; /* Fallback color */
     
-    /* 
-       FIX: Add the same image you used in the 'poster' tag here.
-       This displays INSTANTLY while the video element is being created by the browser.
-    */
+   
     background-image: url('baby_crawl_image.jpeg'); 
     
-    /* Ensures the background image covers the area like the video */
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
 }
 
-/* The Video Element */
 .video-hero-container .video-background {
     position: absolute;
     top: 0;

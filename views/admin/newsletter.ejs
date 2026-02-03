@@ -1,0 +1,111 @@
+<%- include('navbar.ejs') %>
+
+<div class="container py-4">
+  
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+    </div>
+
+    <div>
+        <button onclick="exportNewsletterCSV()" class="btn btn-success me-2">
+            <i class="fas fa-file-csv me-2"></i>Export CSV
+        </button>
+        <button onclick="printNewsletter()" class="btn btn-secondary">
+            <i class="fas fa-print me-2"></i>Print
+        </button>
+    </div>
+  </div>
+
+  <div id="printArea">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Newsletter Subscriptions</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 5%;" class="text-center">#</th>
+                
+                <th style="width: 50%;">Email Address</th>
+                <th style="width: 20%;">Status</th>
+                <th style="width: 25%;">Subscribed On</th>
+              
+              </tr>
+            </thead>
+            <tbody>
+              <% if (newsletters.length > 0) { %>
+                <% for (let i = 0; i < newsletters.length; i++) { %>
+                  <tr>
+                    <td class="text-center fw-bold"><%= i + 1 %></td>
+                   
+                    <td><%= newsletters[i].newsletter_email %></td>
+                    <td>
+                        <% if(newsletters[i].newsletter_status === 'active') { %>
+                           <!-- <span class="badge bg-success"> -->
+                              Active
+                            <!-- </span>  -->
+                        <% } else { %>
+                            <!-- <span class="badge bg-secondary"> -->
+                              Inactive
+                            <!-- </span> -->
+                        <% } %>
+                    </td>
+                    <td><%= new Date(newsletters[i].created_at).toLocaleDateString() %></td>
+                  </tr>
+                <% } %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center p-5">No subscribers found.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function exportNewsletterCSV() {
+  let csv = [];
+  let rows = document.querySelectorAll("#printArea table tr");
+
+  for (let i = 0; i < rows.length; i++) {
+    let row = [], cols = rows[i].querySelectorAll("th, td");
+
+    for (let j = 0; j < cols.length; j++) {
+      let text = cols[j].innerText.replace(/"/g, '""');
+      row.push('"' + text + '"');
+    }
+    csv.push(row.join(","));
+  }
+
+  let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+  let downloadLink = document.createElement("a");
+
+  downloadLink.download = "newsletter_subscribers.csv";
+  downloadLink.href = window.URL.createObjectURL(csvFile);
+  downloadLink.style.display = "none";
+
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
+</script>
+
+<script>
+  function printNewsletter() {
+    const printContent = document.getElementById("printArea").innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    location.reload();
+  }
+</script>
+
+<%- include('footer.ejs') %>

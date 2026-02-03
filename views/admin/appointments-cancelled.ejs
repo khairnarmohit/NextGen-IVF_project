@@ -1,8 +1,20 @@
 <%- include('navbar.ejs') %>
 
+<div class="d-flex justify-content-end align-items-center gap-2 mb-3 me-5 mt-2">
+  <button type="button" class="btn btn-success px-3" onclick="exportCSV()">
+              <i class="fas fa-file-csv me-2"></i> Export CSV
+
+  </button>
+
+  <button type="button" class="btn btn-secondary px-3" onclick="printTable()">
+    <i class="fas fa-print me-1"></i> Print
+  </button>
+</div>
 
 <div class="container mt-5">
-<P class="mb-2 bg-primary rounded-top fw-bold p-2 fs-5 text-light"> Cancelled Appointments </P>
+<p class="mb-2 bg-primary rounded-top fw-bold p-2 fs-5 text-light"> Cancelled Appointments </p>
+
+
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -32,6 +44,43 @@
     </tbody>
   </table>
 
+<script>
+  function exportCSV() {
+    let table = document.querySelector("table");
+    let rows = table.querySelectorAll("tr");
+    let csv = [];
+
+    rows.forEach(row => {
+      let cols = row.querySelectorAll("th, td");
+      let rowData = [];
+      cols.forEach(col => {
+        rowData.push('"' + col.innerText.replace(/"/g, '""') + '"');
+      });
+      csv.push(rowData.join(","));
+    });
+
+    let csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+    let downloadLink = document.createElement("a");
+
+    downloadLink.download = "canclled_appointments.csv";
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+
+  function printTable() {
+    let printContent = document.querySelector(".container").innerHTML;
+    let originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+    location.reload();
+  }
+</script>
 
 
 

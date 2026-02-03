@@ -140,14 +140,14 @@ exports.saveEnquiry = async (req, res) => {
   }
 };
 
-exports.getPatientStoriesPage = (req, res) => {
-  try {
-    res.render("user/patient_stories");
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Patient Stories Page Error" });
-  }
-};
+// exports.getPatientStoriesPage = (req, res) => {
+//   try {
+//     res.render("user/patient_stories");
+//   } catch (error) {
+//      console.error(error);
+//     res.status(500).render("error", { message: "Patient Stories Page Error" });
+//   }
+// };
 
 
 exports.getFaqPage = async (req, res) => {
@@ -413,7 +413,7 @@ exports.getHomePage = async (req, res) => {
 
 exports.getPatientStoriesPage = async (req, res) => {
   try {
-    var sql = "SELECT * FROM patients_review ORDER BY patients_review_id DESC";
+    var sql = "SELECT * FROM patients_review ORDER BY patients_review_id ASC";
     var stories = await exe(sql);
 
     var sql1 = `SELECT * FROM gallery`;
@@ -422,7 +422,7 @@ exports.getPatientStoriesPage = async (req, res) => {
     // console.log(stories,gallery);
     res.render("user/patient_stories", packet);
   } catch (error) {
-    console.error(error);
+    
     res.status(500).render("error", { message: "Patient Stories Page Error" });
   }
 };
@@ -431,7 +431,7 @@ exports.getPatientStoriesPage = async (req, res) => {
 
 exports.getPrivacyPage = async (req, res) => {
   try {
-    var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id DESC`);
+    var data = await exe(`SELECT * FROM privacy ORDER BY privacy_id ASC`);
     res.render("user/privacy", { list: data });
   } catch (error) {
     console.error(error);
@@ -443,7 +443,7 @@ exports.getPrivacyPage = async (req, res) => {
 
 exports.getTermsPage = async (req, res) => {
   try {
-    var data = await exe(`SELECT * FROM terms ORDER BY term_id DESC`);
+    var data = await exe(`SELECT * FROM terms ORDER BY term_id ASC`);
     res.render("user/terms", { list: data });
   } catch (error) {
     console.error(error);
@@ -455,10 +455,19 @@ exports.getTermsPage = async (req, res) => {
 
 
 
-
-
-
-
-
+exports.subscribeNewsletter = async (req, res) => {
+  try {
+    const { email } = req.body; 
+    var sql = "INSERT INTO newsletter (newsletter_email) VALUES (?)";
+    await exe(sql, [email]);
+    res.redirect("/"); 
+  } catch (error) {
+    console.error("Newsletter Subscription Error:", error);
+    // if (error.code === 'ER_DUP_ENTRY') {
+    //     return res.redirect("/"); 
+    // }
+    res.status(500).send("Error subscribing to newsletter");
+  }
+};
 
 

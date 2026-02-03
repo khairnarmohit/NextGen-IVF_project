@@ -85,9 +85,10 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-bordered table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
+                                   <th style="width: 5%;" class="text-center">#</th>
                                 <th class="ps-4" style="width: 20%;">Title</th>
                                 <th style="width: 55%;">Description</th>
                                 <th class="text-end pe-4" style="width: 10%;">Actions</th>
@@ -98,6 +99,9 @@
                                 <% for (let i = 0; i < list.length; i++) { %>
                                     <tr>
                                         <td class="ps-4">
+                                            <h6 class="mb-0 fw-bold text-primary"><%= i+1 %></h6>
+                                        </td>
+                                        <td class="ps-4">
                                             <h6 class="mb-0 fw-bold text-primary"><%= list[i].term_title %></h6>
                                         </td>
                                         <td>
@@ -105,7 +109,7 @@
                                         </td>
                                         <td class="text-end pe-4">
                                             <a href="/admin/terms?edit=<%= list[i].term_id %>" class="btn btn-sm btn-outline-primary me-1">
-                                                <i class="fas fa-edit"></i> Edit
+                                                <i class="fas fa-edit"></i> 
                                             </a>
                                             
                                             <a href="/admin/terms/delete/<%= list[i].term_id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this section?')">
