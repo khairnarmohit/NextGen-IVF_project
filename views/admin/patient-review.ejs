@@ -72,60 +72,69 @@
     </div>
   </div>
 
+
   <!-- Edit Form Section -->
-  <% if(editData) { %>
-    <div class="card shadow-sm border-0 mb-4">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Edit Review</h5>
-      </div>
-      <div class="card-body">
-        <form action="/admin/patient-review/update" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="patients_review_id" value="<%= editData.patients_review_id %>">
-          <input type="hidden" name="old_photo" value="<%= editData.patients_review_photo %>">
 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Patient Name</label>
-              <input type="text" name="patients_review_name" class="form-control" value="<%= editData.patients_review_name %>" required>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Location</label>
-              <input type="text" name="patients_review_address" class="form-control" value="<%= editData.patients_review_address %>" required>
-            </div>
-          </div>
 
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <label class="form-label">Date</label>
-              <input type="date" name="patients_review_date" class="form-control" value="<%= editData.patients_review_date %>" required>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Change Photo (Optional)</label>
-              <input type="file" name="patients_review_photo" class="form-control" accept="image/*">
-            </div>
-            <div class="col-md-4 d-flex align-items-center">
-              <div class="text-center w-100">
-                <label class="small text-muted">Current Photo</label><br>
-                <img src="/uploads/<%= editData.patients_review_photo %>" class="rounded border" width="60" height="60" style="object-fit:cover;">
+    <% if(editData) { %>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Edit Review</h5>
+        </div>
+        <div class="card-body">
+          <form action="/admin/patient-review/update" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="patients_review_id" value="<%= editData.patients_review_id %>">
+            <input type="hidden" name="old_photo" value="<%= editData.patients_review_photo %>">
+
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Patient Name</label>
+                <input type="text" name="patients_review_name" class="form-control"
+                  value="<%= editData.patients_review_name %>" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Location</label>
+                <input type="text" name="patients_review_address" class="form-control"
+                  value="<%= editData.patients_review_address %>" required>
               </div>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label class="form-label">Review Description</label>
-            <textarea name="patients_review_desc" class="form-control" rows="4" required><%= editData.patients_review_desc %></textarea>
-          </div>
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Date</label>
+                <input type="date" name="patients_review_date" class="form-control"
+                  value="<%= editData.patients_review_date %>" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Change Photo (Optional)</label>
+                <input type="file" name="patients_review_photo" class="form-control" accept="image/*">
+              </div>
+              <div class="col-md-4 d-flex align-items-center">
+                <div class="text-center w-100">
+                  <label class="small text-muted">Current Photo</label><br>
+                  <img src="/uploads/<%= editData.patients_review_photo %>" class="rounded border" width="60"
+                    height="60" style="object-fit:cover;">
+                </div>
+              </div>
+            </div>
 
-          <div class="text-end">
-            <a href="/admin/patient-review" class="btn btn-secondary me-2">Cancel</a>
-            <button type="submit" class="btn btn-primary px-4">
-              <i class="fas fa-sync-alt me-1"></i> Update Review
-            </button>
-          </div>
-        </form>
+            <div class="mb-3">
+              <label class="form-label">Review Description</label>
+              <textarea name="patients_review_desc" class="form-control" rows="4"
+                required><%= editData.patients_review_desc %></textarea>
+            </div>
+
+            <div class="text-end">
+              <a href="/admin/patient-review" class="btn btn-secondary me-2">Cancel</a>
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="fas fa-sync-alt me-1"></i> Update Review
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  <% } %>
+      <% } %>
 
   <!-- List Section (ID for Print/Export) - Cleaned Structure -->
   <div id="printArea" class="card shadow-sm border-0">
@@ -163,30 +172,39 @@
                 <td class="text-start">
                   <p class="text-muted mb-0" style="padding-left: 15px;"><%= list[i].patients_review_desc %></p>
                 </td>
-                <td class="text-center">
-                  <span class="review-date text-secondary small" data-date="<%= list[i].patients_review_date %>"></span>
-                </td>
-                <td class="text-center">
-                  <a href="/admin/patient-review?edit=<%= list[i].patients_review_id %>" class="btn btn-sm btn-warning" title="Edit">
-                    <i class="fas fa-edit"></i>
-                  </a>
-                  <a href="/admin/patient-review/delete/<%= list[i].patients_review_id %>" class="btn btn-sm btn-danger mt-1" title="Delete" onclick="return confirm('Are you sure you want to delete this review?')">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-            <% } %>
-          <% } else { %>
-            <tr>
-              <td colspan="7" class="text-center text-muted py-4">
-                No reviews found. Click "Add Review" to create one.
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
-  </div>
+
+                     
+
+                      <td class="text-center">
+                        <span class="review-date text-secondary small"
+                          data-date="<%= list[i].patients_review_date %>"></span>
+                      </td>
+
+                      <td class="text-center">
+                        <a href="/admin/patient-review?edit=<%= list[i].patients_review_id %>"
+                          class="btn btn-sm btn-warning" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </a>
+
+                        <a href="/admin/patient-review/delete/<%= list[i].patients_review_id %>"
+                          class="btn btn-sm btn-danger mt-1" title="Delete"
+                          onclick="return confirm('Are you sure you want to delete this review?')">
+                          <i class="fas fa-trash"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <% } %>
+                      <% } else { %>
+                        <tr>
+                          <td colspan="7" class="text-center text-muted py-4">
+                            No reviews found. Click "Add Review" to create one.
+                          </td>
+                        </tr>
+                        <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
 </div> <!-- End Container -->
 

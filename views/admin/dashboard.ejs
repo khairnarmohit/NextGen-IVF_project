@@ -1,10 +1,9 @@
 <%- include("navbar.ejs") %>
-    <style type="css/text">
+    <style type="text/css">
         .chart-container {
-    height: 300px;
-}
-
-</style>
+            height: 300px;
+        }
+    </style>
 
     <!-- Dashboard Content -->
     <div class="dashboard-content">
@@ -21,11 +20,15 @@
             <div class="stat-card patients fade-in-up">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3><%= appointments[0].total_appointments %></h3>
+                        <h3>
+                            <%= appointments[0].total_appointments %>
+                        </h3>
                         <div class="stat-title">Total Patients</div>
                         <div class="stat-trend positive">
                             <i class="fas fa-arrow-up"></i>
-                            <span><%= new Date().toLocaleString('default', { month: 'long' }) %></span>
+                            <span>
+                                <%= new Date().toLocaleString('default', { month: 'long' }) %>
+                            </span>
                         </div>
                     </div>
                     <div class="stat-icon">
@@ -37,11 +40,15 @@
             <div class="stat-card appointments fade-in-up delay-1">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3><%= todays_appointments[0].todays_appointments %></h3>
+                        <h3>
+                            <%= todays_appointments[0].todays_appointments %>
+                        </h3>
                         <div class="stat-title">Today's Appointments</div>
                         <div class="stat-trend positive">
                             <i class="fas fa-clock"></i>
-                            <span><%= pending_appointments[0].pending_appointments %> pending</span>
+                            <span>
+                                <%= pending_appointments[0].pending_appointments %> pending
+                            </span>
                         </div>
                     </div>
                     <div class="stat-icon">
@@ -53,7 +60,9 @@
             <div class="stat-card success-rate fade-in-up delay-2">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3><%= patient_reviews[0].patients_review %></h3>
+                        <h3>
+                            <%= patient_reviews[0].patients_review %>
+                        </h3>
                         <div class="stat-title">Patient Review</div>
                         <div class="stat-trend positive">
                             <i class="fas fa-arrow-up"></i>
@@ -69,7 +78,9 @@
             <div class="stat-card enquiries fade-in-up delay-3">
                 <div class="stat-content">
                     <div class="stat-info">
-                        <h3><%= enquiry[0].enquiry %></h3>
+                        <h3>
+                            <%= enquiry[0].enquiry %>
+                        </h3>
                         <div class="stat-title">New Enquiries</div>
                         <div class="stat-trend negative">
                             <i class="fas fa-exclamation-circle"></i>
@@ -104,6 +115,7 @@
         <!-- Charts Section -->
         <div class="charts-grid">
 
+            <!-- LINE CHART : Daily Appointments -->
             <div class="chart-card">
                 <div class="chart-header">
                     <h5 class="chart-title">
@@ -117,18 +129,18 @@
                             Select Month
                         </button>
                         <ul class="dropdown-menu" id="monthDropdownMenu">
-                            <li><a class="dropdown-item" href="#" data-month="0">January</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="1">February</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="2">March</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="3">April</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="4">May</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="5">June</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="6">July</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="7">August</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="8">September</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="9">October</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="10">November</a></li>
-                            <li><a class="dropdown-item" href="#" data-month="11">December</a></li>
+                            <li><a class="dropdown-item" data-month="0">January</a></li>
+                            <li><a class="dropdown-item" data-month="1">February</a></li>
+                            <li><a class="dropdown-item" data-month="2">March</a></li>
+                            <li><a class="dropdown-item" data-month="3">April</a></li>
+                            <li><a class="dropdown-item" data-month="4">May</a></li>
+                            <li><a class="dropdown-item" data-month="5">June</a></li>
+                            <li><a class="dropdown-item" data-month="6">July</a></li>
+                            <li><a class="dropdown-item" data-month="7">August</a></li>
+                            <li><a class="dropdown-item" data-month="8">September</a></li>
+                            <li><a class="dropdown-item" data-month="9">October</a></li>
+                            <li><a class="dropdown-item" data-month="10">November</a></li>
+                            <li><a class="dropdown-item" data-month="11">December</a></li>
                         </ul>
                     </div>
                 </div>
@@ -138,8 +150,7 @@
                 </div>
             </div>
 
-            
-
+            <!-- DOUGHNUT CHART : Doctor Distribution -->
             <div class="chart-card">
                 <div class="chart-header">
                     <h5 class="chart-title">
@@ -147,169 +158,107 @@
                         Doctor Appointments Distribution
                     </h5>
                 </div>
+
                 <div class="treatment-distribution-container">
-                    <div class="chart-container treatment-chart-wrapper">
+                    <div class="chart-container">
                         <canvas id="doctorAppointmentChart"></canvas>
                     </div>
-                    <div class="treatment-legend" id="doctorAppointmentLegend">
-                        <!-- Legend will be generated by JavaScript -->
-                    </div>
+                    <div class="treatment-legend" id="doctorAppointmentLegend"></div>
                 </div>
             </div>
 
         </div>
 
 
+
     </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript">
-        
-    function initCharts() {
-        // Monthly Appointments Chart with responsive settings
-        const appointmentsCtx = document.getElementById('appointmentsChart');
-        if (appointmentsCtx) {
-            window.appointmentsChart = new Chart(appointmentsCtx.getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
-                        label: 'Appointments',
-                        data: [45, 52, 60, 55, 70, 65, 80, 75, 85, 90, 95, 100],
-                        borderColor: '#0d6efd',
-                        backgroundColor: 'rgba(13, 110, 253, 0.08)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#0d6efd',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleFont: { size: 12 },
-                            bodyFont: { size: 13 },
-                            padding: 10,
-                            cornerRadius: 6
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false,
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            ticks: {
-                                font: { size: 10 },
-                                padding: 5,
-                                maxTicksLimit: 6
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                font: { size: 10 },
-                                padding: 5,
-                                maxTicksLimit: 12
-                            }
-                        }
-                    }
-                }
-            });
-        }
+<!-- 1️⃣ Backend data -->
+<script>
+  const dailyAppointments = <%- JSON.stringify(dailyAppointments || []) %>;
+  const doctorAppointments = <%- JSON.stringify(doctorAppointments || []) %>;
+</script>
 
-        // Doctor Appointments Distribution Chart
-        const doctorCtx = document.getElementById('doctorAppointmentChart');
-        if (doctorCtx) {
-            const doctorAppointmentData = {
-                labels: [
-                    'Dr. Sharma',
-                    'Dr. Patel',
-                    'Dr. Mehta',
-                    'Dr. Khan',
-                    'Dr. Iyer'
-                ],
-                datasets: [{
-                    data: [50, 25, 20, 12, 8], // % or appointment share
-                    backgroundColor: [
-                        '#0d6efd',
-                        '#1e88e5',
-                        '#1565c0',
-                        '#42a5f5',
-                        '#90caf9'
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 10
-                }]
-            };
+<!-- 2️⃣ Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            window.doctorAppointmentChart = new Chart(doctorCtx.getContext('2d'), {
-                type: 'doughnut',
-                data: doctorAppointmentData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            bodyFont: { size: 12 },
-                            padding: 8,
-                            cornerRadius: 6,
-                            callbacks: {
-                                label: function (context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} appointments (${percentage}%)`;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '60%'
-                }
-            });
+<!-- 3️⃣ Dashboard charts logic -->
+<script>
+  let appointmentsChart;
+  let doctorAppointmentChart;
 
-            // Custom Legend
-            const legendContainer = document.getElementById('doctorAppointmentLegend');
-            if (legendContainer) {
-                legendContainer.innerHTML = '';
-                doctorAppointmentData.labels.forEach((label, index) => {
-                    const legendItem = document.createElement('div');
-                    legendItem.className = 'legend-item';
+  const colors = [
+    '#0d6efd',
+    '#1e88e5',
+    '#1565c0',
+    '#42a5f5',
+    '#90caf9',
+    '#64b5f6'
+  ];
 
-                    const colorBox = document.createElement('div');
-                    colorBox.className = 'legend-color';
-                    colorBox.style.backgroundColor =
-                        doctorAppointmentData.datasets[0].backgroundColor[index];
+  function initAppointmentsChart() {
+    const ctx = document.getElementById('appointmentsChart');
+    if (!ctx || !dailyAppointments.length) return;
 
-                    const labelText = document.createElement('span');
-                    labelText.textContent = `${label} (${doctorAppointmentData.datasets[0].data[index]}%)`;
+    appointmentsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dailyAppointments.map(d => d.day),
+        datasets: [{
+          label: 'Appointments',
+          data: dailyAppointments.map(d => d.total),
+          borderColor: '#0d6efd',
+          backgroundColor: 'rgba(13,110,253,0.08)',
+          fill: true,
+          tension: 0.4
+        }]
+      }
+    });
+  }
 
-                    legendItem.appendChild(colorBox);
-                    legendItem.appendChild(labelText);
-                    legendContainer.appendChild(legendItem);
-                });
-            }
-        }
+  function initDoctorAppointmentChart() {
+    const ctx = document.getElementById('doctorAppointmentChart');
+    if (!ctx || !doctorAppointments.length) return;
 
+    doctorAppointmentChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: doctorAppointments.map(d => d.doctor_name),
+        datasets: [{
+          data: doctorAppointments.map(d => d.total),
+          backgroundColor: colors
+        }]
+      },
+      options: {
+        cutout: '60%',
+        plugins: { legend: { display: false } }
+      }
+    });
 
-    }
-    </script>
+    renderDoctorLegend();
+  }
 
+  function renderDoctorLegend() {
+    const legend = document.getElementById('doctorAppointmentLegend');
+    if (!legend) return;
+
+    legend.innerHTML = '';
+
+    doctorAppointments.forEach((doc, i) => {
+      legend.innerHTML += `
+        <div class="legend-item">
+          <span class="legend-color" style="background:${colors[i % colors.length]}"></span>
+          ${doc.doctor_name} (${doc.total})
+        </div>`;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initAppointmentsChart();
+    initDoctorAppointmentChart();
+  });
+</script>
 
 
     <%- include("footer.ejs") %>

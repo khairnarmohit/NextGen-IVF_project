@@ -157,6 +157,8 @@ router.post("/update-contact", isLoggedIn, adminController.postUpdateContact);
 
 router.get("/patient-review", isLoggedIn, adminController.getPatientReviewPage);
 
+router.get("/edit-patient-review/:id", isLoggedIn, adminController.getEditPatientReviewPage);
+
 router.post("/patient-review/save", isLoggedIn, adminController.saveReview);
 
 router.post("/patient-review/update", isLoggedIn, adminController.updateReview);
@@ -323,6 +325,8 @@ router.get('/appointment', adminController.getAppointmentPage);
 
 router.post('/appointment-save', adminController.postAppointmentSave);
 
+
+router.get("/logout", adminController.getLogout);
 
 
 
