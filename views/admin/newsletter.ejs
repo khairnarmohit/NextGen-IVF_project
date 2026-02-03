@@ -68,7 +68,6 @@
   </div>
 </div>
 
-<!-- JavaScript for CSV Export -->
 <script>
 function exportNewsletterCSV() {
   let csv = [];
@@ -78,7 +77,6 @@ function exportNewsletterCSV() {
     let row = [], cols = rows[i].querySelectorAll("th, td");
 
     for (let j = 0; j < cols.length; j++) {
-      // Note: We no longer need to skip the last column since Action buttons are removed
       let text = cols[j].innerText.replace(/"/g, '""');
       row.push('"' + text + '"');
     }
@@ -98,7 +96,6 @@ function exportNewsletterCSV() {
 }
 </script>
 
-<!-- JavaScript for Print -->
 <script>
   function printNewsletter() {
     const printContent = document.getElementById("printArea").innerHTML;

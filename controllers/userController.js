@@ -140,14 +140,14 @@ exports.saveEnquiry = async (req, res) => {
   }
 };
 
-exports.getPatientStoriesPage = (req, res) => {
-  try {
-    res.render("user/patient_stories");
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Patient Stories Page Error" });
-  }
-};
+// exports.getPatientStoriesPage = (req, res) => {
+//   try {
+//     res.render("user/patient_stories");
+//   } catch (error) {
+//      console.error(error);
+//     res.status(500).render("error", { message: "Patient Stories Page Error" });
+//   }
+// };
 
 
 exports.getFaqPage = async (req, res) => {
@@ -422,7 +422,7 @@ exports.getPatientStoriesPage = async (req, res) => {
     console.log(stories,gallery);
     res.render("user/patient_stories", packet);
   } catch (error) {
-    console.error(error);
+    
     res.status(500).render("error", { message: "Patient Stories Page Error" });
   }
 };

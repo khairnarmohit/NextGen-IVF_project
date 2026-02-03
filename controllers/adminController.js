@@ -501,14 +501,7 @@ exports.getDeleteAwards = async (req, res) => {
   }
 };
 
-exports.getPatientReviewPage = (req, res) => {
-  try {
-    res.render("admin/patient-review");
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { message: "Patient Review Page Error" });
-  }
-};
+
 
 exports.getGalleryPage = async (req, res) => {
   try {
@@ -576,6 +569,8 @@ exports.postUpdateContact = async (req, res) => {
   }
 };
 
+
+
 exports.getPatientReviewPage = async (req, res) => {
   try {
     var data = await exe(
@@ -594,7 +589,7 @@ exports.getPatientReviewPage = async (req, res) => {
 
     res.render("admin/patient-review", { list: data, editData: editData });
   } catch (error) {
-    console.error(error);
+    
     res.status(500).render("error", { message: "Patient Review Page Error" });
   }
 };
@@ -616,7 +611,7 @@ exports.saveReview = async (req, res) => {
     await exe(sql);
     res.redirect("/admin/patient-review");
   } catch (error) {
-    console.log(error);
+   
     res.send("Error saving review");
   }
 };
@@ -640,7 +635,7 @@ exports.updateReview = async (req, res) => {
     await exe(sql);
     res.redirect("/admin/patient-review");
   } catch (error) {
-    console.log(error);
+   
     res.send("Error updating review");
   }
 };
@@ -652,10 +647,11 @@ exports.deleteReview = async (req, res) => {
     await exe(sql);
     res.redirect("/admin/patient-review");
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.send("Error deleting review");
   }
 };
+
 
 exports.getPrivacyPage = async (req, res) => {
   try {
