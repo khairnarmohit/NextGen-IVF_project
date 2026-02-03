@@ -258,3 +258,7 @@
     text-align: center; 
   }
 }
+
+.logo_css{
+      filter: brightness(15);
+    }
