@@ -1,28 +1,16 @@
 <%- include("navbar.ejs") %>
 
 <style type="text/css">
-    /* =========================
-       PRIVACY POLICY PAGE ONLY
-       All classes prefixed with pp-
-    ========================= */
+  .hero-section .breadcrumb a,
+.hero-section .breadcrumb .breadcrumb-item.active {
+  color: #000;
+  text-decoration: none;
+}
 
-    .pp-hero-section {
-        background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-        padding: 100px 0 60px;
-        margin-bottom: 40px;
-    }
+.hero-section .breadcrumb a:hover {
+  color: #000;
+}
 
-    .pp-hero-section h1 {
-        color: #1d8c9a;
-        margin-bottom: 15px;
-    }
-
-    .pp-hero-section .lead {
-        font-size: 1.25rem;
-        color: #555;
-        max-width: 700px;
-        margin: 0 auto 20px;
-    }
 
     /* Main Content */
     .pp-main-content {
@@ -105,22 +93,27 @@
 </style>
 
 <!-- Hero / Page Title Section -->
-<section class="pp-hero-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 text-center">
-                <h1 class="display-4 fw-bold mb-3">Privacy Policy</h1>
-                <p class="lead mb-4">Your privacy is important to us. We are committed to protecting your personal and medical information.</p>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item">Home</li>
-                        <li class="breadcrumb-item active" aria-current="page"><a href="#">Privacy Policy</a></li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+<section class="hero-section bg-body-secondary">
+  <div class="container ">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="hero-title">Privacy Policy</h1>
+
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-center">
+            <li class="breadcrumb-item">
+              <a href="/">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Privacy Policy
+            </li>
+          </ol>
+        </nav>
+      </div>
     </div>
+  </div>
 </section>
+
 
 <main class="pp-main-content py-5">
     <div class="container">
@@ -156,7 +149,7 @@
 </main>
 
 <!-- Call to Action Section -->
-<section class="pp-cta-section py-5">
+<section class="pp-cta-section py-5 bg-body-secondary">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">

@@ -419,7 +419,7 @@ exports.getPatientStoriesPage = async (req, res) => {
     var sql1 = `SELECT * FROM gallery`;
     var gallery = await exe(sql1);
     var packet = { stories,gallery };
-    console.log(stories,gallery);
+    // console.log(stories,gallery);
     res.render("user/patient_stories", packet);
   } catch (error) {
     

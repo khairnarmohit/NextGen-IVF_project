@@ -9,14 +9,36 @@
   
 
   <!-- Buttons side by side -->
-  <div class="d-flex mb-3 gap-2">
-    <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#faqTypeForm" aria-expanded="false" aria-controls="faqTypeForm">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+
+  <!-- Left Buttons -->
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="button"
+      data-bs-toggle="collapse" data-bs-target="#faqTypeForm"
+      aria-expanded="false" aria-controls="faqTypeForm">
       Add FAQ Type
     </button>
-    <button class="btn btn-success " type="button" data-bs-toggle="collapse" data-bs-target="#faqForm" aria-expanded="false" aria-controls="faqForm">
+
+    <button class="btn btn-success" type="button"
+      data-bs-toggle="collapse" data-bs-target="#faqForm"
+      aria-expanded="false" aria-controls="faqForm">
       Add FAQ
     </button>
   </div>
+
+  <!-- Right Buttons (float-end style) -->
+  <div class="d-flex gap-2">
+    <button onclick="exportFaq()" class="btn btn-success">
+      <i class="fas fa-file-csv me-2"></i> Export CSV
+    </button>
+
+    <button onclick="printFaq()" class="btn btn-secondary">
+      <i class="fas fa-print me-1"></i> Print
+    </button>
+  </div>
+
+</div>
+
 
   <!-- FAQ Type Form -->
   <div class="collapse" id="faqTypeForm">
@@ -63,14 +85,19 @@
 
 </div>
 <!-- FAQ List Table -->
+
+<div class="container-fluid" id="printArea">
+  <h2 class="text-primary bg-primary text-white">FAQ List</h2>
+
  
 <div class="container-fluid">
   <h2 class="text-primary">FAQ List</h2>
    
+
   <div class="row">
 <div class="col-12">
 
-<table class="table table-bordered  mt-3">
+<table class="table table-bordered  ">
   <thead >
     <tr>
       <th>ID</th>
@@ -130,6 +157,86 @@
 </div>
 </div>
 </div>
+
+ <script>
+function exportFaq() {
+  let csv = [];
+  let table = document.querySelector("#printArea table");
+
+  if (!table) {
+    alert("Table not found!");
+    return;
+  }
+
+  let rows = table.querySelectorAll("tr");
+
+  rows.forEach(rowEl => {
+    let row = [];
+    let cols = rowEl.querySelectorAll("th, td");
+
+    cols.forEach((col, index) => {
+      // ❌ Skip Actions column (index 4)
+      if (index === 4) return;
+
+      let text = col.innerText
+        .trim()
+        .replace(/"/g, '""')
+        .replace(/\n/g, ' ');
+
+      row.push(`"${text}"`);
+    });
+
+    if (row.length > 0) {
+      csv.push(row.join(","));
+    }
+  });
+
+  let csvContent = "\uFEFF" + csv.join("\n");
+  let blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "faq_list.csv";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script>
+
+
+
+
+<script>
+function printFaq() {
+  const printArea = document.getElementById("printArea");
+  const originalBody = document.body.innerHTML;
+
+  // Clone print area
+  const clone = printArea.cloneNode(true);
+
+  // Remove Actions column (last column)
+  const rows = clone.querySelectorAll("tr");
+  rows.forEach(row => {
+    if (row.cells.length > 0) {
+      row.deleteCell(row.cells.length - 1);
+    }
+  });
+
+  // Print only modified content
+  document.body.innerHTML = "";
+  document.body.appendChild(clone);
+
+  window.print();
+
+  // Restore original page
+  document.body.innerHTML = originalBody;
+  location.reload();
+}
+</script>
+
+
 
 
 
