@@ -599,6 +599,22 @@ exports.getPatientReviewPage = async (req, res) => {
   }
 };
 
+exports.getEditPatientReviewPage = async (req, res) => {
+  try {
+    var id = req.params.id;
+    var sql = "SELECT * FROM patients_review WHERE patients_review_id = ?";
+    var editData = await exe(sql, [id]);
+    if (editData.length == 0) {
+      res.status(404).render("error", { message: "Patient Review not found" });
+      return;
+    }
+    res.render("admin/edit-patient-review", { editData: editData[0] });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("error", { message: "Edit Patient Review Page Error" });
+  }
+};
+
 exports.saveReview = async (req, res) => {
   try {
     var d = req.body;

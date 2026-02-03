@@ -49,7 +49,7 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-      transition: 0.4s ease;
+      transition: 0.5s ease;
       position: relative;
     }
 
@@ -68,7 +68,7 @@
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       opacity: 0;
-      transition: 0.4s;
+      transition: 0.5s;
     }
 
     .visiting-doctor-card:hover::before {
@@ -83,7 +83,7 @@
       width: 100%;
       height: 280px;
       object-fit: cover;
-      transition: 0.4s ease;
+      transition: 0.5s ease;
     }
 
     .visiting-doctor-card:hover .visiting-doctor-img {
@@ -139,7 +139,7 @@
       background: #fff;
       padding: 9px;
       border-radius: 50%;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); */
       font-size: 1.1rem;
     }
 
@@ -148,13 +148,34 @@
       color: #1E88E5;
       font-size: 1.05rem;
     }
+    /* ===== Hover Effects ===== */
+    .doctor-img,
+    .visiting-doctor-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
 
-    
+      /* performance */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+
+    .doctor-card,
+    .visiting-doctor-card {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .doctor-card,
+    .visiting-doctor-card {
+      transition: transform 0.25s ease;
+    }
+
 
     /* ===== MEDIA QUERIES FOR VISITING DOCTORS ===== */
 
     /* LARGE DESKTOP / COMPUTER > 992px */
-    @media (min-width: 992px) {
+    /* @media (min-width: 992px) {
       .visiting-doctor-img {
         height: 280px;
       }
@@ -178,10 +199,10 @@
       .visiting-schedule-item {
         font-size: 1rem;
       }
-    }
+    } */
 
     /* TABLETS 768px - 991px */
-    @media (max-width: 991px) and (min-width: 768px) {
+    /* @media (max-width: 991px) and (min-width: 768px) {
       .visiting-doctor-img {
         height: 240px;
       }
@@ -205,7 +226,7 @@
       .visiting-schedule-item {
         font-size: 0.95rem;
       }
-    }
+    } */
 
     /* MOBILE DEVICES < 768px */
     @media (max-width: 767px) {
@@ -246,7 +267,7 @@
     }
 
     /* OPTIONAL: VERY SMALL DEVICES < 480px */
-    @media (max-width: 480px) {
+    /* @media (max-width: 480px) {
       .visiting-doctor-img {
         height: 170px;
       }
@@ -275,7 +296,7 @@
         padding: 6px;
         font-size: 1rem;
       }
-    }
+    } */
   </style>
 
 
@@ -535,6 +556,8 @@
             <img 
               src="/uploads/<%= doctor.doctor_photo %>" 
               class="doctor-img" 
+              loading="lazy"
+              decoding="async"
               alt="<%= doctor.doctor_name %>">
 
             <div class="doctor-info">
@@ -585,6 +608,9 @@
               <img
                 src="/uploads/<%= visitingDoctors[i].visitor_doctor_photo %>"
                 class="visiting-doctor-img"
+                loading="lazy"
+                decoding="async"
+                
                 alt="<%= visitingDoctors[i].visitor_doctor_name %>">
 
               <div class="visiting-doctor-info">
