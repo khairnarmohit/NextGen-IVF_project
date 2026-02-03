@@ -63,6 +63,7 @@
   height: 2px;
   background-color: #0d6efd;
   margin-top: 10px;
+  color: white;
 }
 
 .ivf-footer ul {
@@ -82,7 +83,7 @@
 }
 
 .ivf-footer a:hover {
-  color: #0d6efd !important;
+  color: #c0af9b !important;
   padding-left: 5px; /* Slight movement on hover */
 }
 
@@ -257,3 +258,7 @@
     text-align: center; 
   }
 }
+
+.logo_css{
+      filter: brightness(15);
+    }
