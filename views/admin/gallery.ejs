@@ -27,7 +27,9 @@
                 <div class="card-footer text-center">
                     <!-- Delete Form -->
                     <form action="/admin/gallery/delete/<%= gallery[i].image_id %>" method="POST">
-                        <button type="submit" class="btn btn-danger w-100">
+                        <button type="submit" class="btn btn-danger w-100"
+                        onclick="return confirm('Are you sure you want to delete this record?');">
+                            
                             <i class="fa-solid fa-trash"></i> Delete
                         </button>
                     </form>

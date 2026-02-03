@@ -1,6 +1,18 @@
 <%- include("navbar.ejs") %>
   <style>
     /* ===== SECTION ===== */
+
+
+    .breadcrumb a,
+.breadcrumb .breadcrumb-item.active {
+  color: #000;          
+  text-decoration: none; 
+}
+
+.breadcrumb a:hover {
+  color: #000;         
+}
+
     .visiting-doctor-section {
       background: #f6f9ff;
       padding: 80px 0;
@@ -276,10 +288,7 @@
         font-size: 1rem;
       }
     }
-  </style>
-
-
-  <style>
+ 
     /* ===== SECTION HEADER ===== */
     .section-header {
       text-align: center;
@@ -503,18 +512,23 @@
     }
   </style>
 
-
 <header class="page-header text-center bg-body-secondary py-5 mb-5">
-    <div class="container">
-        <h1 class="display-4 fw-bold text-dark mb-3 p-5">Ours Doctors</h1>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb justify-content-center">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Doctors</li>
-            </ol>
-        </nav>
-    </div>
+  <div class="container">
+    <h1 class="display-4 fw-bold text-dark mb-3 p-5">Our Doctors</h1>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center">
+        <li class="breadcrumb-item">
+          <a href="/">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          Doctors
+        </li>
+      </ol>
+    </nav>
+  </div>
 </header>
+
 
 <section class="container py-5" id="core-doctors">
   <div class="section-header text-center mb-5">

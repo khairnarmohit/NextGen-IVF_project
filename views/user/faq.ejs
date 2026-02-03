@@ -16,6 +16,17 @@
     --transition: all 0.3s ease;
 }
 
+.hero-section .breadcrumb a,
+.hero-section .breadcrumb .breadcrumb-item.active {
+  color: #6c757d;              
+  text-decoration: none;    
+}
+
+.hero-section .breadcrumb a:hover {
+  color: #6c757d;             
+}
+
+
 
 
 
@@ -202,7 +213,7 @@
     </style>
    
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section bg-body-secondary">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center">
@@ -265,7 +276,7 @@
           </h2>
 
           <div id="faq<%= faqs[i].faq_id %>"
-               class="accordion-collapse collapse"
+               class="accordion-collapse collapse "
                data-bs-parent="#accordion<%= acc %>">
             <div class="accordion-body">
               <%= faqs[i].faq_desc %>
