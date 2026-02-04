@@ -1,12 +1,14 @@
 var mysql = require("mysql2");
 var util = require("util");
 
+require("dotenv").config();
+
 var conn = mysql.createPool({
-  host: "bprlqrokrwlzpporvdd4-mysql.services.clever-cloud.com",
-  user: "uvxpln6bip7zygue",
-  password: "MrfPkWRNWp90aBliN40L",
-  database: "bprlqrokrwlzpporvdd4",
-  port: "3306",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  port: process.env.DB_PORT,
 });
 
 var exe = util.promisify(conn.query).bind(conn);

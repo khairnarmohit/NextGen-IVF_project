@@ -1,4 +1,6 @@
 var exe = require("../model/conn.js");
+require("dotenv").config();
+
 var nodemailer = require("nodemailer");
 
 exports.getAboutPage = async (req, res) => {
@@ -293,8 +295,8 @@ exports.saveAppointment = async (req, res) => {
       port: 587, // ✅ Correct Port
       secure: false,
       auth: {
-        user: "magarlalitnandkumar@gmail.com",
-        pass: "srkx knhn nzvb kidr", // App Password
+        user: "process.env.EMAIL_USER",
+        pass: "process.env.EMAIL_PASS", // App Password
       },
     });
 

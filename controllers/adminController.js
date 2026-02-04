@@ -1,4 +1,5 @@
 var exe = require("../model/conn.js");
+require("dotenv").config();
 
 var nodemailer = require("nodemailer");
 
@@ -85,9 +86,6 @@ const doctorAppointments = await exe(`
       dailyAppointments,
       doctorAppointments,
     };
-
-    console.log(dailyAppointments);
-    console.log(doctorAppointments);
 
     res.render("admin/dashboard", packet);
   } catch (error) {
