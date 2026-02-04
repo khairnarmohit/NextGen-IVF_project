@@ -402,7 +402,6 @@ exports.getHomePage = async (req, res) => {
       hero_info = hero_info[0];
     }
 
-    console.log(patients_review)
     res.render("user/home", { hero_info, treatments, doctors, about, whychooseus, patients_review });
   } catch (error) {
     console.error(error);
