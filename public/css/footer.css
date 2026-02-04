@@ -233,29 +233,11 @@
     justify-content: center; 
   }
   
-  .ivf-footer .horizontal-links-row {
-    justify-content: center; 
-  }
 
-  .ivf-footer .footer-logo-container {
-    justify-content: center;
-  }
-
-  .ivf-footer .footer-desc {
-    text-align: center;
-  }
   
   .ivf-footer .footer-content {
     padding-top: 40px;
     padding-bottom: 20px;
-  }
-  
-  .ivf-footer h5 {
-    text-align: center; 
-  }
-  
-  .ivf-footer ul {
-    text-align: center; 
   }
 }
 
