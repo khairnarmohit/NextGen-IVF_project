@@ -31,7 +31,6 @@ exports.postLogin = async (req, res) => {
         .status(401)
         .render("admin/login", { message: "Invalid Email or Password" });
     }
-    console.log(req.body.email, req.body.password);
   } catch (error) {
     console.error(error);
     res.status(500).render("error", { message: "Login Page Error" });

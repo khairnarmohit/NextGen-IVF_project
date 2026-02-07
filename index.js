@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
   secret: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 }));
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
